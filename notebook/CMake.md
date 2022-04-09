@@ -32,7 +32,7 @@ mkdir build
 cd build/
 cmake ..
 make
-# MSVC
+# 通用命令，符合modern cmake,支持Makefile、Ninja、MSVC等不同的底层。
 cmake . -B build
 cmake --build build
 ```
