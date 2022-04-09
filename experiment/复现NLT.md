@@ -47,7 +47,7 @@ dependencies:
 
 但是作者的自己写的第三方库并没有兼容windows，运行会报错:
 
-<img src="../pic\复现NLT\windows不兼容.png" alt="windows不兼容" style="zoom: 67%;" />
+<img src="./pic\复现NLT\windows不兼容.png" alt="windows不兼容" style="zoom: 67%;" />
 
 <font color=red>非常坑的一点就是中断之后重新运行，不会加载原来保存的checkpoint而是直接覆盖输出目录重新从0开始训练，记得把配置文件里的overwrite改为False。</font>
 
@@ -55,7 +55,8 @@ dependencies:
 
 dragon_specular.zip训练结果：
 
-<video id="video" controls="controls" src="./../pic/复现NLT/dragon_specular_ckpt-100_pred_2fps.mp4" autoplay="autoplay">
+<video id="video" controls="controls" src="./pic/复现NLT/dragon_specular_ckpt-100_pred_2fps.mp4" autoplay="autoplay">
+
 
 
 

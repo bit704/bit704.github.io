@@ -130,7 +130,7 @@ dependencies:
 
 tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[4194304,90] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:ConcatV2] name: concat
 
-<img src="../pic/复现NeRF/显存不足.png" alt="显存不足" style="zoom:67%;" />
+<img src="./pic/复现NeRF/显存不足.png" alt="显存不足" style="zoom:67%;" />
 
 应该是因为我的3060的6G显存不如作者使用的nvidia v100。
 
@@ -152,19 +152,19 @@ N_importance = 16
 
 实际运行中的GPU情况：
 
-<img src="../pic/复现NeRF/GPU使用情况.png" alt="GPU使用情况" style="zoom:80%;" />
+<img src="./pic/复现NeRF/GPU使用情况.png" alt="GPU使用情况" style="zoom:80%;" />
 
 **Terminal输出：**
 
-<img src="../pic/复现NeRF/Terminal输出.png" alt="Terminal输出" style="zoom:80%;" />
+<img src="./pic/复现NeRF/Terminal输出.png" alt="Terminal输出" style="zoom:80%;" />
 
 **tesnorboard输出：**
 
 使用命令tensorboard --logdir=logs/summaries --port=6006，查看网页
 
-<img src="../pic/复现NeRF/tensorboard1.png" alt="tensorboard1" style="zoom:67%;" />
+<img src="./pic/复现NeRF/tensorboard1.png" alt="tensorboard1" style="zoom:67%;" />
 
-<img src="../pic/复现NeRF/tensorboard2.png" alt="tensorboard2" style="zoom: 67%;" />
+<img src="./pic/复现NeRF/tensorboard2.png" alt="tensorboard2" style="zoom: 67%;" />
 
 最后输出的视频位于logs/fern_test文件夹中
 
@@ -189,6 +189,11 @@ llff类型数据：
 要求图片的长宽是16的整数倍，否则网络会做裁剪处理，可能会导致损失增大。
 
 手动拍摄的照片之间基线不能太宽，角度变化不能太大。
+
+```python
+# render_rays函数的以下语句在处理360度环视场景时会报错
+tf.debugging.check_numerics(ret[k], 'output {}'.format(k))
+```
 
 ## 3.代码分析
 
@@ -275,7 +280,7 @@ Shader not supported by your hardware!
 ERROR: SiftGPU not fully supported.
 ```
 
-<img src="../pic/复现NeRF/SiftGPU.png" alt="SiftGPU" style="zoom:67%;" />
+<img src="./pic/复现NeRF/SiftGPU.png" alt="SiftGPU" style="zoom:67%;" />
 
 这个问题我完全不知道怎么解决，显然3060及其驱动又和程序出现了兼容性问题。
 
@@ -291,15 +296,15 @@ ERROR: SiftGPU not fully supported.
 
 手动安装的colmap终于可用了，但我遇到了一个全新的问题。（[相同的issue](https://github.com/Fyusion/LLFF/issues/36)）
 
-![error1](../pic/复现NeRF/error1.png)
+![error1](./pic/复现NeRF/error1.png)
 
 根据我自己的实验，colmap在作者提供的数据集上运行的很完美，说明只是我只是拍的照片不够“好”，不足以让colmap匹配这些图片。（这种情况是，如果我对自己拍摄的照片进行降采样，就会使colmap无法匹配）
 
 我自己用手机拍摄的一个数据集：
 
-![toyset](../pic/复现NeRF/toyset.png)
+![toyset](./pic/复现NeRF/toyset.png)
 
-<img src="../pic/复现NeRF/toy.JPG" alt="toy" style="zoom: 25%;" />
+<img src="./pic/复现NeRF/toy.JPG" alt="toy" style="zoom: 25%;" />
 
 ​			实验证明可以用colmap生成相机参数并输入nerf或grf训练。
 
