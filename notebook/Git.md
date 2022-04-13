@@ -81,10 +81,14 @@ git push -f origin main      # 强行推送到远程的main分支
 
 ## 参考网址
 
-[Git 工作区、暂存区和版本库 | 菜鸟教程 (runoob.com)](https://www.runoob.com/git/git-workspace-index-repo.html)
+[Git 工作区、暂存区和版本库  菜鸟教程 (runoob.com)](https://www.runoob.com/git/git-workspace-index-repo.html)
 
 [【Git】(1)---工作区、暂存区、版本库、远程仓库 - 雨点的名字 - 博客园 (cnblogs.com)](https://www.cnblogs.com/qdhxhz/p/9757390.html)
 
 [Git 少用 Pull 多用 Fetch 和 Merge - 技术翻译 - OSCHINA 社区](https://www.oschina.net/translate/git-fetch-and-merge?print=)
 
 [git submodule添加、更新和删除 - JYRoy - 博客园 (cnblogs.com)](https://www.cnblogs.com/jyroy/p/14367776.html)
+
+[git commit --amend - 简书 (jianshu.com)](https://www.jianshu.com/p/7d40838883af)
+
+[git commit回退三种姿势_DiuDiu_yang的博客-CSDN博客_git 回退commit](https://blog.csdn.net/qq_41261490/article/details/108119801)

@@ -2,8 +2,9 @@
 这里存放着个人学习记录，使用Typora和VSCode等工具撰写。请勿转载，谢谢。
 ## notebook
 [CMake](./notebook/CMake.md)  <sub><font color=green>13.55k</font> letters</sub>  <sub><font color=red>2022/04/10 00:13 </font>updated</sub>
-[Git](./notebook/Git.md)  <sub><font color=green>2.40k</font> letters</sub>  <sub><font color=red>2022/04/10 17:39 </font>updated</sub>
-[《DirectX-12-3D-游戏开发实战》笔记](./notebook/《DirectX-12-3D-游戏开发实战》笔记.md)  <sub><font color=green>26.44k</font> letters</sub>  <sub><font color=red>2022/04/09 17:46 </font>updated</sub>
+[Git](./notebook/Git.md)  <sub><font color=green>2.60k</font> letters</sub>  <sub><font color=red>2022/04/10 21:56 </font>updated</sub>
+[《C++程序设计教程（第3版）（通用版）》笔记](./notebook/《C++程序设计教程（第3版）（通用版）》笔记.md)  <sub><font color=green>12.48k</font> letters</sub>  <sub><font color=red>2022/04/13 11:32 </font>updated</sub>
+[《DirectX-12-3D-游戏开发实战》笔记](./notebook/《DirectX-12-3D-游戏开发实战》笔记.md)  <sub><font color=green>26.42k</font> letters</sub>  <sub><font color=red>2022/04/13 11:34 </font>updated</sub>
 ## experiment
 [NeRF全流程代码解析](./experiment/NeRF全流程代码解析.md)  <sub><font color=green>8.32k</font> letters</sub>  <sub><font color=red>2022/04/09 17:41 </font>updated</sub>
 [复现GRF](./experiment/复现GRF.md)  <sub><font color=green>2.35k</font> letters</sub>  <sub><font color=red>2021/12/12 22:36 </font>updated</sub>
@@ -19,6 +20,6 @@
 [阅读LLFF](./experiment/阅读LLFF.md)  <sub><font color=green>0.96k</font> letters</sub>  <sub><font color=red>2022/03/17 10:37 </font>updated</sub>
 [阅读Plenoxel](./experiment/阅读Plenoxel.md)  <sub><font color=green>4.05k</font> letters</sub>  <sub><font color=red>2022/03/19 11:41 </font>updated</sub>
 ## log
-[共享知识](./log/共享知识.md)  <sub><font color=green>3.21k</font> letters</sub>  <sub><font color=red>2022/04/10 15:14 </font>updated</sub>
+[共享知识](./log/共享知识.md)  <sub><font color=green>3.33k</font> letters</sub>  <sub><font color=red>2022/04/13 22:21 </font>updated</sub>
 [科学进食](./log/科学进食.md)  <sub><font color=green>3.72k</font> letters</sub>  <sub><font color=red>2022/03/28 23:44 </font>updated</sub>
 [阅读记录](./log/阅读记录.md)  <sub><font color=green>0.67k</font> letters</sub>  <sub><font color=red>2021/12/12 22:36 </font>updated</sub>
