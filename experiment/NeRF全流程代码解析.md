@@ -73,6 +73,8 @@ colmap运行日志打印到./fern/colmap_output.txt。
 
 以上参数对应相机编号, 相机模型, 宽, 高, ~~params[fx,fy,cx,cy]（fx、fy是焦距，cx、cy是光心）~~这个网上的解释是错误的，我翻了colmap的源码，应该是params[f,cx,cy,k] ，f是焦距，cx、cy是光心，k是畸变参数。这个相机模型SIMPLE_RADIAL是opencv相机模型的简化。
 
+可以参考：[colmap 相机模型及参数 - 小小灰迪 - 博客园 (cnblogs.com)](https://www.cnblogs.com/xiaohuidi/p/15767477.html)
+
 最终取hwf（高、宽、焦距）。
 
 加载images.bin得到**相机外参**：
