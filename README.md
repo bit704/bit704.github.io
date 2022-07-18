@@ -9,6 +9,7 @@
 ## experiment
 [NeRF全流程代码解析](./experiment/NeRF全流程代码解析.md)  <sub><font color=green>8.42k</font> letters</sub>  <sub><font color=red>2022/04/20 16:20 </font>updated</sub>
 [tiny-cuda-nn使用](./experiment/tiny-cuda-nn使用.md)  <sub><font color=green>3.24k</font> letters</sub>  <sub><font color=red>2022/05/17 14:56 </font>updated</sub>
+[复现Extracting](./experiment/复现Extracting.md)  <sub><font color=green>0.53k</font> letters</sub>  <sub><font color=red>2022/07/07 10:35 </font>updated</sub>
 [复现GRF](./experiment/复现GRF.md)  <sub><font color=green>2.35k</font> letters</sub>  <sub><font color=red>2021/12/12 22:36 </font>updated</sub>
 [复现ingp](./experiment/复现ingp.md)  <sub><font color=green>3.74k</font> letters</sub>  <sub><font color=red>2022/03/13 14:33 </font>updated</sub>
 [复现Mip-NeRF](./experiment/复现Mip-NeRF.md)  <sub><font color=green>1.15k</font> letters</sub>  <sub><font color=red>2021/12/18 21:08 </font>updated</sub>
@@ -22,6 +23,8 @@
 [阅读LLFF](./experiment/阅读LLFF.md)  <sub><font color=green>0.96k</font> letters</sub>  <sub><font color=red>2022/03/17 10:37 </font>updated</sub>
 [阅读Plenoxel](./experiment/阅读Plenoxel.md)  <sub><font color=green>4.05k</font> letters</sub>  <sub><font color=red>2022/03/19 11:41 </font>updated</sub>
 ## log
+[Unity常识](./log/Unity常识.md)  <sub><font color=green>0.09k</font> letters</sub>  <sub><font color=red>2022/07/14 22:15 </font>updated</sub>
 [共享知识](./log/共享知识.md)  <sub><font color=green>4.31k</font> letters</sub>  <sub><font color=red>2022/05/17 01:26 </font>updated</sub>
 [科学进食](./log/科学进食.md)  <sub><font color=green>3.72k</font> letters</sub>  <sub><font color=red>2022/03/28 23:44 </font>updated</sub>
+[计算机图形学常识](./log/计算机图形学常识.md)  <sub><font color=green>0.23k</font> letters</sub>  <sub><font color=red>2022/07/06 19:31 </font>updated</sub>
 [阅读记录](./log/阅读记录.md)  <sub><font color=green>0.74k</font> letters</sub>  <sub><font color=red>2022/05/20 21:05 </font>updated</sub>
