@@ -9,9 +9,7 @@ subtitle: 个人主页
 description: ''
 keywords:
 author: bit704
-language:
-  - zh-CN
-  - en
+language: [zh-CN,en]
 timezone: ''
 
 # URL

@@ -29,11 +29,14 @@ article:
 #底部图标
 footer:
   social:
-    github:
+    Github:
       icon: '<img src="https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.3/social/08a41b181ce68.svg"/>'
       url: https://github.com/bit704
     CSDN:
       icon: '<img src="https://tva2.sinaimg.cn/large/0077Un8Egy1h5erqs36soj306y06yt95.jpg"/>'
       url: https://blog.csdn.net/CN_BIT
+    Star:
+      icon: '<img src="https://tvax3.sinaimg.cn/thumbnail/0077Un8Egy1h5froky2bcj306y06yaaa.jpg"/>'
+      url: https://github.com/bit704/bit704.github.io
   license: '[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)'
   more: '健康，快乐！'
