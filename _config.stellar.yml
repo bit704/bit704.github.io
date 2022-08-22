@@ -1,0 +1,38 @@
+sidebar:
+  menu:
+    post: '[博客](/)'
+    wiki: '[项目](/wiki/)'
+    more: '[关于本人](/about/)'
+
+article:
+  # 分类颜色
+  category_color:
+    'Essay': '#DA0F47'
+    'Experiment': '#03a9f4'
+    'Log': '#ff9800'
+    'Notebook': '#ffa000'
+  share: [wechat, weibo, email, link]
+  related_posts:
+    enable: false
+    auto_cover: false
+
+
+
+# MathJax
+# 需在Markdown文件开头加入mathjax: true
+# 推荐使用Pandoc: npm uninstall hexo-renderer-marked --save & npm install hexo-renderer-pandoc --save
+# 需要更改 node_modules/hexo-renderer-mathjax/mathjax.html中的脚本路径为hhtps,不然无法渲染
+mathjax:
+  enable: true
+  cdn: https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+
+#底部图标
+footer:
+  social:
+    github:
+      icon: '<img src="https://fastly.jsdelivr.net/gh/cdn-x/placeholder@1.0.3/social/08a41b181ce68.svg"/>'
+      url: https://github.com/bit704
+    CSDN:
+      icon: '<img src="https://tva2.sinaimg.cn/large/0077Un8Egy1h5erqs36soj306y06yt95.jpg"/>'
+      url: https://blog.csdn.net/CN_BIT
