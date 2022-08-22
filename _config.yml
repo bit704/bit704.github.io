@@ -12,12 +12,11 @@ author: bit704
 language:
   - zh-CN
   - en
-  - zh-TW
 timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://bit704.github.io
+url: 'https://bit704.github.io'
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -44,7 +43,8 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-# 自动创建资源文件夹
+# 不自动创建资源文件夹
+post_asset_folder: false
 relative_link: false
 future: true
 highlight:
