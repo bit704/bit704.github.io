@@ -18,12 +18,13 @@ article:
 
 
 
-# MathJax
+# 使用MathJax渲染数学公式
 # 需在Markdown文件开头加入mathjax: true
-# 使用Pandoc: npm uninstall hexo-renderer-marked --save & npm install hexo-renderer-pandoc --save (若使用pandoc,footer里的markdown无法正确渲染)
+# 需要使用Pandoc: npm uninstall hexo-renderer-marked --save & npm install hexo-renderer-pandoc --save 
+# 若使用pandoc,footer里的markdown无法正确渲染。但是不使用pandoc，有大量公式的笔记无法正常渲染，hexo g会报错
+# pandoc比marked要慢一百倍
 # 需要更改 node_modules/hexo-renderer-mathjax/mathjax.html中的脚本路径为https,不然无法渲染
-# mathjax:
-#   enable: true
+# Katex用不了
 
 
 #底部图标
