@@ -5,11 +5,11 @@ categories: [Experiment]
 mathjax: false
 ---
 
-plenoxel
+Fridovich-Keil S, Yu A, Tancik M, et al. Plenoxels: Radiance Fields Without Neural Networks[C]//Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2022: 5501-5510.
 
 <!-- more -->
 
-https://github.com/sxyu/svox2
+[代码仓库](https://github.com/sxyu/svox2)
 
 ## 1.运行环境
 

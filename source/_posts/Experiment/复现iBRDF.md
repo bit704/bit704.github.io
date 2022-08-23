@@ -6,11 +6,9 @@ mathjax: false
 
 ---
 
-iBRDF
+Chen Z, Nobuhara S, Nishino K. Invertible neural BRDF for object inverse rendering[J]. IEEE Transactions on Pattern Analysis and Machine Intelligence, 2021.<!-- more -->
 
-<!-- more -->
-
-## 环境
+## 1 环境
 
 **操作系统**
 
@@ -87,7 +85,7 @@ Server: Docker Engine - Community
 5. OptiX 7.0.0
 6. TinyEXR (bundled)
 
-## 实验过程
+## 2 实验过程
 
 使用docker/下的脚本构建容器ranix。
 

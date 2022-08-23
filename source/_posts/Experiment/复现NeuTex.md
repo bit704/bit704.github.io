@@ -6,13 +6,13 @@ mathjax: false
 
 ---
 
-NeuTex<sup><a class=n href="#ref1">[1]</a></sup> 
+Xiang F ,  Xu Z ,  Haan M , et al. NeuTex: Neural Texture Mapping for Volumetric Neural Rendering[J].  2021.
 
 <!-- more -->
 
-## 1. 运行环境
+[代码仓库](https://github.com/fbxiang/NeuTex)
 
-[论文作者代码仓库](https://github.com/fbxiang/NeuTex)
+## 1. 运行环境
 
 ### 1.1 ubuntu
 
@@ -49,10 +49,4 @@ python环境：和ubuntu一摸一样
 要使用自己的输入数据的话，需要根据作者的要求写一个自己的数据加载类，加载指定需要的数据即可（而类中的加载方式怎么写都行，所以源数据格式不重要）。
 
 
-
-
-
-## 参考文献
-
-<a name="ref1">[1] Xiang F ,  Xu Z ,  Haan M , et al. NeuTex: Neural Texture Mapping for Volumetric Neural Rendering[J].  2021.</a>
 

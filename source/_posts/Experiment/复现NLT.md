@@ -5,7 +5,7 @@ categories: [Experiment]
 mathjax: false
 ---
 
-NLT<sup><a class=n href="#ref1">[1]</a></sup>
+Zhang X ,  Fanello S ,  Tsai Y T , et al. Neural Light Transport for Relighting and View Synthesis[J].  2020.
 
 <!-- more -->
 
@@ -61,9 +61,4 @@ dragon_specular.zip训练结果：
 dragon_sss.zip训练所需的神经网络学习率是前者的1/4，且深度是前者的4倍，可能会慢很多。并且将其batch size减半依然超出6G显存，暂时没有训练。
 
 
-
-
-## 参考文献
-
-<a name="ref1">[1] Zhang X ,  Fanello S ,  Tsai Y T , et al. Neural Light Transport for Relighting and View Synthesis[J].  2020.</a>
 

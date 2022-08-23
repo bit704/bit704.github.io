@@ -5,7 +5,7 @@ categories: [Experiment]
 mathjax: true
 ---
 
-NeRF<sup><a class=n href="#ref1">[1]</a></sup> 
+Mildenhall B ,  Srinivasan P P ,  Tancik M , et al. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis[J]. Springer, Cham, 2020.
 
 <!-- more -->
 

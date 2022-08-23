@@ -5,11 +5,11 @@ categories: [Experiment]
 mathjax: false
 ---
 
-ingp
+Müller T, Evans A, Schied C, et al. Instant neural graphics primitives with a multiresolution hash encoding[J]. arXiv preprint arXiv:2201.05989, 2022.
 
 <!-- more -->
 
-[github网址](https://github.com/NVlabs/instant-ngp)
+[代码仓库](https://github.com/NVlabs/instant-ngp)
 
 ## 1.实验环境
 

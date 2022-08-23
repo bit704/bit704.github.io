@@ -6,7 +6,7 @@ mathjax: false
 
 ---
 
-Mip-NeRF<sup><a class=n href="#ref1">[1]</a></sup> 
+Barron J T, Mildenhall B, Tancik M, et al. Mip-NeRF: A Multiscale Representation for Anti-Aliasing Neural Radiance Fields[J]. arXiv preprint arXiv:2103.13415, 2021.
 
 <!-- more -->
 
@@ -43,10 +43,3 @@ E external/org_tensorflow/tensorflow/stream_executor/cuda/cuda_dnn.cc:364] Could
 这个怀疑是因为显存分配有问题。
 
 并且，偶尔进程会被系统kill，怀疑是因为16G内存不够用。
-
-
-
-## 参考文献
-
-<a name="ref1">[1] Barron J T, Mildenhall B, Tancik M, et al. Mip-NeRF: A Multiscale Representation for Anti-Aliasing Neural Radiance Fields[J]. arXiv preprint arXiv:2103.13415, 2021.</a>
-

@@ -5,7 +5,7 @@ categories: [Experiment]
 mathjax: false
 ---
 
-GRF<sup><a class=n href="#ref1">[1]</a></sup> 
+Trevithick A ,  Yang B . GRF: Learning a General Radiance Field for 3D Scene Representation and Rendering[J].  2020.
 
 <!-- more -->
 
@@ -83,10 +83,4 @@ GRF<sup><a class=n href="#ref1">[1]</a></sup>
 GRF开始的训练是正常的，过了一段时间之后acm_loss全部变成nan。
 
 根据作者在Github Issue中的说法，训练400k次应该是足够的，因此我训练了30个小时完成400次。
-
-
-
-## 参考文献
-
-<a name="ref1">[1] Trevithick A ,  Yang B . GRF: Learning a General Radiance Field for 3D Scene Representation and Rendering[J].  2020.</a>
 

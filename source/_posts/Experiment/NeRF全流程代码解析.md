@@ -5,11 +5,9 @@ categories: [Experiment]
 mathjax: false
 ---
 
-代码分析
+Mildenhall B ,  Srinivasan P P ,  Tancik M , et al. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis[J]. Springer, Cham, 2020.
 
 <!-- more -->
-
-
 
 ## 1.相机参数生成
 
