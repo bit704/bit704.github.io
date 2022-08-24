@@ -50,3 +50,7 @@ GAMES101
 
 [一篇搞定！GAMES101现代计算机图形学入门（全） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/394932478)
 
+### DX
+
+[【资源】DirectX教程汇总 - 科创网 (kechuang.org)](https://www.kechuang.org/t/80420)
+
