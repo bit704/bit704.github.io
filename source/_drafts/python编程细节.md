@@ -1,6 +1,6 @@
 ---
 title: python编程细节
-layout: post
+layout: draft
 categories: [Essay]
 tags: [Python]
 mathjax: false
