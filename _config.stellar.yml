@@ -19,7 +19,7 @@ article:
 
 
 # 使用MathJax渲染数学公式
-# 需在Markdown文件开头加入mathjax: true
+# 需在Markdown文件开头加入mathjax: true（不加也可以渲染）
 # 需要使用Pandoc: npm uninstall hexo-renderer-marked --save & npm install hexo-renderer-pandoc --save 
 # 若使用pandoc,footer里的markdown无法正确渲染。但是不使用pandoc，有大量公式的笔记无法正常渲染，hexo g会报错
 # pandoc比marked要慢一百倍

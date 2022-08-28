@@ -2,7 +2,7 @@
 title: NeRF全流程代码解析
 layout: post
 categories: [Experiment]
-mathjax: false
+mathjax: true
 ---
 
 Mildenhall B ,  Srinivasan P P ,  Tancik M , et al. NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis[J]. Springer, Cham, 2020.
@@ -197,7 +197,7 @@ start->op1->sub1->op2->end
 
 >  get_embedder函数(./run_nerf_helpers.py)：入参是位置编码的最大频率的log2对数multires和位置编码方式i_embed，出参是一个函数embed_fn和输入维度input_ch。
 >
->  embed_fn：操作一个1+multires*2长度的函数列表对输入数进行计算，返回一个拼接的tensor。这个函数列表第一个函数是y=x, 此后每两个函数分别是y=sin(x\*freq)和y=cos(x\*freq)。freq是从2^0到2^(multires-1)按对数采样的multires个数。
+>  embed_fn：操作一个1+multires*2长度的函数列表对输入数进行计算，返回一个拼接的tensor。这个函数列表第一个函数是y=x, 此后每两个函数分别是y=sin(x\*freq)和y=cos(x\*freq)。freq是从$2^0$到$2^{(multires-1)}$按对数采样的multires个数。
 >
 >  input_ch为(1+multires\*2)\*input_dims。input_dims在程序里是常数3。
 >

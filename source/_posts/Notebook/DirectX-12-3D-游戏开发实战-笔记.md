@@ -12,6 +12,8 @@ mathjax: false
 
 <!-- more -->
 
+Introduction to 3D Game Programming with DirectX 12
+
 译者 王陈
 
 人民邮电出版社
