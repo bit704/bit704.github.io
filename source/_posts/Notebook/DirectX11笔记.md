@@ -387,3 +387,85 @@ void GameApp::UpdateScene(float dt)
 
 ## 04 变换
 
+Direct3D使用**左手坐标系**，而OpenGL与我们平日接触到的数学使用**右手坐标系**。
+
+纹理坐标系：
+
+![纹理坐标系](https://directx11.tech/assets/04/02.png)
+
+屏幕坐标系：
+
+![屏幕坐标系](https://directx11.tech/assets/04/03.png)
+
+的DirectXMath数学库中生成的矩阵都是行矩阵。这也意味着矩阵乘法通常被表示为行向量乘以行矩阵的形式。这不仅在编写C++的代码中有所体现，在HLSL中我们也将习惯写成上述形式。
+
+**齐次坐标（homogeneous coordinate）**：
+
+1. (x,y,z,0)**表示向量**
+2. (x,y,z,1)**表示点**
+
+线性映射（ linear mapping）是从一个向量空间V到另一个向量空间W的映射且保持加法运算和数量乘法运算，而线性变换（linear transformation）是线性空间V到其自身的线性映射。
+
+仿射变换=线性变换+平移
+
+投影部分可以看[GAMES101: 现代计算机图形学入门](https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html)
+
+## 05 DirectXMath数学库
+
+即DirectXMath.h。
+
+### SIMD与SSE2
+
+**SIMD**(Single Instruction Multiple Data)即单指令流多数据流，是一种采用一个控制器来控制多个处理器，同时对一组数据（又称“数据向量”）中的每一个分别执行相同的操作从而实现空间上的并行性的技术。简单来说就是一个指令能够同时处理多个数据。
+
+**SSE2**(Streaming SIMD Extensions 2）指令集是Intel公司在SSE指令集的基础上发展起来的。
+
+### 向量
+
+运算向量
+
+```c++
+typedef __m128 XMVECTOR;
+
+typedef union __declspec(intrin_type) __declspec(align(16)) __m128 {
+    float               m128_f32[4];
+    unsigned __int64    m128_u64[2];
+    __int8              m128_i8[16];
+    __int16             m128_i16[8];
+    __int32             m128_i32[4];
+    __int64             m128_i64[2];
+    unsigned __int8     m128_u8[16];
+    unsigned __int16    m128_u16[8];
+    unsigned __int32    m128_u32[4];
+} __m128;
+```
+
+存储向量
+
+```c++
+2D向量: XMFLOAT2(常用), XMINT2, XMUINT2
+3D向量: XMFLOAT3(常用), XMINT3, XMUINT3
+4D向量: XMFLOAT4(常用), XMINT4, XMUINT4
+```
+
+在需要时进行相互转换。
+
+对于自定义函数，如果需要传入`XMVECTOR`的话，前3个向量需要使用`FXMVECTOR`，第4个向量需要使用`GXMVECTOR`，第5-6个需要使用`HXMVECTOR`，从第7个开始则使用`CXMVECTOR`。这是为了使代码更具通用性，不受具体平台、编译器的影响，基于特定的平台和编译器，它们会被自动地定义为适当的类型。一定要把调用约定注解XM_CALLCONV加在函数名之前，它会根据编译器的版本确定出对应的调用约定属性。
+
+```c++
+#if _XM_VECTORCALL_
+#define XM_CALLCONV __vectorcall
+#else
+#define XM_CALLCONV __fastcall
+```
+
+### 矩阵
+
+`XMMATRIX`实际上里面是由4个`XMVECTOR`的数组构成的结构体。
+
+## 06 使用ImGui
+
+使用ImGui进行交互。
+
+## 07 光照、常用几何模型、光栅化状态
+

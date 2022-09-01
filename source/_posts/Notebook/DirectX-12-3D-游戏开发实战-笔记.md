@@ -147,7 +147,7 @@ XMMATRIX由4个XMVECTOR实例所构成，并借此来使用SIMD技术。
 
 在32位Windows操作系统上的\__fastcall调用约定中，XMMATRIX类型的参数是不能传至SSE/SSE2寄存器的，因为这些寄存器此时只支持3个XMVECTOR参数传入。而XMMATRIX参数却是由4个XMVECTOR构成，所以矩阵类型的数据只能通过堆栈来加以引用。
 
-[DirectXMath]建议用户总是在构造函数中采用CXMMATRIX类型来获取XMMATRIX参数，而且对于构造函数也不要使用XM_CALLCONV约定注解。
+DirectXMath建议用户总是在构造函数中采用CXMMATRIX类型来获取XMMATRIX参数，而且对于构造函数也不要使用XM_CALLCONV约定注解。
 
 矩阵与其逆矩阵的乘积结果为单位矩阵。如果一个矩阵是可逆的，则此矩阵的逆矩阵是唯一的。只有方阵才可能有逆矩阵，即便是方阵也未必可逆。
 
