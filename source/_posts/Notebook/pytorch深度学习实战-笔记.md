@@ -68,7 +68,7 @@ dir(models)
 # 首字母大写的名称指的是实现了许多流行模型的Python类，它们的体系结构不同，即输入和输出之间操作的编排不同。首字母小写的名称指的是一些便捷函数，它们返回这些类实例化的模型，有时使用不同的参数集。例如，resnet101表示返回一个有101层网络的ResNet实例，resnet152表示返回一个有152层网络的ResNet实例，以此类推。
 ```
 
-训练时候开启`model.train()`，启用 BatchNormalization 和 Dropout，将BatchNormalization和Dropout置为True。测试（评估）时开启`model.eval()`。
+训练时候开启`model.train()`，启用 BatchNormalization 和 Dropout，**将BatchNormalization和Dropout置为True**。测试（评估）时开启`model.eval()`。
 
 ## 第3章 从张量开始
 
@@ -205,13 +205,13 @@ def training_loop(n_epochs, learning_rate, params, t_u, t_c):
     for epoch in range(1, n_epochs + 1):
         w, b = params
 
-        t_p = model(t_u, w, b)  # <1>
+        t_p = model(t_u, w, b)  
         loss = loss_fn(t_p, t_c)
-        grad = grad_fn(t_u, t_c, t_p, w, b)  # <2>
+        grad = grad_fn(t_u, t_c, t_p, w, b)  
 
         params = params - learning_rate * grad
 
-        print('Epoch %d, Loss %f' % (epoch, float(loss))) # <3>
+        print('Epoch %d, Loss %f' % (epoch, float(loss))) 
             
     return params
 
@@ -250,7 +250,7 @@ def training_loop(n_epochs, learning_rate, params, t_u, t_c):
         # PyTorch反向遍历计算图以计算梯度
         loss.backward()
         
-        # 在with块中，对参数进行更新，PyTorch自动求导机制将不起作用
+        # 在with块中对参数进行更新，在这里PyTorch自动求导机制将不起作用
         with torch.no_grad(): 
             params -= learning_rate * params.grad
 

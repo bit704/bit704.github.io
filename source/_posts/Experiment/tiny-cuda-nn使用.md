@@ -106,3 +106,4 @@ GPUMatrix<float> inference_outputs(n_output_dims, batch_size);
 model.network->inference(inference_inputs, inference_outputs);
 ```
 
+也可以直接在pytorch里使用。
