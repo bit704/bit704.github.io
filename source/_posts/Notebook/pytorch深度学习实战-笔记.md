@@ -1,7 +1,7 @@
 ---
 title: 《pytorch深度学习实战》笔记
 categories: [Essay]
-tags: [C++,DirectX]
+tags: [Python,AI,Pytorch]
 cover: https://tva4.sinaimg.cn/large/0077Un8Egy1h5k6z703otj30rs14079r.jpg
 banner: https://tva4.sinaimg.cn/large/0077Un8Egy1h5k6z703otj30rs14079r.jpg
 ---
@@ -68,7 +68,7 @@ dir(models)
 # 首字母大写的名称指的是实现了许多流行模型的Python类，它们的体系结构不同，即输入和输出之间操作的编排不同。首字母小写的名称指的是一些便捷函数，它们返回这些类实例化的模型，有时使用不同的参数集。例如，resnet101表示返回一个有101层网络的ResNet实例，resnet152表示返回一个有152层网络的ResNet实例，以此类推。
 ```
 
-训练时候开启`model.train()`，启用 BatchNormalization 和 Dropout，**将BatchNormalization和Dropout置为True**。测试（评估）时开启`model.eval()`。
+训练时候开启`model.train()`，启用 BatchNormalization 和 Dropout。测试（评估）时开启`model.eval()`。
 
 ## 第3章 从张量开始
 
