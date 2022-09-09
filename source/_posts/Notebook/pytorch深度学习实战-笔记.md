@@ -6,7 +6,7 @@ cover: https://tva4.sinaimg.cn/large/0077Un8Egy1h5k6z703otj30rs14079r.jpg
 banner: https://tva4.sinaimg.cn/large/0077Un8Egy1h5k6z703otj30rs14079r.jpg
 ---
 
-作者  *Eli Stevens   Luca Antiga   Thomas Viehmann*
+原书作者  *Eli Stevens   Luca Antiga   Thomas Viehmann*
 
 <!--more-->
 

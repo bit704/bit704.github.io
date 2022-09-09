@@ -37,7 +37,7 @@ model.apply(init_weight)
 
 不同的初始化API:[torch.nn.init — PyTorch 1.12 documentation](https://pytorch.org/docs/stable/nn.init.html?highlight=nn init)
 
-Pytorch线性层采取的默认初始化方式是Kaiming初始化。
+Pytorch线性层采取的默认初始化方式是kaiming_uniform_初始化。
 
 ### BN 
 
@@ -68,6 +68,36 @@ BN层的加入可以起到抑制过拟合的作用，在训练过程对每个单
 > Li X, Chen S, Hu X, et al. Understanding the disharmony between dropout and batch normalization by variance shift[C]//Proceedings of the IEEE/CVF conference on computer vision and pattern recognition. 2019: 2682-2690.
 
 Dropout层一般放在激活函数层之后。
+
+### 保存模型
+
+1. 保存整个模型
+
+   ```python
+   # 保存
+   model = Model()
+   torch.save(model, 'model_name.pth')
+   # 读取
+   model = torch.load('model_name.pth')
+   ```
+
+2. 保存模型参数
+
+   ```python
+   # 保存
+   model = Model()
+   # 可以加个键，特别是保存多个模型的时候
+   torch.save({'model': model.state_dict()}, 'model_name.pth')
+   # 读取
+   model = Model()
+   state_dict = torch.load('model_name.pth')
+   model.load_state_dict(state_dict['model'])
+   ```
+   
+   第一种方法可以直接保存模型，加载模型的时候直接把读取的模型给一个参数就行。它包含四个键，分别是model,optimizer,scheduler,iteration。
+   
+   第二种方法只保存model参数，在读取模型参数前要先定义一个模型（模型必须与原模型相同的构造），然后对这个模型导入参数。
+   
 
 
 

@@ -379,11 +379,17 @@ void GameApp::UpdateScene(float dt)
 }
 ```
 
-## 作业1及作业2
+## 作业 1 2
 
-![作业1 渲染2D汉字](https://tva4.sinaimg.cn/large/0077Un8Egy1h5okpl1gmvj318i0q4q95.jpg)
+作业1 Rendering a 2D Hanzi
 
-![作业2 渲染3D汉字](https://tvax4.sinaimg.cn/large/0077Un8Egy1h5oktdre8dj318i0q4jue.jpg)
+![01 Rendering a 2D Hanzi](https://tva4.sinaimg.cn/large/0077Un8Egy1h5okpl1gmvj318i0q4q95.jpg)
+
+作业2 Rendering a 3D Hanzi
+
+![02 Rendering a 3D Hanzi](https://tvax4.sinaimg.cn/large/0077Un8Egy1h5oktdre8dj318i0q4jue.jpg)
+
+
 
 ## 04 变换
 
@@ -466,6 +472,12 @@ typedef union __declspec(intrin_type) __declspec(align(16)) __m128 {
 ## 06 使用ImGui
 
 使用ImGui进行交互。
+
+## 作业 3
+
+作业3 Rendering Much 3D Hanzi
+
+![03 Rendering Much 3D Hanzi](https://tvax2.sinaimg.cn/large/0077Un8Egy1h5vvv85vfjj318i0q4x2c.jpg)
 
 ## 07 光照、常用几何模型、光栅化状态
 

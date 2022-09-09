@@ -8,7 +8,7 @@ tags: [C++]
 mathjax: true
 ---
 
-原书作者 *钱能*     
+作者 *钱能*     
 
 <!-- more -->
 

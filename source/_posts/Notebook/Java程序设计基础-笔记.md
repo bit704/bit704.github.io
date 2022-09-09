@@ -8,7 +8,7 @@ tags: [Java]
 mathjax: false
 ---
 
-原书作者 *陈国君*
+作者 *陈国君*
 
 <!-- more -->
 
