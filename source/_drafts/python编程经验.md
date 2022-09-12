@@ -81,11 +81,20 @@ for i in range(X.size):
         # 注意这里Z的shape是(Y.size,X.size)
         Z[j][i] = X[i] + Y[j]
 
-        ax2 = fig.add_subplot(122, projection='3d')
-        ax2.plot_surface(XX, YY, Z, cmap='rainbow')
-        ax2.set_xlabel('X')
-        ax2.set_ylabel('Y')
-        ax2.set_zlabel('Z')
+ax2 = fig.add_subplot(122, projection='3d')
+ax2.plot_surface(XX, YY, Z, cmap='rainbow')
+ax2.set_xlabel('X')
+ax2.set_ylabel('Y')
+ax2.set_zlabel('Z')
+# visible：表示是否显示网格。若提供其他关键字参数，则b参数设为True。
+# which：表示显示网格的类型，支持major、minor、both这3种类型，默认为major。
+# axis：表示显示哪个方向的网格，该参数支持both、x和y这3个选项，默认为both。
+# linewidth或lw：表示网格线的宽度。
+# ax1.grid(visible=True,which='both', axis='both', linewidth=0.3)
+# 在show之前调用
+plt.savefig('loss_image.jpg')
+plt.show()
+plt.close()
 ```
 
 ![可视化结果](https://tvax4.sinaimg.cn/large/0077Un8Egy1h5uph5gvslj30vd0bb0vk.jpg)

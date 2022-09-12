@@ -87,7 +87,7 @@ git branch -m main          # 重命名当前分支为main
 git push -f origin main      # 强行推送到远程的main分支
 ```
 
-
+推荐一个动画演示的[在线练习网站](https://learngitbranching.js.org/?locale=zh_CN)
 
 ## 参考
 
@@ -101,4 +101,5 @@ git push -f origin main      # 强行推送到远程的main分支
 
 [git commit --amend - 简书 (jianshu.com)](https://www.jianshu.com/p/7d40838883af)
 
-[git commit回退三种姿势_DiuDiu_yang的博客-CSDN博客_git 回退commit](https://blog.csdn.net/qq_41261490/article/details/108119801)
+[git commit回退三种姿势_DiuDiu_yang的博客-CSDN博客_ git 回退commit](https://blog.csdn.net/qq_41261490/article/details/108119801)
+

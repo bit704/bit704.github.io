@@ -22,7 +22,7 @@ Deep learning with pytorch
 
 [代码仓库](https://github.com/deep-learning-with-pytorch/dlwpt-code)
 
-这本书的中文翻译不是很行。
+这本书的中文翻译有一些地方不通顺。5、6章目录自行编制。
 
 [toc]
 

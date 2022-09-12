@@ -1,1 +1,4 @@
-在编辑数学latex公式时将连续的两个{{用空格隔开，不然会报错Nunjucks Error。
+在编辑数学latex公式需注意：
+1. 将连续的两个{{用空格隔开，不然会报错Nunjucks Error。
+2. 生成中会warn LaTeX-incompatible input and strict mode is set to 'warn': Unicode text characte，需要对公式中的中文使用\text{}包裹
+

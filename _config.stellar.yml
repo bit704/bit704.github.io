@@ -16,20 +16,6 @@ article:
     enable: false
     auto_cover: false
 
-
-
-# 使用MathJax渲染数学公式
-# 需在Markdown文件开头加入mathjax: true（不加也可以渲染）
-# 需要更改 node_modules/hexo-renderer-mathjax/mathjax.html中的脚本路径为https,不然无法渲染
-# Katex用不了
-
-# 使用Pandoc: npm uninstall hexo-renderer-marked --save & npm install hexo-renderer-pandoc --save 
-# 若使用pandoc,footer里的markdown无法正确渲染。但是不使用pandoc，有大量公式的笔记无法正常渲染，hexo g会报错。
-# pandoc比marked要慢一百倍
-# 后面发现报错是因为Nunjucks Error, 有大量公式的笔记中存在两个{{挨在一起，需要用空格隔开
-# 换回marked
-
-
 #底部图标
 footer:
   social:
@@ -44,3 +30,31 @@ footer:
       url: https://github.com/bit704/bit704.github.io
   license: '[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)'
   more: '健康，快乐！'
+
+
+
+# 使用MathJax渲染数学公式
+# 需在Markdown文件开头加入mathjax: true（不加也可以渲染）
+# mathjax:
+#   enable: true
+# (上面同样不必添加)
+# 只需要安装hexo-renderer-mathjax即可
+# 另外需要更改 node_modules/hexo-renderer-mathjax/mathjax.html中的脚本路径为https,不然无法渲染
+
+# 默认使用hexo-renderer-marked处理markdown
+# 使用hexo-renderer-marked，有大量公式的笔记无法正常渲染，hexo g会报错。
+# 后面发现报错是因为Nunjucks Error, 有大量公式的笔记中存在两个{{挨在一起，需要用空格隔开
+# hexo-renderer-marked会对公式块中的\\转义，导致矩阵无法正确渲染
+
+# 使用hexo-renderer-pandoc替换hexo-renderer-marked
+# npm uninstall hexo-renderer-marked --save & npm install hexo-renderer-pandoc --save 
+# 但是pandoc会导致footer里的markdown无法正确渲染。并且pandoc比marked要慢一百倍
+
+# 使用hexo-renderer-kramed替换hexo-renderer-marked
+# 解决公式块中\\被转移导致矩阵无法正确渲染的问题，并且同样很快
+# 但是_依然会被转义为斜体，导致公式中的下标无法正确渲染
+
+# 使用hexo-renderer-markdown-it-katex替换hexo-renderer-marked
+# 自带katex，处理markdown同时渲染公式，因此可以卸载hexo-renderer-mathjax
+# 渲染没有问题，但是生成中会warn LaTeX-incompatible input and strict mode is set to 'warn': Unicode text characte
+# 需要对公式中的中文使用\text{}包裹

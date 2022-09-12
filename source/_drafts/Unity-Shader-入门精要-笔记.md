@@ -299,7 +299,7 @@ Shader  "Custom/Simple  VertexFragment  Shader"  {
 }
 ```
 
-#### 总结
+#### 附录
 
 在传统的Shader中，我们仅可以编写特定类型的Shader，例如顶点着色器、片元着色器等。而在Unity Shader中，我们可以在同一个文件里同时包含需要的顶点着色器和片元着色器代码。
 
@@ -315,17 +315,15 @@ Shader  "Custom/Simple  VertexFragment  Shader"  {
 
 ![Unity内置的摄像机和屏幕参数](https://tvax4.sinaimg.cn/large/0077Un8Egy1h5z3s12927j30rs0f7778.jpg)
 
-#### 总结
+#### 附录
 
 通常在变换顶点时，我们都是使用右乘的方式来按列矩阵进行乘法。这是因为，Unity提供的内置矩阵（如UNITY_MATRIX_MVP等）都是按列存储的。但有时，我们也会使用左乘的方式，这是因为可以省去对矩阵转置的操作。
 
 Unity在脚本中提供了一种矩阵类型——Matrix4x4。脚本中的这个矩阵类型则是采用列优先的方式。这与Unity Shader中的规定不一样。
 
-> 矩阵在CG、DirectX中是**行优先**存储，在OpenGL中是**列优先**存储的。
+> 矩阵在CG、DirectX中是**行优先**表示，在OpenGL中是**列优先**表示的。
 >
-> 行优先存储，点/向量用行向量表示，变换矩阵必须在✖的右边，称为**右乘**。
->
-> 列优先可类比。
+> 更多细节可以参考我Essay分类下的文章 矩阵存储与表示。
 
 OpenGL和DirectX 10以后的版本认为**像素中心**对应的是浮点值中的0.5。VPOS/WPOS语义定义的输入是一个float4类型的变量。我们已经知道它的xy值代表了在屏幕空间中的像素坐标。如果屏幕分辨率为400 × 300，那么x的范围就是[0.5,400.5], y的范围是[0.5,300.5]。(VPOS是HLSL中对屏幕坐标的语义，而WPOS是CG中对屏幕坐标的语义。)
 
@@ -394,6 +392,8 @@ Shader "Unity Shaders Book/Chapter 5/Simple Shader" {
 }
 ```
 
+![结果1](https://tva4.sinaimg.cn/large/0077Un8Egy1h61ci2jjdvj30q70o30wh.jpg)
+
 #### 5.3 强大的援手：Unity提供的内置文件和变量
 
 包含文件（include file），是类似于C++中头文件的一种文件。在Unity中，它们的文件后缀是．cginc。在编写Shader时，我们可以使用#include指令把这些文件包含进来，这样我们就可以使用Unity为我们提供的一些非常有用的变量和帮助函数。
@@ -423,4 +423,663 @@ CGIncludes文件夹在Mac上位于：/Applications/Unity/Unity.app/Contents/CGIn
 #### 5.5 程序员的烦恼：Debug
 
 Shader可以直接使用颜色代表数据进行可视化来Debug。也可以借助帧调试器一类的工具。
+
+#### 5.6 小心：渲染平台的差异
+
+在OpenGL（OpenGL ES也是）中，(0, 0)点对应了屏幕的左下角，而在DirectX（Meta l也是）中，(0, 0)点对应了左上角。
+
+大多数情况下，这样的差异并不会对我们造成任何影响。但当我们要使用**渲染到纹理技术**，把屏幕图像渲染到一张渲染纹理中时，如果不采取行任何措施的话，就会出现纹理翻转的情况。幸运的是，Unity在背后为我们处理了这种翻转问题——当在DirectX平台上使用渲染到纹理技术时，Unity会为我们翻转屏幕图像纹理，以便在不同平台上达到一致性。
+
+如果我们需要同时处理多张渲染图像（前提是开启了抗锯齿），例如需要同时处理屏幕图像和法线纹理，这些图像在竖直方向的朝向就可能是不同的（只有在DirectX这样的平台上才有这样的问题）。
+
+#### 5.7 Shader整洁之道
+
+CG/HLSL中3种精度的数值类型
+
+| 类型  | 精度                                           |
+| ----- | ---------------------------------------------- |
+| float | 最高精度，通常32位存储                         |
+| half  | 中等精度，通常16位存储，精度范围-60000\~+60000 |
+| fixed | 最低精度，通常11位存储，精度范围-2.0\~+2.0     |
+
+Shader Model是由微软提出的一套规范，通俗地理解就是它们决定了Shader中各个特性（feature）的能力（capability）。这些特性和能力体现在Shader能使用的运算指令数目、寄存器个数等各个方面。Shader Model等级越高，Shader的能力就越大。
+
+GPU使用了不同于CPU的技术来实现分支语句，在最坏的情况下，我们花在一个分支语句的时间相当于运行了所有分支语句的时间。因此，我们不鼓励在Shader中使用流程控制语句，因为它们会降低GPU的并行处理操作（尽管在现代的GPU上已经有了改进）。
+
+### 第6章 Unity中的基础光照
+
+#### 6.1 我们是如何看到这个世界的
+
+**着色**（shading）指的是，根据材质属性（如漫反射属性等）、光源信息（如光源方向、辐照度等），使用一个等式去计算沿某个观察方向的出射度的过程。我们也把这个等式称为光照模型（Lighting Model）。
+
+当给定模型表面上的一个点时，BRDF包含了对该点外观的完整的描述。在图形学中，**BRDF**（Bidirectional Reflectance Distribution Function）大多使用一个数学公式来表示，并且提供了一些参数来调整材质属性。通俗来讲，当给定入射光线的方向和辐照度后，BRDF可以给出在某个出射方向上的光照能量分布。
+
+本章涉及的BRDF都是对真实场景进行理想化和简化后的模型，也就是说，它们并不能真实地反映物体和光线之间的交互，这些光照模型被称为是**经验模型**。
+
+#### 6.2 标准光照模型
+
+虽然光照模型有很多种类，但在早期的游戏引擎中往往只使用一个光照模型，这个模型被称为**标准光照模型**。实际上，在BRDF理论被提出之前，标准光照模型就已经被广泛使用了。
+
+> 在1975年，著名学者裴祥风（Bui Tuong Phong）提出了标准光照模型背后的基本理念。标准光照模型只关心直接光照（direct light），也就是那些直接从光源发射出来照射到物体表面后，经过物体表面的一次反射直接进入摄像机的光线。
+
+它把进入到摄像机内的光线分为4个部分，每个部分使用一种方法来计算它的贡献度:
+
+- **自发光**（emissive）部分，本书使用cmissive来表示。这个部分用于描述当给定一个方向时，一个表面本身会向该方向发射多少辐射量。需要注意的是，如果没有使用全局光照（global illumination）技术，这些自发光的表面并不会真的照亮周围的物体，而是它本身看起来更亮了而已。
+
+- **漫反射**（diffuse）部分，本书使用cdiffuse来表示。这个部分用于描述，当光线从光源照射到模型表面时，该表面会向每个方向散射多少辐射量。
+
+  因为反射完全随机，可以认为在任何反射方向上的分布都是一样的，因此入射光线的角度很重要。
+
+  漫反射光照符合兰伯特定律（Lambert's law）：反射光线的强度与表面法线和光源方向之间夹角的余弦值成正比。
+  $$
+  c_{diffuse}=(c_{light}·m_{diffuse})\max(0,\hat{n}·\hat{I})
+  $$
+  $c_{light}$是光源颜色，$m_{diffuse}$是材质的漫反射颜色， $\hat{n}$是表面法线， $\hat{I}$是指向光源的单位矢量。max防止物体被从后面来的光源照亮。
+
+- **高光反射**（specular）部分，本书使用cspecular来表示。这个部分用于描述当光线从光源照射到模型表面时，该表面会在完全镜面反射方向散射多少辐射量。
+
+  计算高光反射需要知道表面法线$\hat{n}$、视角方向$\hat{v}$、光源方向$\hat{l}$、反射方向$\hat{r}$。反射方向可以由表面法线和光源方向计算。
+  $$
+  \hat{r}=2(\hat{n}·\hat{I})\hat{n}-\hat{I}
+  $$
+  利用Phong模型来计算高光反射:
+  $$
+  c_{specular}=(c_{light}·m_{specular})\max(0,\hat{v}·\hat{r})^{m_{gloss}}
+  $$
+  $m_{gloss}$是材质的光泽度（gloss），也被称为反光度（shininess）。它用于控制高光区域的“亮点”有多宽，**gloss越大，亮点就越小**。
+
+  Blinn模型引入了一个新的矢量$\hat{h}$，$\hat{h}=\frac{\hat{v}+\hat{I}}{ | \hat{v}+\hat{I} | }$：
+  $$
+  c_{specular}=(c_{light}·m_{specular})\max(0,\hat{n}·\hat{h})^{m_{gloss}}
+  $$
+
+- **环境光**（ambient）部分，本书使用cambient来表示。它用于描述其他所有的间接光照。
+
+  通常是一个全局变量，即场景中的所有物体都使用这个环境光。
+
+**逐像素光照**: 以每个像素为基础，得到它的法线（可以是对顶点法线插值得到的，也可以是从法线纹理中采样得到的），然后进行光照模型的计算。这种在面片之间对顶点法线进行插值的技术被称为Phong着色（Phong shading），也被称为Phong插值或法线插值着色技术。这不同于我们之前讲到的Phong光照模型。
+
+**逐顶点光照**: 被称为高洛德着色（Gouraud shading）,每个顶点上计算光照，然后会在渲染图元内部进行线性插值，最后输出成像素颜色。由于顶点数目往往远小于像素数目，因此逐顶点光照的计算量往往要小于逐像素光照。但是，由于逐顶点光照依赖于线性插值来得到像素光照，因此，当光照模型中有非线性的计算（例如计算高光反射时）时，逐顶点光照就会出问题。而且，由于逐顶点光照会在渲染图元内部对顶点颜色进行插值，这会导致渲染图元内部的颜色总是暗于顶点处的最高颜色值，这在某些情况下会产生明显的棱角现象。
+
+> 标准光照模型有很多不同的叫法。例如，一些资料中称它为Phong光照模型，因为裴祥风（Bui Tuong Phong）首先提出了使用漫反射和高光反射的和来对反射光照进行建模的基本思想，并且提出了基于经验的计算高光反射的方法（用于计算漫反射光照的兰伯特模型在那时已经被提出了）。而后，由于Blinn的方法简化了计算而且在某些情况下计算更快，我们把这种模型称为Blinn-Phong光照模型。
+
+**局限**: 首先，有很多重要的物理现象无法用Blinn-Phong模型表现出来，例如菲涅耳反射（Fresnel reflection）。其次，Blinn-Phong模型是各项同性（isotropic）的，也就是说，当我们固定视角和光源方向旋转这个表面时，反射不会发生任何改变。但有些表面是具有各向异性（anisotropic）反射性质的，例如拉丝金属、毛发等。
+
+#### 6.3 Unity中的环境光和自发光
+
+环境光在window->Rendering->Lighting->Environment中调节。
+
+计算自发光只需要在片元着色器输出最后的颜色之前，把材质的自发光颜色添加到输出颜色上。
+
+#### 6.4 在Unity Shader中实现漫反射光照模型
+
+逐顶点的漫反射光照着色器
+
+```c
+// Upgrade NOTE: replaced '_World2Object' with 'unity_WorldToObject'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unity Shaders Book/Chapter 6/Diffuse Vertex-Level" {
+	Properties {
+		_Diffuse ("Diffuse", Color) = (1, 1, 1, 1)
+	}
+	SubShader {
+		Pass { 
+            //定义该Pass在Unity的光照流水线中的角色
+			Tags { "LightMode"="ForwardBase" }
+		
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "Lighting.cginc"
+			
+			fixed4 _Diffuse;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				fixed3 color : COLOR;
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				// Transform the vertex from object space to projection space
+				o.pos = UnityObjectToClipPos(v.vertex);
+				
+				// Get ambient term
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
+				
+				// Transform the normal from object space to world space
+				fixed3 worldNormal = normalize(mul(v.normal, (float3x3)unity_WorldToObject));
+				// Get the light direction in world space
+				fixed3 worldLight = normalize(_WorldSpaceLightPos0.xyz);
+				// Compute diffuse term
+				fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * saturate(dot(worldNormal, worldLight));
+				
+				o.color = ambient + diffuse;
+				
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {
+				return fixed4(i.color, 1.0);
+			}
+			
+			ENDCG
+		}
+	}
+	FallBack "Diffuse"
+}
+```
+
+注意，管线会自动在顶点着色器和片元着色器之间进行插值。
+
+逐像素的漫反射光照着色器类似，只是把颜色的计算放在了片元着色器中。
+
+半兰伯特光照模型：
+$$
+c_{diffuse}=(c_{light}·m_{diffuse})(0.5(\hat{n}·\hat{I})+0.5)
+$$
+不使用max，而是把$\hat{n}·\hat{I}$从$[-1,1]$映射到$[0,1]$。没有任何物理依据，仅仅是一个视觉加强技术。
+
+左起逐顶点漫反射光照、逐像素漫反射光照、逐像素半兰伯特光照：
+
+![结果2](https://tva4.sinaimg.cn/large/0077Un8Egy1h61vvfs78hj30pw0ng78e.jpg)
+
+#### 6.5 在Unity Shader中实现高光反射光照模型
+
+该部分主干代码与上节相同，把计算公式换掉即可。
+
+#### 6.6 召唤神龙：使用Unity内置的函数
+
+```c
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unity Shaders Book/Chapter 6/Blinn-Phong Use Built-in Functions" {
+	Properties {
+		_Diffuse ("Diffuse", Color) = (1, 1, 1, 1)
+		_Specular ("Specular", Color) = (1, 1, 1, 1)
+		_Gloss ("Gloss", Range(1.0, 500)) = 20
+	}
+	SubShader {
+		Pass { 
+			Tags { "LightMode"="ForwardBase" }
+		
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "Lighting.cginc"
+			
+			fixed4 _Diffuse;
+			fixed4 _Specular;
+			float _Gloss;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 worldNormal : TEXCOORD0;
+				float4 worldPos : TEXCOORD1;
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+                // o.worldNormal = mul(v.normal, (float3x3)unity_WorldToObject);
+				o.worldNormal = UnityObjectToWorldNormal(v.normal);
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
+				
+				fixed3 worldNormal = normalize(i.worldNormal);
+				// fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
+				fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));
+				
+				fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(worldNormal, worldLightDir));
+				
+				// fixed3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz);
+				fixed3 viewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));
+				fixed3 halfDir = normalize(worldLightDir + viewDir);
+				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss);
+				
+				return fixed4(ambient + diffuse + specular, 1.0);
+			}
+			
+			ENDCG
+		}
+	} 
+	FallBack "Specular"
+}
+```
+
+### 第7章 基础纹理
+
+纹理最初的目的就是使用一张图片来控制模型的外观。使用**纹理映射**（texture mapping）技术，我们可以把一张图“黏”在模型表面，逐纹素（texel）（纹素的名字是为了和像素进行区分）地控制模型的颜色。
+
+在美术人员建模的时候，通常会**在建模软件中利用纹理展开技术把纹理映射坐标（texture-mapping coordinates）存储在每个顶点上**。纹理映射坐标定义了该顶点在纹理中对应的2D坐标。通常，这些坐标使用一个二维变量(u, v)来表示，其中u是横向坐标，而v是纵向坐标。因此，纹理映射坐标也被称为**UV坐标**，通常都被归一化到[0, 1]范围内。对于不在[0, 1]范围内的纹理坐标，与之关系紧密的是纹理的平铺模式。
+
+#### 7.1 单张纹理
+
+通常会使用一张纹理来代替物体的漫反射颜色。
+
+```c
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unity Shaders Book/Chapter 7/Single Texture" {
+	Properties {
+		_Color ("Color Tint", Color) = (1, 1, 1, 1)
+		_MainTex ("Main Tex", 2D) = "white" {}
+		_Specular ("Specular", Color) = (1, 1, 1, 1)
+		_Gloss ("Gloss", Range(8.0, 256)) = 20
+	}
+	SubShader {		
+		Pass { 
+			Tags { "LightMode"="ForwardBase" }
+		
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+
+			#include "Lighting.cginc"
+			
+			fixed4 _Color;
+			sampler2D _MainTex;
+            //在Unity中，我们需要使用纹理名_ST的方式来声明某个纹理的属性。其中，ST是缩放（scale）和平移（translation）的缩写。_MainTex_ST可以让我们得到该纹理的缩放和平移（偏移）值，_MainTex_ST.xy存储的是缩放值，而_MainTex_ST.zw存储的是偏移值。这些值可以在材质面板的纹理属性中调节。
+			float4 _MainTex_ST;
+			fixed4 _Specular;
+			float _Gloss;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+				float4 texcoord : TEXCOORD0;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 worldNormal : TEXCOORD0;
+				float3 worldPos : TEXCOORD1;
+				float2 uv : TEXCOORD2;
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				o.worldNormal = UnityObjectToWorldNormal(v.normal);
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				o.uv = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+				// Or just call the built-in function o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {
+				fixed3 worldNormal = normalize(i.worldNormal);
+				fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));
+				
+				// Use the texture to sample the diffuse color
+				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
+				
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
+				
+				fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(worldNormal, worldLightDir));
+				
+				fixed3 viewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));
+				fixed3 halfDir = normalize(worldLightDir + viewDir);
+				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss);
+				
+				return fixed4(ambient + diffuse + specular, 1.0);
+			}
+			
+			ENDCG
+		}
+	} 
+	FallBack "Specular"
+}
+```
+
+![结果3](https://tva3.sinaimg.cn/large/0077Un8Egy1h62zwtiy2tj30ek0jijvw.jpg)
+
+Wrap Mode : 一种是Repeat，在这种模式下，如果纹理坐标超过了1，那么它的整数部分将会被舍弃，而直接使用小数部分进行采样，这样的结果是纹理将会不断重复；另一种是Clamp，在这种模式下，如果纹理坐标大于1，那么将会截取到1，如果小于0，那么将会截取到0。
+
+Filter Mode : Point模式使用了最近邻（nearest neighbor）滤波，在放大或缩小时，它的采样像素数目通常只有一个，因此图像会看起来有种像素风格的效果。而Bilinear滤波则使用了线性滤波，对于每个目标像素，它会找到4个邻近像素，然后对它们进行线性插值混合后得到最终像素，因此图像看起来像被模糊了。而Trilinear滤波几乎是和Bilinear一样的，只是Trilinear还会在多级渐远纹理之间进行混合。如果一张纹理没有使用多级渐远纹理技术，那么Trilinear得到的结果是和Bilinear就一样的。
+
+#### 7.2 凹凸映射
+
+**凹凸映射**（bump mapping）的目的是使用一张纹理来修改模型表面的法线，以便为模型提供更多的细节。这种方法不会真的改变模型的顶点位置，只是让模型看起来好像是“凹凸不平”的，但可以从模型的轮廓处看出“破绽”。
+
+有两种主要的方法可以用来进行凹凸映射
+
+- 使用一张高度纹理（height map）来模拟表面位移（displacement），然后得到一个修改后的法线值，这种方法也被称为高度映射（height mapping）
+- 使用一张法线纹理（normal map）来直接存储表面法线，这种方法又被称为法线映射（normal mapping）。
+
+由于法线方向的分量范围在[-1, 1]，而像素的分量范围为[0, 1]，因此我们需要做一个映射将法线方向存储到法线纹理中。
+
+法线纹理分类 : 
+
+- **模型空间的法线纹理**（object-space normal map）
+
+  - 实现简单
+
+  - 这是因为模型空间下的法线纹理存储的是同一坐标系下的法线信息，因此在边界处通过插值得到的法线可以平滑变换 
+
+- **切线空间的法线纹理**（tangent-space normal map）
+
+  > 对于模型的每个顶点，它都有一个属于自己的切线空间，这个切线空间的原点就是该顶点本身，而z轴是顶点的法线方向（n）, x轴是顶点的切线方向（t），而y轴可由法线和切线叉积而得，也被称为是副切线（bitangent, b）或副法线。
+  
+  - 自由度很高，可以重用。模型空间下的法线纹理记录的是绝对法线信息，仅可用于创建它时的那个模型，而应用到其他模型上效果就完全错误了。而切线空间下的法线纹理记录的是相对法线信息，这意味着，即便把该纹理应用到一个完全不同的网格上，也可以得到一个合理的结果。
+  - 可进行UV动画。比如，我们可以移动一个纹理的UV坐标来实现一个凹凸移动的效果，但使用模型空间下的法线纹理会得到完全错误的结果。原因同上。这种UV动画在水或者火山熔岩这种类型的物体上会经常用到。
+  - 可压缩。由于切线空间下的法线纹理中法线的Z方向总是正方向，因此我们可以仅存储XY方向，而推导得到Z方向。而模型空间下的法线纹理由于每个方向都是可能的，因此必须存储3个方向的值，不可压缩。
+
+我们需要在计算光照模型中统一各个方向矢量所在的坐标空间。由于法线纹理中存储的法线是切线空间下的方向，因此我们通常有**两种方法**：
+
+1. 在切线空间下进行光照计算，此时我们需要把光照方向、视角方向变换到切线空间下。
+2. 在世界空间下进行光照计算，此时我们需要把采样得到的法线方向变换到世界空间下，再和世界空间下的光照方向和视角方向进行计算。
+
+从效率上来说，第一种方法往往要优于第二种方法，因为我们可以在顶点着色器中就完成对光照方向和视角方向的变换，而第二种方法由于要先对法线纹理进行采样，所以变换过程必须在片元着色器中实现，这意味着我们需要在片元着色器中进行一次矩阵操作。
+
+但从通用性角度来说，第二种方法要优于第一种方法，因为有时我们需要在世界空间下进行一些计算，例如在使用Cubemap进行环境映射时，我们需要使用世界空间下的反射方向对Cubemap进行采样。如果同时需要进行法线映射，我们就需要把法线方向变换到世界空间下。
+
+对于第一种方法，原代码有点问题：[Issue #45 · candycat1992/Unity_Shaders_Book · GitHub](https://github.com/candycat1992/Unity_Shaders_Book/issues/45)
+
+```c
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unity Shaders Book/Chapter 7/Normal Map In Tangent Space" {
+	Properties {
+		_Color ("Color Tint", Color) = (1, 1, 1, 1)
+		_MainTex ("Main Tex", 2D) = "white" {}
+		_BumpMap ("Normal Map", 2D) = "bump" {}
+		_BumpScale ("Bump Scale", Float) = 1.0
+		_Specular ("Specular", Color) = (1, 1, 1, 1)
+		_Gloss ("Gloss", Range(8.0, 256)) = 20
+	}
+	SubShader {
+		Pass { 
+			Tags { "LightMode"="ForwardBase" }
+		
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "Lighting.cginc"
+			
+			fixed4 _Color;
+			sampler2D _MainTex;
+			float4 _MainTex_ST;
+			sampler2D _BumpMap;
+			float4 _BumpMap_ST;
+			float _BumpScale;
+			fixed4 _Specular;
+			float _Gloss;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+				// 和法线方向normal不同，tangent的类型是float4，而非float3，这是因为我们需要使用tangent.w分量来决定切线空间中的坐标轴——副切线的方向性。
+				float4 tangent : TANGENT;
+				float4 texcoord : TEXCOORD0;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float4 uv : TEXCOORD0;
+				float3 lightDir: TEXCOORD1;
+				float3 viewDir : TEXCOORD2;
+			};
+
+			// Unity doesn't support the 'inverse' function in native shader
+			// so we write one by our own
+			// Note: this function is just a demonstration, not too confident on the math or the speed
+			// Reference: http://answers.unity3d.com/questions/218333/shader-inversefloat4x4-function.html
+			float4x4 inverse(float4x4 input) {
+				#define minor(a,b,c) determinant(float3x3(input.a, input.b, input.c))
+				
+				float4x4 cofactors = float4x4(
+				     minor(_22_23_24, _32_33_34, _42_43_44), 
+				    -minor(_21_23_24, _31_33_34, _41_43_44),
+				     minor(_21_22_24, _31_32_34, _41_42_44),
+				    -minor(_21_22_23, _31_32_33, _41_42_43),
+				    
+				    -minor(_12_13_14, _32_33_34, _42_43_44),
+				     minor(_11_13_14, _31_33_34, _41_43_44),
+				    -minor(_11_12_14, _31_32_34, _41_42_44),
+				     minor(_11_12_13, _31_32_33, _41_42_43),
+				    
+				     minor(_12_13_14, _22_23_24, _42_43_44),
+				    -minor(_11_13_14, _21_23_24, _41_43_44),
+				     minor(_11_12_14, _21_22_24, _41_42_44),
+				    -minor(_11_12_13, _21_22_23, _41_42_43),
+				    
+				    -minor(_12_13_14, _22_23_24, _32_33_34),
+				     minor(_11_13_14, _21_23_24, _31_33_34),
+				    -minor(_11_12_14, _21_22_24, _31_32_34),
+				     minor(_11_12_13, _21_22_23, _31_32_33)
+				);
+				#undef minor
+				return transpose(cofactors) / determinant(input);
+			}
+
+			v2f vert(a2v v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				
+				o.uv.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+				o.uv.zw = v.texcoord.xy * _BumpMap_ST.xy + _BumpMap_ST.zw;
+
+				///
+				/// Note that the code below can handle both uniform and non-uniform scales
+				///
+
+				// Construct a matrix that transforms a point/vector from tangent space to world space
+				fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);  
+				fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);  
+				fixed3 worldBinormal = cross(worldNormal, worldTangent) * v.tangent.w; 
+
+				/*
+				float4x4 tangentToWorld = float4x4(worldTangent.x, worldBinormal.x, worldNormal.x, 0.0,
+												   worldTangent.y, worldBinormal.y, worldNormal.y, 0.0,
+												   worldTangent.z, worldBinormal.z, worldNormal.z, 0.0,
+												   0.0, 0.0, 0.0, 1.0);
+				// The matrix that transforms from world space to tangent space is inverse of tangentToWorld
+				float3x3 worldToTangent = inverse(tangentToWorld);
+				*/
+				
+				//wToT = the inverse of tToW = the transpose of tToW as long as tToW is an orthogonal matrix.
+				// xyz轴
+				float3x3 worldToTangent = float3x3(worldTangent, worldBinormal, worldNormal);
+
+				// Transform the light and view dir from world space to tangent space
+				o.lightDir = mul(worldToTangent, WorldSpaceLightDir(v.vertex));
+				o.viewDir = mul(worldToTangent, WorldSpaceViewDir(v.vertex));
+
+				///
+				/// Note that the code below can only handle uniform scales, not including non-uniform scales
+				/// 
+
+				// Compute the binormal
+//				float3 binormal = cross( normalize(v.normal), normalize(v.tangent.xyz) ) * v.tangent.w;
+//				// Construct a matrix which transform vectors from object space to tangent space
+//				float3x3 rotation = float3x3(v.tangent.xyz, binormal, v.normal);
+				// Or just use the built-in macro
+//				TANGENT_SPACE_ROTATION;
+//				
+//				// Transform the light direction from object space to tangent space
+//				o.lightDir = mul(rotation, normalize(ObjSpaceLightDir(v.vertex))).xyz;
+//				// Transform the view direction from object space to tangent space
+//				o.viewDir = mul(rotation, normalize(ObjSpaceViewDir(v.vertex))).xyz;
+				
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {				
+				fixed3 tangentLightDir = normalize(i.lightDir);
+				fixed3 tangentViewDir = normalize(i.viewDir);
+				
+				// Get the texel in the normal map
+				fixed4 packedNormal = tex2D(_BumpMap, i.uv.zw);
+				fixed3 tangentNormal;
+				// If the texture is not marked as "Normal map"
+//				tangentNormal.xy = (packedNormal.xy * 2 - 1) * _BumpScale;
+//				tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy)));
+				
+				// Or mark the texture as "Normal map", and use the built-in funciton
+				tangentNormal = UnpackNormal(packedNormal);
+				tangentNormal.xy *= _BumpScale;
+				tangentNormal.z = sqrt(1.0 - saturate(dot(tangentNormal.xy, tangentNormal.xy)));
+				
+				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
+				
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
+				
+				fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(tangentNormal, tangentLightDir));
+
+				fixed3 halfDir = normalize(tangentLightDir + tangentViewDir);
+				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(tangentNormal, halfDir)), _Gloss);
+				
+				return fixed4(ambient + diffuse + specular, 1.0);
+			}
+			
+			ENDCG
+		}
+	} 
+	FallBack "Specular"
+}
+```
+
+第二种方法：
+
+```c
+// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
+Shader "Unity Shaders Book/Chapter 7/Normal Map In World Space" {
+	Properties {
+		_Color ("Color Tint", Color) = (1, 1, 1, 1)
+		_MainTex ("Main Tex", 2D) = "white" {}
+		_BumpMap ("Normal Map", 2D) = "bump" {}
+		_BumpScale ("Bump Scale", Float) = 1.0
+		_Specular ("Specular", Color) = (1, 1, 1, 1)
+		_Gloss ("Gloss", Range(8.0, 256)) = 20
+	}
+	SubShader {
+		Pass { 
+			Tags { "LightMode"="ForwardBase" }
+		
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "Lighting.cginc"
+			
+			fixed4 _Color;
+			sampler2D _MainTex;
+			float4 _MainTex_ST;
+			sampler2D _BumpMap;
+			float4 _BumpMap_ST;
+			float _BumpScale;
+			fixed4 _Specular;
+			float _Gloss;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+				float4 tangent : TANGENT;
+				float4 texcoord : TEXCOORD0;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float4 uv : TEXCOORD0;
+                // 从切线空间到世界空间的变换矩阵
+                // 一个插值寄存器最多只能存储float4大小的变量，对于矩阵这样的变量，我们可以把它们按行拆成多个变量再进行存储。
+				float4 TtoW0 : TEXCOORD1;  
+				float4 TtoW1 : TEXCOORD2;  
+				float4 TtoW2 : TEXCOORD3; 
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				
+				o.uv.xy = v.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
+				o.uv.zw = v.texcoord.xy * _BumpMap_ST.xy + _BumpMap_ST.zw;
+				
+				float3 worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;  
+				fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);  
+				fixed3 worldTangent = UnityObjectToWorldDir(v.tangent.xyz);  
+				fixed3 worldBinormal = cross(worldNormal, worldTangent) * v.tangent.w; 
+				
+				// Compute the matrix that transform directions from tangent space to world space
+				// Put the world position in w component for optimization
+				o.TtoW0 = float4(worldTangent.x, worldBinormal.x, worldNormal.x, worldPos.x);
+				o.TtoW1 = float4(worldTangent.y, worldBinormal.y, worldNormal.y, worldPos.y);
+				o.TtoW2 = float4(worldTangent.z, worldBinormal.z, worldNormal.z, worldPos.z);
+				
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {
+				// Get the position in world space		
+				float3 worldPos = float3(i.TtoW0.w, i.TtoW1.w, i.TtoW2.w);
+				// Compute the light and view dir in world space
+				fixed3 lightDir = normalize(UnityWorldSpaceLightDir(worldPos));
+				fixed3 viewDir = normalize(UnityWorldSpaceViewDir(worldPos));
+				
+				// Get the normal in tangent space
+				fixed3 bump = UnpackNormal(tex2D(_BumpMap, i.uv.zw));
+				bump.xy *= _BumpScale;
+				bump.z = sqrt(1.0 - saturate(dot(bump.xy, bump.xy)));
+				// Transform the normal from tangent space to world space
+				bump = normalize(half3(dot(i.TtoW0.xyz, bump), dot(i.TtoW1.xyz, bump), dot(i.TtoW2.xyz, bump)));
+				
+				fixed3 albedo = tex2D(_MainTex, i.uv).rgb * _Color.rgb;
+				
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
+				
+				fixed3 diffuse = _LightColor0.rgb * albedo * max(0, dot(bump, lightDir));
+
+				fixed3 halfDir = normalize(lightDir + viewDir);
+				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(bump, halfDir)), _Gloss);
+				
+				return fixed4(ambient + diffuse + specular, 1.0);
+			}
+			
+			ENDCG
+		}
+	} 
+	FallBack "Specular"
+}
+
+```
+
+![结果4](https://tvax4.sinaimg.cn/large/0077Un8Egy1h63002yv2wj30cf0jkagx.jpg)
+
+#### 7.3 渐变纹理
+
+
+
+
+
+### 第18章 基于物理的渲染
+
+
 
