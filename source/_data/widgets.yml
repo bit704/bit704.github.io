@@ -1,0 +1,13 @@
+recent:
+    layout: recent
+    rss: /atom.xml # npm i hexo-generator-feed
+    limit: 10 # Count of posts
+toc:
+    layout: toc
+    list_number: false
+    min_depth: 2
+    max_depth: 5
+welcome:
+    layout: markdown
+    title: Hello World
+    content: 来自一名生于1999年的程序员

@@ -1,0 +1,297 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: bit704
+subtitle: ''
+description: ''
+keywords: 
+author: bit704
+language: zh-CN
+timezone: ''
+
+# URL
+## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
+url: https://github.com/bit704/bit704.github.io
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+pretty_urls:
+  trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
+  trailing_html: true # Set to false to remove trailing '.html' from permalinks
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archives
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+titlecase: false # Transform title into titlecase
+external_link:
+  enable: true # Open external links in new tab
+  field: site # Apply to the whole site
+  exclude: ''
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace: ''
+  wrap: true
+  hljs: false
+prismjs:
+  enable: false
+  preprocess: true
+  line_number: true
+  tab_replace: ''
+
+# Home page setting
+# path: Root path for your blogs index page. (default = '')
+# per_page: Posts displayed per page. (0 = disable pagination)
+# order_by: Posts order. (Order by date descending by default)
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Metadata elements
+## https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
+meta_generator: true
+
+# Date / Time format
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+## updated_option supports 'mtime', 'date', 'empty'
+updated_option: 'mtime'
+
+# Pagination
+## Set per_page to 0 to disable pagination
+per_page: 50
+pagination_dir: page
+
+# Include / Exclude file(s)
+## include:/exclude: options only apply to the 'source/' folder
+include:
+exclude:
+ignore:
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: fluid
+
+# Deployment
+## Docs: https://hexo.io/docs/one-command-deployment
+deploy:
+  type: git
+  repo: https://github.com/bit704/bit704.github.io
+  branch: gh-pages
+  message: "Build at {{ now('YYYY-MM-DD HH:mm:ss Z') }}"
+
+# 以下是主题自定义部分
+
+index:
+  # 本站图片来自 Twitter @HoDaRaKe
+  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-天国.png
+  slogan:
+    enable: false
+    text:  
+    # 获取北京时间
+    api:
+      enable: false
+      url: "http://quan.suning.com/getSysTime.do"
+      method: "GET"
+      headers: {}
+      keys: ["sysTime2"]
+  # 文章跳转方式，_blank：新标签页打开，_self：当前标签页打开
+  post_url_target: _self
+
+
+fun_features:
+  typing: # 为 subtitle 添加打字机效果
+    enable: false
+    typeSpeed: 100 # 打印速度，越小越慢
+    cursorChar: "_" # 游标字符
+    loop: false # 是否循环播放效果
+
+post:
+  # 文章默认封面图片
+  default_index_img: 
+  meta:
+    author:  # 作者，优先根据 front-matter 里 author 字段，其次是 hexo 配置中 author 值
+      enable: false
+    date:  # 文章日期，优先根据 front-matter 里 date 字段，其次是 md 文件日期
+      enable: true
+      format: "dddd, MMMM Do YYYY, h:mm a"  # 格式参照 ISO-8601 日期格式化
+    wordcount:  # 字数统计
+      enable: true
+      format: "{} 字"  # 显示的文本，{}是数字的占位符（必须包含)，下同
+    min2read:  # 阅读时间
+      enable: true
+      format: "{} 分钟"
+    views:  # 阅读次数
+      enable: true
+      source: "busuanzi"  # 统计数据来源，可选：leancloud | busuanzi   注意不蒜子会间歇抽风
+      format: "{} 次"
+  math:
+    enable: true
+    specific: false
+    engine: mathjax
+
+code:
+  copy_btn: true
+  highlight:
+    enable: true
+    line_number: true
+    lib: "highlightjs"
+    highlightjs:
+      style: 'Github Gist'
+      bg_color: false
+    prismjs:
+      style: "default"
+      preprocess: true
+
+
+navbar:
+  blog_title: 逝者如斯夫！不舍昼夜 
+  menu:
+    - { key: 'home', link: '/', icon: 'iconfont icon-home-fill' , name: '首页'}
+    - { key: 'tag', link: '/tags/', icon: 'iconfont icon-tags-fill' , name: '标签'}
+    - { key: 'categories', link: '/categories/', icon: 'iconfont icon-category-fill' , name: '分类'}
+    - { key: 'archives', link: '/archives/', icon: 'iconfont icon-archive-fill' , name: '归档'}
+    - { key: 'about', link: '/about/', icon: 'iconfont icon-user-fill', name: '联系我' }
+    - { key: 'links', link: '/links/', icon: 'iconfont icon-link-fill', name: '更多'  }
+
+
+# 底部
+footer:
+  statistics:
+    enable: true
+    source: "busuanzi"  # 可选 leancloud | busuanzi  根据自己需求选择
+    pv_format: "总访问量 {} 次"  # 显示的文本，{}是数字的占位符（必须包含)，下同
+    uv_format: "总访客数 {} 人"
+
+# 暗色模式
+dark_mode:
+  enable: true
+  default: auto
+
+#---------------------------
+# 归档页
+# Archive Page
+#---------------------------
+archive:
+  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-白堡.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+#---------------------------
+# 分类页
+# Category Page
+#---------------------------
+category:
+  enable: true
+  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-寒冰教堂.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+  # 分类的排序字段，前面带减号是倒序，不带减号是正序
+  # Sort field for categories, with a minus sign is reverse order
+  # Options: length | name
+  order_by: "-length"
+
+  # 层级的折叠深度，0 是全部折叠，大于 0 后如果存在子分类则默认展开
+  # Collapse depth. If 0, all posts collapsed. If greater than 0, it will be expanded by default if there are subcategories
+  collapse_depth: 1
+
+  # 文章的排序字段，前面带减号是倒序，不带减号是正序
+  # Sort field for posts, with a minus sign is reverse order
+  # Options: date | title | or other field of front-matter
+  post_order_by: "-date"
+
+  # 单个分类中折叠展示文章数的最大值，超过限制会显示 More，0 则不限制
+  # The maximum number of posts in a single category. If the limit is exceeded, it will be displayed More. If 0 no limit
+  post_limit: 10
+
+
+#---------------------------
+# 标签页
+# Tag Page
+#---------------------------
+tag:
+  enable: true
+  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-教堂.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+  tagcloud:
+    min_font: 25
+    max_font: 25
+    unit: px
+    start_color: "#000000"
+    end_color: "#000000"
+
+#---------------------------
+# 关于页
+# About Page
+#---------------------------
+about:
+  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-仙境.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+  avatar: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-头像.jfif
+  name: "bit704"
+  intro: "出生于1999年的程序员,20世纪的余烬"
+  icons:
+    - { class: 'iconfont icon-github-fill', link: 'https://github.com/bit704', tip: 'GitHub' }
+    - { class: 'iconfont icon-mail', link: 'mailto:mhn.bit@qq.com', tip: 'mail' }
+    - { class: 'iconfont icon-bilibili-fill', link: 'https://space.bilibili.com/23718828', tip: 'bilibili' }
+
+#---------------------------
+# 链接页
+# Links Page
+#---------------------------
+links:
+  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-巨门.jpg
+  banner_img_height: 60
+  banner_mask_alpha: 0.3
+
+  items:
+    - {
+      title: 'CSDN',
+      intro: 'CSDN主页',
+      link: 'https://blog.csdn.net/CN_BIT',
+      avatar: 'https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-c.svg'
+    }
+    - {
+      title: 'Leetcode',
+      intro: 'Leetcode主页',
+      link: 'https://leetcode.cn/u/oneonone/',
+      avatar: 'https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-leetcode.jpg'
+    }
+    - {
+      title: 'Repo',
+      intro: '本站仓库',
+      link: 'https://github.com/bit704/bit704.github.io',
+      avatar: 'https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-五角星.svg'
+    }
