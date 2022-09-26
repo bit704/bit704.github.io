@@ -16,6 +16,8 @@ banner: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-
 
 [代码仓库](https://github.com/candycat1992/Unity_Shaders_Book)
 
+我的实验环境：Windows 10, Unity 2020.3.26f1c1
+
 [toc]
 
 ## 前言
@@ -1533,6 +1535,640 @@ Off：就会关闭剔除功能
 #### 9.1 Unity的渲染路径
 
 在Unity里，渲染路径（Rendering Path）决定了光照是如何应用到Unity Shader中的。只有为Shader正确地选择和设置了需要的渲染路径，该Shader的光照计算才能被正确执行。
+
+在Unity 5.0版本之前，主要有3种：前向渲染路径（Forward Rendering Path）、延迟渲染路径（Deferred Rendering Path）和顶点照明渲染路径（Vertex Lit Rendering Path）。但在Unity 5.0版本以后，Unity做了很多更改，主要有两个变化：首先，顶点照明渲染路径已经被Unity抛弃（但目前仍然可以对之前使用了顶点照明渲染路径的Unity Shader兼容）；其次，新的延迟渲染路径代替了原来的延迟渲染路径（同样，目前也提供了对较旧版本的兼容）。
+
+2020.3.26版本在Edit->Project Settings->Graphics->Tier Settings中设置默认Rendering Path。每个相机可以单独覆盖设置。
+
+![LightMode标签支持的渲染路径设置选项](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-22-LightMode标签支持的渲染路径设置选项.jfif)
+
+**前向渲染路径**
+
+每进行一次完整的前向渲染，我们需要渲染该对象的渲染图元，并计算两个缓冲区的信息：一个是颜色缓冲区，一个是深度缓冲区。我们利用深度缓冲来决定一个片元是否可见，如果可见就更新颜色缓冲区中的颜色值。
+
+假设场景中有N个物体，每个物体受M个光源的影响，那么要渲染整个场景一共需要N*M个Pass。可以看出，如果有大量逐像素光照，那么需要执行的Pass数目也会很大。因此，渲染引擎通常会限制每个物体的逐像素光照的数目。
+
+在Unity中，前向渲染路径有3种处理光照（即照亮物体）的方式：**逐顶点处理**、**逐像素处理**、**球谐函数**（Spherical Harmonics, SH）处理。
+
+Unity使用的判断规则如下：
+
+- 场景中最亮的平行光总是按逐像素处理的。
+- 渲染模式被设置成Not Important的光源，会按逐顶点或者SH处理。
+- 渲染模式被设置成Important的光源，会按逐像素处理。
+- 如果根据以上规则得到的逐像素光源数量小于Quality Setting中的逐像素光源数量(Pixel Light Count)，会有更多的光源以逐像素的方式进行渲染。
+
+![前向渲染的两种Pass](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-epub_22691473_355.jfif)
+
+对于前向渲染来说，一个Unity Shader通常会定义一个Base Pass（Base Pass也可以定义多次，例如需要双面渲染等情况）以及一个Additional Pass。一个Base Pass仅会执行一次（定义了多个Base Pass的情况除外），而一个Additional Pass会根据影响该物体的其他逐像素光源的数目被多次调用，即每个逐像素光源会执行一次Additional Pass。
+
+![前向渲染可以使用的内置光照变量](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-前向渲染可以使用的内置光照变量.jfif)
+
+![前向渲染可以使用的内置光照函数](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-前向渲染可以使用的内置光照函数.jfif)
+
+**顶点照明渲染路径**
+
+略过
+
+**延迟渲染路径**
+
+延迟渲染主要包含了两个Pass。在第一个Pass中，我们不进行任何光照计算，而是仅仅计算哪些片元是可见的，这主要是通过深度缓冲技术来实现，当发现一个片元是可见的，我们就把它的相关信息存储到G缓冲区中（Geometry）。然后，在第二个Pass中，我们利用G缓冲区的各个片元信息，例如表面法线、视角方向、漫反射系数等，进行真正的光照计算。
+
+延迟渲染的缺点：
+
+- 不支持真正的抗锯齿（anti-aliasing）功能。
+- 不能处理半透明物体。
+- 对显卡有一定要求。如果要使用延迟渲染的话，显卡必须支持MRT（Multiple Render Targets）、Shader Mode 3.0及以上、深度渲染纹理以及双面的模板缓冲。
+
+#### 9.2 Unity的光源类型
+
+Unity一共支持4种光源类型：平行光、点光源、聚光灯和面光源（area light）。面光源仅在烘焙时才可发挥作用，因此不在本节讨论范围内。
+
+**平行光**
+
+位置方向不变，没有衰减
+
+**点光源**
+
+位置方向均变化，有衰减
+
+**聚光灯**
+
+位置方向均变化，有衰减，照明区域为锥形
+
+```c
+Shader "Unity Shaders Book/Chapter 9/Forward Rendering" {
+	Properties {
+		_Diffuse ("Diffuse", Color) = (1, 1, 1, 1)
+		_Specular ("Specular", Color) = (1, 1, 1, 1)
+		_Gloss ("Gloss", Range(8.0, 256)) = 20
+	}
+	SubShader {
+		Tags { "RenderType"="Opaque" }
+		
+		Pass {
+			// Pass for ambient light & first pixel light (directional light)
+			Tags { "LightMode"="ForwardBase" }
+		
+			CGPROGRAM
+			
+			// Apparently need to add this declaration 
+			#pragma multi_compile_fwdbase	
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "Lighting.cginc"
+			
+			fixed4 _Diffuse;
+			fixed4 _Specular;
+			float _Gloss;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 worldNormal : TEXCOORD0;
+				float3 worldPos : TEXCOORD1;
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				
+				o.worldNormal = UnityObjectToWorldNormal(v.normal);
+				
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {
+				fixed3 worldNormal = normalize(i.worldNormal);
+				fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
+				
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz;
+				
+			 	fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(worldNormal, worldLightDir));
+
+			 	fixed3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz);
+			 	fixed3 halfDir = normalize(worldLightDir + viewDir);
+			 	fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss);
+
+				fixed atten = 1.0;
+				
+				return fixed4(ambient + (diffuse + specular) * atten, 1.0);
+			}
+			
+			ENDCG
+		}
+	
+		Pass {
+			// Pass for other pixel lights
+			Tags { "LightMode"="ForwardAdd" }
+			
+			Blend One One
+		
+			CGPROGRAM
+			
+			// Apparently need to add this declaration
+			#pragma multi_compile_fwdadd
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "Lighting.cginc"
+			#include "AutoLight.cginc"
+			
+			fixed4 _Diffuse;
+			fixed4 _Specular;
+			float _Gloss;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float3 worldNormal : TEXCOORD0;
+				float3 worldPos : TEXCOORD1;
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				o.pos = UnityObjectToClipPos(v.vertex);
+				
+				o.worldNormal = UnityObjectToWorldNormal(v.normal);
+				
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {
+				fixed3 worldNormal = normalize(i.worldNormal);
+				#ifdef USING_DIRECTIONAL_LIGHT
+					fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
+				#else
+					fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz - i.worldPos.xyz);
+				#endif
+				
+				fixed3 diffuse = _LightColor0.rgb * _Diffuse.rgb * max(0, dot(worldNormal, worldLightDir));
+				
+				fixed3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.worldPos.xyz);
+				fixed3 halfDir = normalize(worldLightDir + viewDir);
+				fixed3 specular = _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss);
+				
+				#ifdef USING_DIRECTIONAL_LIGHT
+					fixed atten = 1.0;
+				#else
+					#if defined (POINT)
+				        float3 lightCoord = mul(unity_WorldToLight, float4(i.worldPos, 1)).xyz;
+				        fixed atten = tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
+				    #elif defined (SPOT)
+				        float4 lightCoord = mul(unity_WorldToLight, float4(i.worldPos, 1));
+				        fixed atten = (lightCoord.z > 0) * tex2D(_LightTexture0, lightCoord.xy / lightCoord.w + 0.5).w * tex2D(_LightTextureB0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
+				    #else
+				        fixed atten = 1.0;
+				    #endif
+				#endif
+
+				return fixed4((diffuse + specular) * atten, 1.0);
+			}
+			
+			ENDCG
+		}
+	}
+	FallBack "Specular"
+```
+
+#### 9.3 Unity的光照衰减
+
+9.2代码中使用一张纹理作为查找表来在片元着色器中计算逐像素光照的衰减。这样的好处在于，计算衰减不依赖于数学公式的复杂性，我们只要使用一个参数值去纹理中采样即可。但使用纹理查找来计算衰减也有一些弊端。
+
+- 需要预处理得到采样纹理，而且纹理的大小也会影响衰减的精度。
+- 不直观，同时也不方便，因此一旦把数据存储到查找表中，我们就无法使用其他数学公式来计算衰减。
+
+#### 9.4 Unity的阴影
+
+在实时渲染中，我们最常使用的是一种名为**Shadow Map**的技术。这种技术理解起来非常简单，它会首先把摄像机的位置放在与光源重合的位置上，那么场景中该光源的阴影区域就是那些摄像机看不到的地方。而Unity就是使用的这种技术。
+
+Unity选择使用一个额外的Pass来专门更新光源的阴影映射纹理，这个Pass就是LightMode标签被设置为ShadowCaster的Pass。这个Pass的渲染目标不是帧缓存，而是阴影映射纹理（或深度纹理）。Unity首先把摄像机放置到光源的位置上，然后调用该Pass，通过对顶点变换后得到光源空间下的位置，并据此来输出深度信息到阴影映射纹理中。
+
+**传统的阴影映射纹理的实现**：
+
+在正常渲染的Pass中把顶点位置变换到光源空间下，以得到它在光源空间中的三维位置信息。然后，我们使用xy分量对阴影映射纹理进行采样，得到阴影映射纹理中该位置的深度信息。如果该深度值小于该顶点的深度值（通常由z分量得到），那么说明该点位于阴影中。
+
+**屏幕空间的阴影映射技术**（Screenspace Shadow Map）：
+
+通过调用LightMode为ShadowCaster的Pass来得到可投射阴影的光源的阴影映射纹理以及摄像机的深度纹理。然后，根据光源的阴影映射纹理和摄像机的深度纹理来得到屏幕空间的阴影图。如果摄像机的深度图中记录的表面深度大于转换到阴影映射纹理中的深度值，就说明该表面虽然是可见的，但是却处于该光源的阴影中。通过这样的方式，阴影图就包含了屏幕空间中所有有阴影的区域。如果我们想要一个物体接收来自其他物体的阴影，只需要在Shader中对阴影图进行采样。由于阴影图是屏幕空间下的，因此，我们首先需要把表面坐标从模型空间变换到屏幕空间中，然后使用这个坐标对阴影图进行采样即可。
+
+使用阴影的两个过程：
+
+- 如果我们想要一个物体接收来自其他物体的阴影，就必须在Shader中对阴影映射纹理（包括屏幕空间的阴影图）进行采样，把采样结果和最后的光照结果相乘来产生阴影效果。
+- 如果我们想要一个物体向其他物体投射阴影，就必须把该物体加入到光源的阴影映射纹理的计算中，从而让其他物体在对阴影映射纹理采样时可以得到该物体的相关信息。在Unity中，这个过程是通过为该物体执行LightMode为ShadowCaster的Pass来实现的。（如果使用了屏幕空间的投影映射技术，Unity还会使用这个Pass产生一张摄像机的深度纹理。）
+
+ Mesh Renderer组件的Cast Shadows和Receive Shadows属性可以控制该物体是否投射/接收阴影。
+
+通过对9.2中的Shader做如下改造，使使用该Shader的物体**接受阴影**：
+
+```c
+//包含头文件
+#include "AutoLight.cginc"
+//顶点着色器输出添加宏SHADOW_COORDS,宏的参数需要是下一个可用的插值寄存器的索引值。声明一个用于对阴影纹理采样的坐标。
+struct  v2f  {
+    float4  pos  :  SV_POSITION;
+    float3  worldNormal  :  TEXCOORD0;
+    float3  worldPos  :  TEXCOORD1;
+    SHADOW_COORDS(2)
+};
+//在顶点着色器返回之前添加另一个内置宏TRANSFER_SHADOW,计算上一步中声明的阴影纹理坐标。
+v2f  vert(a2v  v)  {
+    v2f  o;
+    ...
+        //  Pass  shadow  coordinates  to  pixel  shader
+        TRANSFER_SHADOW(o);
+    return  o;
+}
+//使用了一个内置宏SHADOW_ATTENUATION在片元着色器中计算阴影值
+//  Use  shadow  coordinates  to  sample  shadow  map
+fixed  shadow  =  SHADOW_ATTENUATION(i);
+//最后只需要把阴影值shadow和漫反射以及高光反射颜色相乘即可。
+/*
+由于这些宏中会使用上下文变量来进行相关计算，例如TRANSFER_SHADOW会使用v.vertex或a.pos来计算坐标，因此为了能够让这些宏正确工作，我们需要保证自定义的变量名和这些宏中使用的变量名相匹配。我们需要保证：a2v结构体中的顶点坐标变量名必须是vertex，顶点着色器的输出结构体v2f必须命名为v，且v2f中的顶点位置变量必须命名为pos。
+*/
+```
+
+**统一管理光照衰减和阴影**
+
+```c
+//前面顶点着色器中的操作和接受阴影相同
+//UNITY_LIGHT_ATTENUATION是Unity内置的用于计算光照衰减和阴影的宏，它接受3个参数，它会将光照衰减和阴影值相乘后的结果存储到第一个参数中。
+//Unity针对不同光源类型、是否启用cookie等不同情况声明了多个版本的UNITY_LIGHT_ATTENUATION。
+fixed4  frag(v2f  i)  :  SV_Target  {
+    ...
+
+        //  UNITY_LIGHT_ATTENUATION  not  only  compute  attenuation,  but  also  shadow  infos
+        UNITY_LIGHT_ATTENUATION(atten,  i,  i.worldPos);
+
+    return  fixed4(ambient  +  (diffuse  +  specular)  ＊  atten,  1.0);
+}
+
+```
+
+**透明度测试的阴影**
+
+为了让使用透明度测试的物体得到正确的阴影效果，我们只需要在Unity Shader中更改一行代码，即把Fallback设置为Transparent/Cutout/VertexLit。但需要注意的是，由于Transparent/Cutout/VertexLit中计算透明度测试时，使用了名为\_Cutoff的属性来进行透明度测试，因此，这要求我们的Shader中也必须提供名为_Cutoff的属性。否则，同样无法得到正确的阴影结果。
+
+**透明度混合的阴影**
+
+由于透明度混合需要关闭深度写入，由此带来的问题也影响了阴影的生成。总体来说，要想为这些半透明物体产生正确的阴影，需要在每个光源空间下仍然严格按照从后往前的顺序进行渲染，这会让阴影处理变得非常复杂，而且也会影响性能。因此，在Unity中，**所有内置的半透明Shader是不会产生任何阴影效果的**。当然，我们可以使用一些dirty trick来强制为半透明物体生成阴影，这可以通过把它们的Fallback设置为VertexLit、Diffuse这些不透明物体使用的Unity Shader，这样Unity就会在它的Fallback找到一个阴影投射的Pass。然后，我们可以通过物体的Mesh Renderer组件上的Cast Shadows和Receive Shadows选项来控制是否需要向其他物体投射或接收阴影。
+
+#### 9.5 本书使用的标准Unity Shader
+
+本书资源的Assets/ Shaders/Common文件夹下提供了两个这样标准的Unity Shader——BumpedDiffuse和BumpedSpecular。这两个Unity Shader都包含了对法线纹理、多光源、光照衰减和阴影的相关处理，唯一不同的是，BumpedDiffuse使用了Phong光照模型，而BumpedSpecular使用了Blinn-Phong光照模型。
+
+### 第10章 高级纹理
+
+#### 10.1 立方体纹理
+
+在图形学中，立方体纹理（Cubemap）是环境映射（Environment Mapping）的一种实现方法。环境映射可以模拟物体周围的环境，而使用了环境映射的物体可以看起来像镀了层金属一样反射出周围的环境。
+
+立方体纹理也仅可以反射环境，但不能反射使用了该立方体纹理的物体本身。想要得到令人信服的渲染结果，我们应该尽量对凸面体而不要对凹面体使用立方体纹理（因为凹面体会反射自身）。
+
+立方体纹理在实时渲染中有很多应用，最常见的是用于天空盒子（Skybox）以及环境映射。
+
+**Skybox**
+
+创建一个Skybox材质，再把它赋在Window->Rendering->Lighting中。
+
+保证渲染场景的摄像机的Camera组件中的Clear Flags被设置为Skybox。
+
+在Unity中，天空盒子是在所有不透明物体之后渲染的，而其背后使用的网格是一个立方体或一个细分后的球体。
+
+**环境映射**
+
+在Unity 5中，创建用于环境映射的立方体纹理的方法有三种：第一种方法是直接由一些特殊布局的纹理创建；第二种方法是手动创建一个Cubemap资源，再把6张图赋给它；第三种方法是由脚本生成。
+
+可以利用环境映射在物体表面模拟反射和折射。
+
+**折射**
+
+Snell's Law : $η_1\sinθ_1=η_2\sinθ_2$
+
+入射光与折射光位于法线两侧，夹角为$\theta$。$η$是介质的折射率。例如真空的折射率是1，而玻璃的折射率一般是1.5。
+
+**菲涅耳反射**
+
+Schlick菲涅耳近似等式：
+$$
+F_{schlick}(v, n)=F_0+(1-F_0)(1-v\cdot n)^5
+$$
+$F_0$是一个反射系数，用于控制菲涅耳反射的强度，v是视角方向，n是表面法线。
+
+#### 10.2 渲染纹理
+
+现代的GPU允许我们把整个三维场景渲染到一个中间缓冲中，即渲染目标纹理（Render Target Texture, RTT），而不是传统的帧缓冲或后备缓冲（back buffer）。与之相关的是多重渲染目标（Multiple Render Target, MRT），这种技术指的是GPU允许我们把场景同时渲染到多个渲染目标纹理中，而不再需要为每个渲染目标纹理单独渲染完整的场景。延迟渲染就是使用多重渲染目标的一个应用。
+
+在Unity中使用**渲染纹理**（Render Texture）通常有两种方式：
+
+- 在Project目录下创建一个渲染纹理，然后把某个摄像机的渲染目标设置成该渲染纹理，这样一来该摄像机的渲染结果就会实时更新到渲染纹理中，而不会显示在屏幕上。使用这种方法，我们还可以选择渲染纹理的分辨率、滤波模式等纹理属性。
+- 在屏幕后处理时使用GrabPass命令或OnRenderImage函数来获取当前屏幕图像，Unity会把这个屏幕图像放到一张和屏幕分辨率等同的渲染纹理中，下面我们可以在自定义的Pass中把它们当成普通的纹理来处理，从而实现各种屏幕特效。
+
+**镜子效果**
+
+使用一个渲染纹理作为输入属性，并把该渲染纹理在水平方向上翻转后直接显示到镜子上即可。
+
+**玻璃效果**
+
+通过一个Cubemap来模拟玻璃的反射，而在模拟折射时，则使用了GrabPass获取玻璃后面的屏幕图像，并使用切线空间下的法线对屏幕纹理坐标偏移后，再对屏幕图像进行采样来模拟近似的折射效果。
+
+#### 10.3 程序纹理
+
+程序纹理（Procedural Texture）指的是那些由计算机生成的图像。
+
+在Unity中，可以编写脚本自动生成纹理赋给材质。
+
+也可以使用了名为**Substance Designer**的软件在Unity外部生成程序材质。很多3A的游戏项目都使用了由它生成的材质。我们可以从Unity的资源商店或网络中获取到很多免费或付费的Substance材质。这些材质都是以.sbsar为后缀的。新版本的Unity已经不内置支持。
+
+### 第11章 让画面动起来
+
+#### 11.1 Unity Shader中的内置变量（时间篇）
+
+![Unity内置的时间变量](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-Unity内置的时间变量.jfif)
+
+#### 11.2 纹理动画
+
+**序列帧动画**
+
+连续播放一系列纹理来形成动画。可以将一系列纹理存入一张纹理图片，根据时间选择变化纹理坐标播放不同的纹理。
+
+**滚动的背景**
+
+根据时间在同一张纹理上进行滚动。还可以多张纹理叠加。
+
+#### 11.3 顶点动画
+
+**流动的河流**
+
+```c
+Shader "Unity Shaders Book/Chapter 11/Water" {
+	Properties {
+		_MainTex ("Main Tex", 2D) = "white" {}
+		_Color ("Color Tint", Color) = (1, 1, 1, 1)
+		_Magnitude ("Distortion Magnitude", Float) = 1
+ 		_Frequency ("Distortion Frequency", Float) = 1
+ 		_InvWaveLength ("Distortion Inverse Wave Length", Float) = 10
+ 		_Speed ("Speed", Float) = 0.5
+	}
+	SubShader {
+		// Need to disable batching because of the vertex animation
+        //批处理会合并所有相关的模型，而这些模型各自的模型空间就会丢失。而在本例中，我们需要在物体的模型空间下对顶点位置进行偏移。因此，在这里需要取消对该Shader的批处理操作。
+		Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "DisableBatching"="True"}
+		
+		Pass {
+			Tags { "LightMode"="ForwardBase" }
+			
+			ZWrite Off
+			Blend SrcAlpha OneMinusSrcAlpha
+			Cull Off
+			
+			CGPROGRAM  
+			#pragma vertex vert 
+			#pragma fragment frag
+			
+			#include "UnityCG.cginc" 
+			
+			sampler2D _MainTex;
+			float4 _MainTex_ST;
+			fixed4 _Color;
+			float _Magnitude;
+			float _Frequency;
+			float _InvWaveLength;
+			float _Speed;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float4 texcoord : TEXCOORD0;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				
+				float4 offset;
+				offset.yzw = float3(0.0, 0.0, 0.0);
+				offset.x = sin(_Frequency * _Time.y + v.vertex.x * _InvWaveLength + v.vertex.y * _InvWaveLength + v.vertex.z * _InvWaveLength) * _Magnitude;
+				o.pos = UnityObjectToClipPos(v.vertex + offset);
+				
+				o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+				o.uv +=  float2(0.0, _Time.y * _Speed);
+				
+				return o;
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {
+				fixed4 c = tex2D(_MainTex, i.uv);
+				c.rgb *= _Color.rgb;
+				
+				return c;
+			} 
+			
+			ENDCG
+		}
+	}
+	FallBack "Transparent/VertexLit"
+}
+```
+
+**广告牌技术（Billboarding）**
+
+广告牌技术会根据视角方向来旋转一个被纹理着色的多边形（通常就是简单的四边形，这个多边形就是广告牌），使得多边形看起来好像总是面对着摄像机。广告牌技术被用于很多应用，比如渲染烟雾、云朵、闪光效果等。
+
+```c
+Shader "Unity Shaders Book/Chapter 11/Billboard" {
+	Properties {
+		_MainTex ("Main Tex", 2D) = "white" {}
+		_Color ("Color Tint", Color) = (1, 1, 1, 1)
+		_VerticalBillboarding ("Vertical Restraints", Range(0, 1)) = 1 
+	}
+	SubShader {
+		// Need to disable batching because of the vertex animation
+		Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" "DisableBatching"="True"}
+		
+		Pass { 
+			Tags { "LightMode"="ForwardBase" }
+			
+			ZWrite Off
+			Blend SrcAlpha OneMinusSrcAlpha
+			Cull Off
+		
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "Lighting.cginc"
+			
+			sampler2D _MainTex;
+			float4 _MainTex_ST;
+			fixed4 _Color;
+			fixed _VerticalBillboarding;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float4 texcoord : TEXCOORD0;
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			};
+			
+			v2f vert (a2v v) {
+				v2f o;
+				
+				// Suppose the center in object space is fixed
+				float3 center = float3(0, 0, 0);
+				float3 viewer = mul(unity_WorldToObject,float4(_WorldSpaceCameraPos, 1));
+				
+				float3 normalDir = viewer - center;
+				// If _VerticalBillboarding equals 1, we use the desired view dir as the normal dir
+				// Which means the normal dir is fixed
+				// Or if _VerticalBillboarding equals 0, the y of normal is 0
+				// Which means the up dir is fixed
+				normalDir.y =normalDir.y * _VerticalBillboarding;
+				normalDir = normalize(normalDir);
+				// Get the approximate up dir
+				// If normal dir is already towards up, then the up dir is towards front
+				float3 upDir = abs(normalDir.y) > 0.999 ? float3(0, 0, 1) : float3(0, 1, 0);
+				float3 rightDir = normalize(cross(upDir, normalDir));
+				upDir = normalize(cross(normalDir, rightDir));
+				
+				// Use the three vectors to rotate the quad
+				float3 centerOffs = v.vertex.xyz - center;
+				float3 localPos = center + rightDir * centerOffs.x + upDir * centerOffs.y + normalDir * centerOffs.z;
+              
+				o.pos = UnityObjectToClipPos(float4(localPos, 1));
+				o.uv = TRANSFORM_TEX(v.texcoord,_MainTex);
+
+				return o;
+			}
+			
+			fixed4 frag (v2f i) : SV_Target {
+				fixed4 c = tex2D (_MainTex, i.uv);
+				c.rgb *= _Color.rgb;
+				
+				return c;
+			}
+			
+			ENDCG
+		}
+	} 
+	FallBack "Transparent/VertexLit"
+}
+```
+
+如果需要对顶点动画添加阴影，需要提供自定义的ShadowCaster Pass。
+
+## 第4篇 高级篇
+
+### 第12章 屏幕后处理效果
+
+屏幕后处理效果（screen post-processing effects）是游戏中实现屏幕特效的常见方法。
+
+#### 12.1 建立一个基本的屏幕后处理脚本系统
+
+```c#
+//当我们在脚本中声明此函数后，Unity会把当前渲染得到的图像存储在第一个参数对应的源渲染纹理中，通过函数中的一系列操作后，再把目标渲染纹理，即第二个参数对应的渲染纹理显示到屏幕上。
+MonoBehaviour.OnRenderImage  (RenderTexture  src,  RenderTexture  dest)
+//在OnRenderImage函数中，我们通常是利用Graphics.Blit函数来完成对渲染纹理的处理。
+/*
+参数src对应了源纹理，在屏幕后处理技术中，这个参数通常就是当前屏幕的渲染纹理或是上一步处理后得到的渲染纹理。参数dest是目标渲染纹理，如果它的值为null就会直接将结果显示在屏幕上。参数mat是我们使用的材质，这个材质使用的Unity Shader将会进行各种屏幕后处理操作，而src纹理将会被传递给Shader中名为_MainTex的纹理属性。参数pass的默认值为-1，表示将会依次调用Shader内的所有Pass。否则，只会调用给定索引的Pass。
+*/
+public  static  void  Blit(Texture  src,  RenderTexture  dest);
+public static void Blit(Texture src, RenderTexture dest, Material mat, int pass = -1);
+public  static  void  Blit(Texture  src,  Material  mat,  int  pass  =  -1);
+```
+
+在Unity中实现屏幕后处理效果，过程通常如下：
+
+1. 在摄像中添加一个用于屏幕后处理的脚本。在这个脚本中，我们会实现OnRenderImage函数来获取当前屏幕的渲染纹理。
+2. 调用Graphics.Blit函数使用特定的Unity Shader来对当前图像进行处理，再把返回的渲染纹理显示到屏幕上。对于一些复杂的屏幕特效，我们可能需要多次调用Graphics.Blit函数来对上一步的输出结果进行下一步处理。
+
+一个用于屏幕后处理效果的基类，在实现各种屏幕特效时，我们只需要继承自该基类，再实现派生类中不同的操作即可:
+
+```c#
+using UnityEngine;
+using System.Collections;
+
+[ExecuteInEditMode]
+[RequireComponent (typeof(Camera))]
+public class PostEffectsBase : MonoBehaviour {
+
+	// Called when start
+	protected void CheckResources() {
+		bool isSupported = CheckSupport();
+		
+		if (isSupported == false) {
+			NotSupported();
+		}
+	}
+
+	// Called in CheckResources to check support on this platform
+	protected bool CheckSupport() {
+		if (SystemInfo.supportsImageEffects == false || SystemInfo.supportsRenderTextures == false) {
+			Debug.LogWarning("This platform does not support image effects or render textures.");
+			return false;
+		}
+		
+		return true;
+	}
+
+	// Called when the platform doesn't support this effect
+	protected void NotSupported() {
+		enabled = false;
+	}
+	
+	protected void Start() {
+		CheckResources();
+	}
+
+	// Called when need to create the material used by this effect
+	protected Material CheckShaderAndCreateMaterial(Shader shader, Material material) {
+		if (shader == null) {
+			return null;
+		}
+		
+		if (shader.isSupported && material && material.shader == shader)
+			return material;
+		
+		if (!shader.isSupported) {
+			return null;
+		}
+		else {
+			material = new Material(shader);
+			material.hideFlags = HideFlags.DontSave;
+			if (material)
+				return material;
+			else 
+				return null;
+		}
+	}
+}
+```
+
+#### 12.2 调整屏幕的亮度、饱和度和对比度
+
+
+
 
 
 

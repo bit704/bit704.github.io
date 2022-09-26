@@ -15,9 +15,13 @@ DX11练手
 
 教程代码仓库：[MKXJun/DirectX11-With-Windows-SDK: 现代DX11系列教程：使用Windows SDK(C++)开发Direct3D 11.x](https://github.com/MKXJun/DirectX11-With-Windows-SDK)
 
+练习仓库：[bit704/DX11-Practice: DX11练习](https://github.com/bit704/DX11-Practice)
+
 使用代码版本：Commits on Jun 29, 2022
 
 commit SHA：fd2745d2b9ca89347b1255276728e0e51ef848f3
+
+使用IDE：VS2019
 
 作者的部分源码摘自d3d教材源码，经过修改，目的是完全脱离旧的DirectX SDK，使用Windows SDK来实现DX11。[d3d教材网站](http://www.d3dcoder.net/)。
 
@@ -34,6 +38,8 @@ commit SHA：fd2745d2b9ca89347b1255276728e0e51ef848f3
 #pragma comment(lib, "D3DCompiler.lib")
 #pragma comment(lib, "winmm.lib")
 ```
+
+或者在项目->属性->链接器->输入->附加依赖项中加入。
 
 ## 01 DirectX11初始化
 
@@ -469,23 +475,245 @@ typedef union __declspec(intrin_type) __declspec(align(16)) __m128 {
 
 ## 06 使用ImGui
 
-使用ImGui进行交互。
+使用ImGui库编写UI。
 
 ## 作业 3 4
 
 作业3 Rendering Much 3D Hanzi
 
+每个汉字有两个汉字围绕其旋转
+
 ![03 Rendering Much 3D Hanzi](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-03%20Rendering%20Much%203D%20Hanzi.png)
 
-作业4 Roaming 实现漫游
+作业4 Roaming 
 
-WASD 水平前后左右移动
+实现漫游
 
-QE 滚筒旋转
-
-视角跟随鼠标移动
+WASD 水平前后左右移动     QE 滚筒旋转      视角跟随鼠标移动
 
 ![04 Roaming](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-04%20Roaming.png)
 
 ## 07 光照、常用几何模型、光栅化状态
 
+一定要注意[HLSL常量缓冲区打包规则](https://directx11.tech/#/misc/Packing?id=hlsl常量缓冲区打包规则)。
+
+**颜色向量**：$(red, green, blue, alpha)$。对于RGB，0代表没有颜色，1代表纯色。对于alpha，0代表透明，1代表不透明。
+
+若是立方体，则一个顶点同时在三个面上，则拥有三个**法向量**。
+
+```c++
+//C++
+struct VertexPosNormalColor
+{
+    DirectX::XMFLOAT3 pos;
+    DirectX::XMFLOAT3 normal;
+    DirectX::XMFLOAT4 color;
+    static const D3D11_INPUT_ELEMENT_DESC inputLayout[3];
+};
+const D3D11_INPUT_ELEMENT_DESC VertexPosNormalColor::inputLayout[3] = {
+    { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0},
+    { "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0}
+};
+//HLSL
+struct VertexIn
+{
+    float3 posL : POSITION;
+    float3 normalL : NORMAL;
+    float4 color : COLOR;
+};
+```
+
+**材质**属性决定了各种颜色分量的反射系数是多少，其中红绿蓝每个分量的取值范围为`[0.0f, 1.0f]`。其中分别代表环境光、漫反射光、高光的反射率。
+
+```c++
+//C++
+struct Material
+{
+    DirectX::XMFLOAT4 ambient;
+    DirectX::XMFLOAT4 diffuse;
+    DirectX::XMFLOAT4 specular;
+    DirectX::XMFLOAT4 reflect;
+};
+//HLSL
+struct Material
+{
+    float4 Ambient;
+    float4 Diffuse;
+    float4 Specular;
+    float4 Reflect;
+};
+```
+
+三种光源：
+
+方向光：
+
+- 所有位置方向一样
+- 环境光直接用材质反射率乘光源颜色，漫反射光用兰伯特模型，高光用blinn-phong模型
+
+点光：
+
+- 每个位置的方向需要单独求
+- 方向光基础上漫反射光和高光随距离d衰弱：$I(d)=\frac{I_0}{a_0+a_1d+d^2}$，并通过灯光范围测试减少计算量
+
+聚光灯：
+
+- 点光基础上整个光照乘一个强度因子：$k_{spot}=max(-L\cdot d,0)^{spot}$，L是光向量，d是照射强度，spot是聚光程度
+
+**光栅化阶段**在像素着色器之前，是不可编程的，但是可以设置光栅化状态。
+
+```c
+typedef struct D3D11_RASTERIZER_DESC
+{
+    D3D11_FILL_MODE FillMode;          // 填充模式
+    D3D11_CULL_MODE CullMode;          // 裁剪模式
+    BOOL FrontCounterClockwise;        // 是否三角形顶点按逆时针排布时为正面
+    INT DepthBias;                     // 深度偏移相关，目前忽略
+    FLOAT DepthBiasClamp;              // 深度偏移相关，目前忽略
+    FLOAT SlopeScaledDepthBias;        // 深度偏移相关，目前忽略
+    BOOL DepthClipEnable;              // 是否允许深度测试将范围外的像素进行裁剪，默认TRUE
+    BOOL ScissorEnable;                // 是否允许指定矩形范围的裁剪，若TRUE，则需要在RSSetScissor设置像素保留的矩形区域
+    BOOL MultisampleEnable;            // 是否允许多重采样
+    BOOL AntialiasedLineEnable;        // 是否允许反走样线，仅当多重采样为FALSE时才有效
+}D3D11_RASTERIZER_DESC;
+```
+
+| 枚举值                   | 含义         |
+| ------------------------ | ------------ |
+| D3D11_FILL_WIREFRAME = 2 | 线框填充方式 |
+| D3D11_FILL_SOLID = 3     | 面填充方式   |
+
+| 枚举值               | 含义                                                   |
+| -------------------- | ------------------------------------------------------ |
+| D3D11_CULL_NONE = 1  | 无背面裁剪，即三角形无论处在视野的正面还是背面都能看到 |
+| D3D11_CULL_FRONT = 2 | 对处在视野正面的三角形进行裁剪                         |
+| D3D11_CULL_BACK = 3  | 对处在视野背面的三角形进行裁剪                         |
+
+创建及设置光栅化状态：
+
+```c++
+HRESULT ID3D11Device::CreateRasterizerState( 
+    const D3D11_RASTERIZER_DESC *pRasterizerDesc,    // [In]光栅化状态描述
+    ID3D11RasterizerState **ppRasterizerState) = 0;  // [Out]输出光栅化状态
+
+void ID3D11DeviceContext::RSSetState(
+  ID3D11RasterizerState *pRasterizerState);  // [In]光栅化状态，若为nullptr，则使用默认光栅化状态
+```
+
+## 作业 5
+
+这里为了省事对于在多个面上的顶点只赋了一条法线。朝向屏幕外侧的面的顶点赋(0.f,0.f,-1.f)，内侧的赋(0.f,0.f,1.f)。
+
+作业5 Light
+
+通过数字键控制3种光源开关。1：开关方向光（猩红）；2：开关点光（板岩暗蓝灰）； 3：开关聚光（金）。
+
+ 三种光源默认开启，开关情况在左上角的UI界面底部显示。
+
+方向光1个，方向固定。
+
+点光3个，在字符矩阵上做随机运动。
+
+聚光1个，跟随相机照亮前方。
+
+使用Blinn-Phong替换Phong计算光照。
+
+![05 Lighting](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-20-05%20Lighting.png)
+
+## 08 几何着色器
+
+在上一节的基础上添加几何着色器，需要以下步骤：
+
+1. 创建Light_GS.hlsl文件，在文件的属性中配置好着色器编译后对应的**对象文件名**HLSL\%(Filename).cso、**入口点名称**GS、**着色器类型**/gs、**着色器名称**/5_0。
+
+2. 在C++端创建几何着色器
+
+   ```c++
+   // 创建几何着色器
+   HR(CreateShaderFromFile(L"HLSL\\Light_GS.cso", L"HLSL\\Light_GS.hlsl", "GS", "gs_5_0", blob.ReleaseAndGetAddressOf()));
+   HR(m_pd3dDevice->CreateGeometryShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, m_pGeometryShader.GetAddressOf()));
+   ```
+
+3. 在C++绑定几何着色器到渲染管线上并设置它的常量缓冲区
+
+   ```c++
+   // 绑定几何着色器
+   m_pd3dImmediateContext->GSSetShader(m_pGeometryShader.Get(), nullptr, 0);
+   // GS常量缓冲区对应HLSL寄存于b0的常量缓冲区
+   m_pd3dImmediateContext->GSSetConstantBuffers(0, 1, m_pConstantBuffers[0].GetAddressOf());
+   ```
+
+4. 设置调试对象名
+
+   ```c++
+   D3D11SetDebugObjectName(m_pGeometryShader.Get(), "Light_GS");
+   ```
+
+5. 编写shader
+
+   ```c
+   #include "Light.hlsli"
+   
+   /* 
+       对任意平面 Ax+By+Cz+D=0 求镜像点
+   */
+   void Symmetry(in float3 p, out float3 p_s)
+   {
+       float A = 0.f, B = 0.f, C = 1.f, D = -2.f;
+       float f1 = A * A + B * B + C * C;
+       float f2 = A * p.x + B * p.y + C * p.z + D;
+       p_s.x = p.x - 2 * A * (f2) / f1;
+       p_s.y = p.y - 2 * B * (f2) / f1;
+       p_s.z = p.z - 2 * C * (f2) / f1;
+   }
+   
+   
+   [maxvertexcount(6)]
+   void GS(
+   	triangle VertexOut input[3],
+   	inout TriangleStream<VertexOut> output
+   )
+   {
+       VertexOut vOri[3], vNew[3];
+       
+   	[unroll]
+       for (uint i = 0; i < 3; i++)
+   	{
+           vOri[i] = input[i];
+           output.Append(vOri[i]);
+           
+           //镜像顶点
+           Symmetry(input[i].posW, vNew[i].posW);
+           
+           //世界到裁剪矩阵
+           matrix viewProj = mul(g_View, g_Proj);
+           vNew[i].posH = mul(float4(vNew[i].posW, 1.0f), viewProj);
+           
+           //顶点自身颜色由白色改为 LimeGreen 酸橙绿
+           vNew[i].color = float4(0.2f, 0.8f, 0.2f, 1.f);
+           
+           //镜像法线
+           float3 normalWSta = input[i].posW;
+           float3 normalWEnd = input[i].posW + input[i].normalW;
+           Symmetry(normalWEnd, normalWEnd);
+           vNew[i].normalW = normalWEnd - vNew[i].posW;
+           
+       }
+       
+       //在以线段或者三角形作为图元的时候，默认是以strip的形式输出的，如果我们不希望下一个输出的顶点与之前的顶点构成新图元，则需要调用此方法来重新开始新的strip。若希望输出的图元类型也保持和原来一样的TriangleList，则需要每调用3次Append方法后就调用一次RestartStrip。
+       output.RestartStrip();
+       
+       [unroll]
+       for (uint i = 0; i < 3; i++)
+       {
+           output.Append(vNew[i]);
+       }
+   }
+   ```
+
+## 作业6 
+
+利用几何着色器对字符森林关于z=2平面作镜像。
+
+![06 Geometry](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-26-06%20Geometry.png)
