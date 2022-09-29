@@ -2,8 +2,8 @@
 title: 《Unity Shader入门精要》笔记
 categories: [Notebook]
 tags: [Unity]
-cover: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
-banner: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
+index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
+banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
 ---
 
 作者    冯乐乐

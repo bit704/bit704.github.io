@@ -2,8 +2,8 @@
 title: 《C++ Primer（中文版）（第5版）》笔记
 categories: [Notebook]
 tags: [C++]
-cover: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-C++Primer.jpg
-banner: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-C++Primer.jpg
+index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-C++Primer.jpg
+banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-C++Primer.jpg
 ---
 
 原书作者      *Stanley B·Lippman      Josée Lajoie      Barbara E·Moo*
