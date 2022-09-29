@@ -1756,7 +1756,7 @@ Shader "Unity Shaders Book/Chapter 9/Forward Rendering" {
 
 在实时渲染中，我们最常使用的是一种名为**Shadow Map**的技术。这种技术理解起来非常简单，它会首先把摄像机的位置放在与光源重合的位置上，那么场景中该光源的阴影区域就是那些摄像机看不到的地方。而Unity就是使用的这种技术。
 
-Unity选择使用一个额外的Pass来专门更新光源的阴影映射纹理，这个Pass就是LightMode标签被设置为ShadowCaster的Pass。这个Pass的渲染目标不是帧缓存，而是阴影映射纹理（或深度纹理）。Unity首先把摄像机放置到光源的位置上，然后调用该Pass，通过对顶点变换后得到光源空间下的位置，并据此来输出深度信息到阴影映射纹理中。
+Unity选择使用一个额外的Pass来专门更新光源的阴影映射纹理，这个Pass就是LightMode标签被设置为ShadowCaster的Pass。这个Pass的渲染目标不是帧缓存，而是阴影映射纹理（或深度纹理）。Unity首先把摄像机放置到光源的位置上，然后调用该Pass，通过对顶点变换后得到光源空间下的位置，并据此来输出深度信息到**阴影映射纹理**中。
 
 **传统的阴影映射纹理的实现**：
 
@@ -2155,6 +2155,7 @@ public class PostEffectsBase : MonoBehaviour {
 		}
 		else {
 			material = new Material(shader);
+            //该对象不保存到场景。加载新场景时，也不会销毁它。
 			material.hideFlags = HideFlags.DontSave;
 			if (material)
 				return material;
@@ -2167,13 +2168,687 @@ public class PostEffectsBase : MonoBehaviour {
 
 #### 12.2 调整屏幕的亮度、饱和度和对比度
 
+继承上一节的PostEffectsBase编写脚本挂载在相机上，加载briSatConShader实现后处理。
 
+```c#
+using UnityEngine;
+using System.Collections;
 
+public class BrightnessSaturationAndContrast : PostEffectsBase {
 
+	public Shader briSatConShader;
+	private Material briSatConMaterial;
+	public Material material {  
+		get {
+			briSatConMaterial = CheckShaderAndCreateMaterial(briSatConShader, briSatConMaterial);
+			return briSatConMaterial;
+		}  
+	}
 
+	[Range(0.0f, 3.0f)]
+	public float brightness = 1.0f;
 
+	[Range(0.0f, 3.0f)]
+	public float saturation = 1.0f;
 
+	[Range(0.0f, 3.0f)]
+	public float contrast = 1.0f;
 
+	void OnRenderImage(RenderTexture src, RenderTexture dest) {
+		if (material != null) {
+			material.SetFloat("_Brightness", brightness);
+			material.SetFloat("_Saturation", saturation);
+			material.SetFloat("_Contrast", contrast);
+
+			Graphics.Blit(src, dest, material);
+		} else {
+			Graphics.Blit(src, dest);
+		}
+	}
+}
+```
+
+```c
+Shader "Unity Shaders Book/Chapter 12/Brightness Saturation And Contrast" {
+	Properties {
+		_MainTex ("Base (RGB)", 2D) = "white" {}
+		_Brightness ("Brightness", Float) = 1
+		_Saturation("Saturation", Float) = 1
+		_Contrast("Contrast", Float) = 1
+	}
+	SubShader {
+		Pass {  
+			ZTest Always Cull Off ZWrite Off
+			
+			CGPROGRAM  
+			#pragma vertex vert  
+			#pragma fragment frag  
+			  
+			#include "UnityCG.cginc"  
+			  
+			sampler2D _MainTex;  
+			half _Brightness;
+			half _Saturation;
+			half _Contrast;
+			  
+			struct v2f {
+				float4 pos : SV_POSITION;
+				half2 uv: TEXCOORD0;
+			};
+			  
+			v2f vert(appdata_img v) {
+				v2f o;
+				
+				o.pos = UnityObjectToClipPos(v.vertex);
+				
+				o.uv = v.texcoord;
+						 
+				return o;
+			}
+		
+			fixed4 frag(v2f i) : SV_Target {
+				fixed4 renderTex = tex2D(_MainTex, i.uv);  
+				  
+				// Apply brightness
+				fixed3 finalColor = renderTex.rgb * _Brightness;
+				
+				// Apply saturation
+				fixed luminance = 0.2125 * renderTex.r + 0.7154 * renderTex.g + 0.0721 * renderTex.b;
+				fixed3 luminanceColor = fixed3(luminance, luminance, luminance);
+				finalColor = lerp(luminanceColor, finalColor, _Saturation);
+				
+				// Apply contrast
+				fixed3 avgColor = fixed3(0.5, 0.5, 0.5);
+				finalColor = lerp(avgColor, finalColor, _Contrast);
+				
+				return fixed4(finalColor, renderTex.a);  
+			}  
+			  
+			ENDCG
+		}  
+	}
+	
+	Fallback Off
+}
+```
+
+#### 12.3 边缘检测
+
+利用一些边缘检测算子对图像进行卷积（convolution）操作。
+
+![3种常见的边缘检测算子](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-27-3种常见的边缘检测算子.jfif)
+
+#### 12.4 高斯模糊
+
+高斯模糊使用高斯核卷积。
+$$
+G(x,y)=\frac{1} {2\pi\sigma^2} e^{-\frac{x^2+y^2}{2\sigma^2} }
+$$
+σ是标准方差（一般取值为1）, x和y分别对应了当前位置到卷积核中心的整数距离。
+
+为了保证滤波后的图像不会变暗，我们需要对高斯核中的权重进行归一化，即让每个权重除以所有权重的和，这样可以保证所有权重的和为1。因此，高斯函数中e前面的系数实际不会对结果有任何影响。
+
+#### 12.5 Bloom效果
+
+首先根据一个阈值提取出图像中的较亮区域，把它们存储在一张渲染纹理中，再利用高斯模糊对这张渲染纹理进行模糊处理，模拟光线扩散的效果，最后再将其和原图像进行混合，得到最终的效果。
+
+#### 12.6 运动模糊
+
+运动模糊的实现有多种方法。
+
+一种实现方法是利用一块累积缓存（accumulation buffer）来混合多张连续的图像。当物体快速移动产生多张图像后，我们取它们之间的平均值作为最后的运动模糊图像。然而，这种暴力的方法对性能的消耗很大，因为想要获取多张帧图像往往意味着我们需要在同一帧里渲染多次场景。
+
+另一种应用广泛的方法是创建和使用速度缓存（velocity buffer），这个缓存中存储了各个像素当前的运动速度，然后利用该值来决定模糊的方向和大小。
+
+### 第13章 使用深度和法线纹理
+
+#### 13.1 获取深度和法线纹理
+
+在Unity中，深度纹理可以直接来自于真正的深度缓存，也可以是由一个单独的Pass渲染而得，这取决于使用的渲染路径和硬件。
+
+1. 通常来讲，当使用延迟渲染路径（包括遗留的延迟渲染路径）时，深度纹理理所当然可以访问到，因为延迟渲染会把这些信息渲染到G-buffer中。
+
+2. 而当无法直接获取深度缓存时，深度和法线纹理是通过一个单独的Pass渲染而得的。具体实现是，Unity会使用着色器替换（Shader Replacement）技术选择那些渲染类型（即SubShader的RenderType标签）为Opaque的物体，判断它们使用的渲染队列是否小于等于2500（内置的Background、Geometry和AlphaTest渲染队列均在此范围内），如果满足条件，就把它渲染到深度和法线纹理中。因此，要想让物体能够出现在深度和法线纹理中，就必须在Shader中设置正确的RenderType标签。
+
+在脚本中设置摄像机，在Shader中通过声明变量来访问：
+
+```c#
+//C#
+camera.depthTextureMode  =  DepthTextureMode.Depth;
+//Shader
+_CameraDepthTexture
+//C#
+camera.depthTextureMode  =  DepthTextureMode.DepthNormals;
+//Shader
+_CameraDepthNormalsTexture
+
+//由纹理坐标对深度纹理进行采样
+float d = SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture,  i.uv);
+//i.scrPos是在顶点着色器中通过调用ComputeScreenPos(o.pos)得到的屏幕坐标。
+float d = SAMPLE_DEPTH_TEXTURE_PROJ(_CameraDepthTexture, UNITY_PROJ_COORD(i.scrPos));
+//输出线性深度值
+float  depth  =  SAMPLE_DEPTH_TEXTURE(_CameraDepthTexture,  i.uv);
+float  linearDepth  =  Linear01Depth(depth);
+return  fixed4(linearDepth,  linearDepth,  linearDepth,  1.0);
+//输出法线方向
+fixed3  normal  =  DecodeViewNormalStereo(tex2D(_CameraDepthNormalsTexture,  i.uv).xy);
+return  fixed4(normal  ＊  0.5  +  0.5,  1.0);
+```
+
+#### 13.2 再谈运动模糊
+
+在C#端求得两个变换矩阵——前一帧的视角投影矩阵以及当前帧的视角投影矩阵的逆矩阵。
+
+在Shader端的片元着色器中：
+
+1. 使用内置的SAMPLE_DEPTH_TEXTURE宏和纹理坐标对深度纹理进行采样，得到了深度值d，由d和纹理坐标映射回NDC（（NDC下的xyz分量范围均为[-1,1]）），得到NDC坐标（w设为1）。
+2. 用视角投影矩阵的逆矩阵左乘NDC坐标，整体除w得到世界坐标。（[为什么将NDC坐标变换到世界坐标下需要除w](https://www.cnblogs.com/sword-magical-blog/p/10483459.html)）
+
+3. 使用前一帧的视角投影矩阵左乘世界坐标，得到其在前一帧下的NDC坐标。
+4. 计算前一帧和当前帧在屏幕空间下的位置差，得到该像素的速度。
+5. 使用该速度值对它的邻域像素进行采样，相加后取平均值得到一个模糊的效果。
+
+本节实现的运动模糊适用于**场景静止、摄像机快速运动**的情况，这是因为我们在计算时只考虑了摄像机的运动。因此，如果读者把本节中的代码应用到一个物体快速运动而摄像机静止的场景，会发现不会产生任何运动模糊效果。如果我们想要对快速移动的物体产生运动模糊的效果，就需要生成更加精确的速度映射图。读者可以在Unity自带的ImageEffect包中找到更多的运动模糊的实现方法。
+
+#### 13.3 全局雾效
+
+Unity内置的**雾效**可以产生基于距离的线性或指数雾效。然而，要想在自己编写的顶点/片元着色器中实现这些雾效，我们需要在Shader中添加#pragma multi_compile_fog指令，同时还需要使用相关的内置宏，例如UNITY_FOG_COORDS、UNITY_TRANSFER_FOG和UNITY_APPLY_FOG等。这种方法的缺点在于，我们不仅需要为场景中所有物体添加相关的渲染代码，而且能够实现的效果也非常有限。当我们需要对雾效进行一些个性化操作时，例如使用基于高度的雾效等，仅仅使用Unity内置的雾效就变得不再可行。
+
+本节基于屏幕后处理实现全局雾效。
+
+基于屏幕后处理的全局雾效的关键是，**根据深度纹理来重建每个像素在世界空间下的位置**：
+
+- 在上一节中，我们在模拟运动模糊时已经实现了这个要求，即构建出当前像素的NDC坐标，再通过当前摄像机的视角投影矩阵的逆矩阵来得到世界空间下的像素坐标，但是，这样的实现需要在片元着色器中进行矩阵乘法的操作，而这通常会影响游戏性能。
+- 在本节中，使用一个快速从深度纹理中重建世界坐标的方法。这种方法首先对图像空间下的视锥体射线（从摄像机出发，指向图像上的某点的射线）进行插值，这条射线存储了该像素在世界空间下到摄像机的方向信息。然后，我们把该射线和线性化后的视角空间下的深度值相乘，再加上摄像机的世界位置，就可以得到该像素在世界空间下的位置。当我们得到世界坐标后，就可以轻松地使用各个公式来模拟全局雾效了。
+
+#### 13.4 再谈边缘检测
+
+在深度和法线纹理上进行边缘检测，这些图像不会受纹理和光照的影响，而仅仅保存了当前渲染物体的模型信息，通过这样的方式检测出来的边缘更加可靠。
+
+### 第14章 非真实感渲染
+
+#### 14.1 卡通风格的渲染
+
+要实现卡通渲染有很多方法，其中之一就是使用基于色调的着色技术（tone-based shading）。
+
+在实时渲染中，**轮廓线渲染**是应用非常广泛的一种效果。近20年来，有许多绘制模型轮廓线的方法被先后提出来。在《Real Time Rendering, third edition》一书中，作者把这些方法分成了5种类型。
+
+- 基于观察角度和表面法线的轮廓线渲染。这种方法使用视角方向和表面法线的点乘结果来得到轮廓线的信息。这种方法简单快速，可以在一个Pass中就得到渲染结果，但局限性很大，很多模型渲染出来的描边效果都不尽如人意。
+
+- 过程式几何轮廓线渲染。这种方法的核心是使用两个Pass渲染。第一个Pass渲染背面的面片，并使用某些技术让它的轮廓可见；第二个Pass再正常渲染正面的面片。这种方法的优点在于快速有效，并且适用于绝大多数表面平滑的模型，但它的缺点是不适合类似于立方体这样平整的模型。
+
+- 基于图像处理的轮廓线渲染。我们在第12、13章介绍的边缘检测的方法就属于这个类别。这种方法的优点在于，可以适用于任何种类的模型。但它也有自身的局限所在，一些深度和法线变化很小的轮廓无法被检测出来，例如桌子上的纸张。
+
+- 基于轮廓边检测的轮廓线渲染。上面提到的各种方法，一个最大的问题是，无法控制轮廓线的风格渲染。对于一些情况，我们希望可以渲染出独特风格的轮廓线，例如水墨风格等。为此，我们希望可以检测出精确的轮廓边，然后直接渲染它们。
+
+- 最后一个种类就是混合了上述的几种渲染方法。例如，首先找到精确的轮廓边，把模型和轮廓边渲染到纹理中，再使用图像处理的方法识别出轮廓线，并在图像空间下进行风格化渲染。
+
+这里使用第二种方法。
+
+```c
+Shader "Unity Shaders Book/Chapter 14/Toon Shading" {
+	Properties {
+		_Color ("Color Tint", Color) = (1, 1, 1, 1)
+		_MainTex ("Main Tex", 2D) = "white" {}
+        //控制漫反射色调的渐变纹理
+		_Ramp ("Ramp Texture", 2D) = "white" {}
+        //轮廓线宽度和颜色
+		_Outline ("Outline", Range(0, 1)) = 0.1
+		_OutlineColor ("Outline Color", Color) = (0, 0, 0, 1)
+		_Specular ("Specular", Color) = (1, 1, 1, 1)
+         //计算高光反射时使用的阈值
+		_SpecularScale ("Specular Scale", Range(0, 0.1)) = 0.01
+	}
+    SubShader {
+		Tags { "RenderType"="Opaque" "Queue"="Geometry"}
+		
+		Pass {
+			NAME "OUTLINE"
+			Cull Front
+			
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#include "UnityCG.cginc"
+			
+			float _Outline;
+			fixed4 _OutlineColor;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+			}; 
+			
+			struct v2f {
+			    float4 pos : SV_POSITION;
+			};
+			
+			v2f vert (a2v v) {
+				v2f o;
+				
+				float4 pos = mul(UNITY_MATRIX_MV, v.vertex); 
+				float3 normal = mul((float3x3)UNITY_MATRIX_IT_MV, v.normal);  
+                //在视角空间下把模型顶点沿着法线方向向外扩张一段距离，以此来让背部轮廓线可见。
+                //在扩张背面顶点之前，我们首先对顶点法线的z分量进行处理，使它们等于一个定值，然后把法线归一化后再对顶点进行扩张。这样的好处在于，扩展后的背面更加扁平化，从而降低了遮挡正面面片的可能性。
+				normal.z = -0.5;
+				pos = pos + float4(normalize(normal), 0) * _Outline;
+				o.pos = mul(UNITY_MATRIX_P, pos);
+				
+				return o;
+			}
+			
+			float4 frag(v2f i) : SV_Target { 
+				return float4(_OutlineColor.rgb, 1);               
+			}
+			
+			ENDCG
+		}
+		
+		Pass {
+			Tags { "LightMode"="ForwardBase" }
+			
+			Cull Back
+		
+			CGPROGRAM
+		
+			#pragma vertex vert
+			#pragma fragment frag
+			
+			#pragma multi_compile_fwdbase
+		
+			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
+			#include "AutoLight.cginc"
+			#include "UnityShaderVariables.cginc"
+			
+			fixed4 _Color;
+			sampler2D _MainTex;
+			float4 _MainTex_ST;
+			sampler2D _Ramp;
+			fixed4 _Specular;
+			fixed _SpecularScale;
+		
+			struct a2v {
+				float4 vertex : POSITION;
+				float3 normal : NORMAL;
+				float4 texcoord : TEXCOORD0;
+				float4 tangent : TANGENT;
+			}; 
+		
+			struct v2f {
+				float4 pos : POSITION;
+				float2 uv : TEXCOORD0;
+				float3 worldNormal : TEXCOORD1;
+				float3 worldPos : TEXCOORD2;
+				SHADOW_COORDS(3)
+			};
+			
+			v2f vert (a2v v) {
+				v2f o;
+				
+				o.pos = UnityObjectToClipPos( v.vertex);
+				o.uv = TRANSFORM_TEX (v.texcoord, _MainTex);
+				o.worldNormal  = UnityObjectToWorldNormal(v.normal);
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				
+				TRANSFER_SHADOW(o);
+				
+				return o;
+			}
+			
+			float4 frag(v2f i) : SV_Target { 
+				fixed3 worldNormal = normalize(i.worldNormal);
+				fixed3 worldLightDir = normalize(UnityWorldSpaceLightDir(i.worldPos));
+				fixed3 worldViewDir = normalize(UnityWorldSpaceViewDir(i.worldPos));
+				fixed3 worldHalfDir = normalize(worldLightDir + worldViewDir);
+				
+				fixed4 c = tex2D (_MainTex, i.uv);
+				fixed3 albedo = c.rgb * _Color.rgb;
+				
+				fixed3 ambient = UNITY_LIGHTMODEL_AMBIENT.xyz * albedo;
+				
+				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
+				
+				fixed diff =  dot(worldNormal, worldLightDir);
+				diff = (diff * 0.5 + 0.5) * atten;
+				
+				fixed3 diffuse = _LightColor0.rgb * albedo * tex2D(_Ramp, float2(diff, diff)).rgb;
+				
+				fixed spec = dot(worldNormal, worldHalfDir);
+                //w是一个很小的值，当spec - threshold小于-w时，返回0，大于w时，返回1，否则在0到1之间进行插值。这样的效果是，我们可以在[-w, w]区间内，即高光区域的边界处，得到一个从0到1平滑变化的spec值，从而实现抗锯齿的目的。尽管我们可以把w设为一个很小的定值，但在本例中，我们选择使用邻域像素之间的近似导数值，这可以通过CG的fwidth函数来得到。
+				fixed w = fwidth(spec) * 2.0;
+				fixed3 specular = _Specular.rgb * lerp(0, 1, smoothstep(-w, w, spec + _SpecularScale - 1)) * step(0.0001, _SpecularScale);
+				
+				return fixed4(ambient + diffuse + specular, 1.0);
+			}
+		
+			ENDCG
+		}
+	}
+	FallBack "Diffuse"
+}
+```
+
+#### 14.2 素描风格的渲染
+
+```c
+///
+///  Reference: 	Praun E, Hoppe H, Webb M, et al. Real-time hatching[C]
+///						Proceedings of the 28th annual conference on Computer graphics and interactive techniques. ACM, 2001: 581.
+///
+Shader "Unity Shaders Book/Chapter 14/Hatching" {
+	Properties {
+		_Color ("Color Tint", Color) = (1, 1, 1, 1)
+		_TileFactor ("Tile Factor", Float) = 1
+		_Outline ("Outline", Range(0, 1)) = 0.1
+		_Hatch0 ("Hatch 0", 2D) = "white" {}
+		_Hatch1 ("Hatch 1", 2D) = "white" {}
+		_Hatch2 ("Hatch 2", 2D) = "white" {}
+		_Hatch3 ("Hatch 3", 2D) = "white" {}
+		_Hatch4 ("Hatch 4", 2D) = "white" {}
+		_Hatch5 ("Hatch 5", 2D) = "white" {}
+	}
+	
+	SubShader {
+		Tags { "RenderType"="Opaque" "Queue"="Geometry"}
+		
+		UsePass "Unity Shaders Book/Chapter 14/Toon Shading/OUTLINE"
+		
+		Pass {
+			Tags { "LightMode"="ForwardBase" }
+			
+			CGPROGRAM
+			
+			#pragma vertex vert
+			#pragma fragment frag 
+			
+			#pragma multi_compile_fwdbase
+			
+			#include "UnityCG.cginc"
+			#include "Lighting.cginc"
+			#include "AutoLight.cginc"
+			#include "UnityShaderVariables.cginc"
+			
+			fixed4 _Color;
+			float _TileFactor;
+			sampler2D _Hatch0;
+			sampler2D _Hatch1;
+			sampler2D _Hatch2;
+			sampler2D _Hatch3;
+			sampler2D _Hatch4;
+			sampler2D _Hatch5;
+			
+			struct a2v {
+				float4 vertex : POSITION;
+				float4 tangent : TANGENT; 
+				float3 normal : NORMAL; 
+				float2 texcoord : TEXCOORD0; 
+			};
+			
+			struct v2f {
+				float4 pos : SV_POSITION;
+				float2 uv : TEXCOORD0;
+				fixed3 hatchWeights0 : TEXCOORD1;
+				fixed3 hatchWeights1 : TEXCOORD2;
+				float3 worldPos : TEXCOORD3;
+				SHADOW_COORDS(4)
+			};
+			
+			v2f vert(a2v v) {
+				v2f o;
+				
+				o.pos = UnityObjectToClipPos(v.vertex);
+				//求纹理采样坐标
+				o.uv = v.texcoord.xy * _TileFactor;
+				
+				fixed3 worldLightDir = normalize(WorldSpaceLightDir(v.vertex));
+				fixed3 worldNormal = UnityObjectToWorldNormal(v.normal);
+				fixed diff = max(0, dot(worldLightDir, worldNormal));
+				
+				o.hatchWeights0 = fixed3(0, 0, 0);
+				o.hatchWeights1 = fixed3(0, 0, 0);
+				
+				float hatchFactor = diff * 7.0;
+				
+                //计算对应的纹理混合权重
+				if (hatchFactor > 6.0) {
+					// Pure white, do nothing
+				} else if (hatchFactor > 5.0) {
+					o.hatchWeights0.x = hatchFactor - 5.0;
+				} else if (hatchFactor > 4.0) {
+					o.hatchWeights0.x = hatchFactor - 4.0;
+					o.hatchWeights0.y = 1.0 - o.hatchWeights0.x;
+				} else if (hatchFactor > 3.0) {
+					o.hatchWeights0.y = hatchFactor - 3.0;
+					o.hatchWeights0.z = 1.0 - o.hatchWeights0.y;
+				} else if (hatchFactor > 2.0) {
+					o.hatchWeights0.z = hatchFactor - 2.0;
+					o.hatchWeights1.x = 1.0 - o.hatchWeights0.z;
+				} else if (hatchFactor > 1.0) {
+					o.hatchWeights1.x = hatchFactor - 1.0;
+					o.hatchWeights1.y = 1.0 - o.hatchWeights1.x;
+				} else {
+					o.hatchWeights1.y = hatchFactor;
+					o.hatchWeights1.z = 1.0 - o.hatchWeights1.y;
+				}
+				
+				o.worldPos = mul(unity_ObjectToWorld, v.vertex).xyz;
+				
+				TRANSFER_SHADOW(o);
+				
+				return o; 
+			}
+			
+			fixed4 frag(v2f i) : SV_Target {			
+				fixed4 hatchTex0 = tex2D(_Hatch0, i.uv) * i.hatchWeights0.x;
+				fixed4 hatchTex1 = tex2D(_Hatch1, i.uv) * i.hatchWeights0.y;
+				fixed4 hatchTex2 = tex2D(_Hatch2, i.uv) * i.hatchWeights0.z;
+				fixed4 hatchTex3 = tex2D(_Hatch3, i.uv) * i.hatchWeights1.x;
+				fixed4 hatchTex4 = tex2D(_Hatch4, i.uv) * i.hatchWeights1.y;
+				fixed4 hatchTex5 = tex2D(_Hatch5, i.uv) * i.hatchWeights1.z;
+                //通过从1中减去所有6张纹理的权重来得到纯白在渲染中的贡献度
+				fixed4 whiteColor = fixed4(1, 1, 1, 1) * (1 - i.hatchWeights0.x - i.hatchWeights0.y - i.hatchWeights0.z - 
+							i.hatchWeights1.x - i.hatchWeights1.y - i.hatchWeights1.z);
+				
+				fixed4 hatchColor = hatchTex0 + hatchTex1 + hatchTex2 + hatchTex3 + hatchTex4 + hatchTex5 + whiteColor;
+				
+				UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos);
+								
+				return fixed4(hatchColor.rgb * _Color.rgb * atten, 1.0);
+			}
+			
+			ENDCG
+		}
+	}
+	FallBack "Diffuse"
+}
+```
+
+### 第15章 使用噪声
+
+#### 15.1 消融效果
+
+**消融**（dissolve）效果常见于游戏中的角色死亡、地图烧毁等效果。在这些效果中，消融往往从不同的区域开始，并向看似随机的方向扩张，最后整个物体都将消失不见。
+
+在C#端随时间更新材质参数——消融程度\_BurnAmount。
+
+在Shader端对噪声纹理进行采样，并将采样结果和用于控制消融程度的属性\_BurnAmount相减，传递给clip函数。当结果小于0时，该像素将会被剔除，从而不会显示到屏幕上。如果通过了测试，则进行正常的光照计算。为了模拟烧焦效果，还要以_BurnAmount为参数插值多种颜色。
+
+#### 15.2 水波效果
+
+使用GrabPass来获取当前屏幕的渲染纹理，并使用切线空间下的法线方向对像素的屏幕坐标进行偏移，再使用该坐标对渲染纹理进行屏幕采样，从而模拟近似的折射效果。
+
+与**10.2.2**节中的实现不同的是，水波的法线纹理是由一张噪声纹理生成而得，而且会随着时间变化不断平移，模拟波光粼粼的效果。除此之外，我们没有使用一个定值来混合反射和折射颜色，而是使用之前提到的菲涅耳系数来动态决定混合系数。
+
+#### 15.3 再谈全局雾效
+
+相比**13.3**节的全局雾效实现，在Shader的片元着色器中对高度的计算添加了噪声的影响，实现非均匀雾效。
+
+#### 15.4 扩展阅读
+
+这些噪声纹理都是如何构建出来的？这些噪声纹理可以被认为是一种程序纹理（Procedure Texture），它们都是由计算机利用某些算法生成的。[Perlin噪声](https://en.wikipedia.org/wiki/Perlin_noise)和[Worley噪声](https://en.wikipedia.org/wiki/Worley_noise)是两种最常使用的噪声类型，例如我们在15.3节中使用的噪声纹理由Perlin噪声生成而来。Perlin噪声可以用于生成更自然的噪声纹理，而Worley噪声则通常用于模拟诸如石头、水、纸张等多孔噪声。
+
+### 第16章 Unity中的渲染优化技术
+
+#### 16.1 移动平台的特点
+
+移动设备上的GPU架构专注于尽可能使用更小的带宽和功能。
+
+#### 16.2 影响性能的因素
+
+1. CPU
+   - 过多的draw call。（使用批处理技术减少draw call数目。）
+   - 复杂的脚本或者物理模拟。
+2. GPU
+   - 顶点处理。（减少需要处理的顶点数目。化几何体； 使用模型的LOD（Level of Detail）技术； 使用遮挡剔除（Occlusion Culling）技术。）
+     - 过多的顶点。
+     -  过多的逐顶点计算。
+   - 片元处理。（减少需要处理的片元数目。控制绘制顺序； 警惕透明物体；减少实时光照。）
+     - 过多的片元（既可能是由于分辨率造成的，也可能是由于overdraw造成的）。
+     - 过多的逐片元计算。
+3. 带宽
+   - 使用了尺寸很大且未压缩的纹理。（减少纹理大小。）
+   - 分辨率过高的帧缓存。（利用分辨率缩放。）
+
+#### 16.3 Unity中的渲染分析工具
+
+**渲染统计窗口（Rendering Statistics Window）**
+
+Game -> Stats
+
+**性能分析器（Profiler）**
+
+Window -> Analysis -> Profiler
+
+**帧调试器（Frame Debugger）**
+
+Window -> Analysis -> Frame Debugger
+
+#### 16.4 减少draw call数目
+
+批处理的思想很简单，就是在每次面对draw call时尽可能多地处理多个物体。
+
+Unity中支持两种批处理方式：一种是动态批处理，另一种是静态批处理。
+
+对于**动态批处理**来说，优点是一切处理都是Unity自动完成的，不需要我们自己做任何操作，而且物体是可以移动的，但缺点是，限制很多，可能一不小心就会破坏了这种机制，导致Unity无法动态批处理一些使用了相同材质的物体。
+
+而对于**静态批处理**来说，它的优点是自由度很高，限制很少；但缺点是可能会占用更多的内存，而且经过静态批处理后的所有物体都不可以再移动了（即便在脚本中尝试改变物体的位置也是无效的）。静态批处理的实现非常简单，只需要把物体面板上的Static复选框勾选上即可（实际上我们只需要勾选Batching Static即可）。
+
+如果两个材质之间只有使用的纹理不同，我们可以把这些纹理合并到一张更大的纹理中，这张更大的纹理被称为是一张**图集**（atlas）。一旦使用了同一张纹理，我们就可以使用同一个材质，再使用不同的采样坐标对纹理采样即可。
+
+#### 16.5 减少需要处理的顶点数目
+
+**优化几何体**
+
+Unity中显示的数目往往要多于建模软件里显示的顶点数:
+
+三维软件更多地是站在我们人类的角度理解顶点的，即组成几何体的每一个点就是一个单独的点。而Unity是站在GPU的角度上去计算顶点数的。在GPU看来，有时需要把一个顶点拆分成两个或更多的顶点。这种将顶点一分为多的原因主要有两个：一个是为了分离纹理坐标（uv splits），另一个是为了产生平滑的边界（smoothing splits）。它们的本质，其实都是因为对于GPU来说，顶点的每一个属性和顶点之间必须是一对一的关系。而分离纹理坐标，是因为建模时一个顶点的纹理坐标有多个。例如，对于一个立方体，它的6个面之间虽然使用了一些相同的顶点，但在不同面上，同一个顶点的纹理坐标可能并不相同。对于GPU来说，这是不可理解的，因此，它必须把这个顶点拆分成多个具有不同纹理坐标的顶点。平滑边界也是类似的，不同的是，此时一个顶点可能会对应多个法线信息或切线信息。这通常是因为我们要决定一个边是一条硬边（hard edge）还是一条平滑边（smooth edge）。
+
+**LOD技术**
+
+在Unity中，我们可以使用LOD Group组件来为一个物体构建一个LOD。我们需要为同一个对象准备多个包含不同细节程序的模型，然后把它们赋给LOD Group组件中的不同等级，Unity就会自动判断当前位置上需要使用哪个等级的模型。
+
+**遮挡剔除技术**
+
+需要把遮挡剔除和摄像机的视锥体剔除（Frustum Culling）区分开来。视锥体剔除只会剔除掉那些不在摄像机的视野范围内的对象，但不会判断视野中是否有物体被其他物体挡住。而遮挡剔除会使用一个虚拟的摄像机来遍历场景，从而构建一个潜在可见的对象集合的层级结构。在运行时刻，每个摄像机将会使用这个数据来识别哪些物体是可见的，而哪些被其他物体挡住不可见。使用遮挡剔除技术，不仅可以减少处理的顶点数目，还可以减少overdraw，提高游戏性能。
+
+#### 16.6 减少需要处理的片元数目
+
+这部分优化的重点在于减少overdraw。简单来说，overdraw指的就是同一个像素被绘制了多次。
+
+**控制绘制顺序**
+
+在Unity中，那些渲染队列数目小于2500（如“Background”“Geometry”和“AlphaTest”）的对象都被认为是不透明（opaque）的物体，这些物体总体上是从前往后绘制的，而使用其他的队列（如“Transparent”“Overlay”等）的物体，则是从后往前绘制的。这意味着，我们可以尽可能地把物体的队列设置为不透明物体的渲染队列，而尽量避免使用半透明队列。而且，我们还可以充分利用Unity的渲染队列来控制绘制顺序。
+
+**时刻警惕透明物体**
+
+ **减少实时光照和阴影**
+
+#### 16.7 节省带宽
+
+**减少纹理大小**
+
+多级渐远纹理技术（mipmapping）和纹理压缩
+
+**利用分辨率缩放**
+
+尤其是对于很多低端手机，除了分辨率高其他硬件条件并不尽如人意。
+
+#### 16.8 减少计算复杂度
+
+**Shader的LOD技术**
+
+它的原理是，只有Shader的LOD值小于某个设定的值，这个Shader才会被使用，而使用了那些超过设定值的Shader的物体将不会被渲染。
+
+**代码方面的优化**
+
+ **根据硬件条件进行缩放**
+
+## 第5篇 扩展篇
+
+### 第17章 Unity的表面着色器探秘
+
+#### 17.1 表面着色器的一个例子
+
+和顶点/片元着色器需要包含到一个特定的Pass块中不同，表面着色器的CG代码是直接而且也必须写在SubShader块中，Unity会在背后为我们生成多个Pass。当然，可以在SubShader一开始处使用Tags来设置该表面着色器使用的标签。
+
+```c
+Shader "Unity Shaders Book/Chapter 17/Bumped Diffuse" {
+	Properties {
+		_Color ("Main Color", Color) = (1,1,1,1)
+		_MainTex ("Base (RGB)", 2D) = "white" {}
+		_BumpMap ("Normalmap", 2D) = "bump" {}
+	}
+	SubShader {
+		Tags { "RenderType"="Opaque" }
+		LOD 300
+		
+		CGPROGRAM
+		#pragma surface surf Lambert
+		#pragma target 3.0
+
+		sampler2D _MainTex;
+		sampler2D _BumpMap;
+		fixed4 _Color;
+
+		struct Input {
+			float2 uv_MainTex;
+			float2 uv_BumpMap;
+		};
+
+		void surf (Input IN, inout SurfaceOutput o) {
+			fixed4 tex = tex2D(_MainTex, IN.uv_MainTex);
+			o.Albedo = tex.rgb * _Color.rgb;
+			o.Alpha = tex.a * _Color.a;
+			o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
+		}
+		
+		ENDCG
+	} 
+	
+	FallBack "Legacy Shaders/Diffuse"
+}
+```
+
+#### 17.2 编译指令
+
+```c
+ #pragma  surface  surfaceFunction  lightModel  [optionalparams]
+```
+
+#pragma surface用于指明该编译指令是用于定义表面着色器的，在它的后面需要指明使用的表面函数（surfaceFunction）和光照模型（lightModel），同时，还可以使用一些可选参数来控制表面着色器的一些行为。
+
+#### 17.3 两个结构体
+
+一个表面着色器需要使用两个结构体：表面函数的输入结构体Input，以及存储了表面属性的结构体SurfaceOutput（Unity 5新引入了另外两个同种的结构体SurfaceOutputStandard和SurfaceOutputStandardSpecular）。
+
+#### 17.4 Unity背后做了什么
+
+Unity实际会在背后为表面着色器生成真正的顶点/片元着色器。在每个编译完成的表面着色器的面板上，都有一个“Show generated code”的按钮可供查看。
+
+#### 17.6 Surface Shader的缺点
 
 
 ### 第18章 基于物理的渲染
@@ -2230,7 +2905,7 @@ Disney使用的BRDF[2]更复杂。
 
 **高光反射项**
 
-基于Torrance-Sparrow微面元模型[5]，，BRDF的高光反射项可以用下面的形式来表示：
+基于Torrance-Sparrow微面元模型[5]，BRDF的高光反射项可以用下面的形式来表示：
 $$
 f_{spec}(I,v)=\frac{F(I,h)G(I,v,h)D(h)}{4(n\cdot I)(n\cdot v)}
 $$
@@ -2305,9 +2980,49 @@ Unity支持两种流行的基于物理的工作流程：**金属工作流**（Me
 
 #### 18.3 一个更加复杂的例子
 
+**反射探针**
 
+当关闭场景中的所有光源并把环境光照强度设为0后，使用了Standard Shader的物体仍然具有光照效果，只有在 Lighting->Environment->Environment Reflections 把反射源设置为空，并关闭所有反射探针，才能使得物体不接受任何默认的反射信息。
 
+反射探针（Reflection Probes）的工作原理和光照探针（Light Probes）类似，它允许我们在场景中的特定位置上对整个场景的环境反射进行采样，并把采样结果存储在每个探针上。当游戏中包含反射效果的物体从这些探针附近经过时，Unity会把从这些邻近探针存储的反射结果传递给物体使用的反射纹理。如果物体周围存在多个反射探针，Unity还会在这些反射结果之间进行插值，来得到平滑渐变的反射效果。实际上，Unity会在场景中放置一个默认的反射探针，这个反射探针存储了对场景使用的Skybox的反射结果，来作为场景的环境光照。如果我们需要让场景中的物体包含额外的反射效果，就需要放置更多的反射探针。
 
+Baked，这种类型的反射探针是通过提前烘焙来得到该位置使用的Cubemap的，在游戏运行时反射探针中存储的Cubemap并不会发生变化。需要注意的是，这种类型的反射探针在烘焙时同样只会处理那些静态物体（即那些被标识为Reflection Probe Static的物体）; 
+
+Realtime，这种类型则会实时更新当前的Cubemap，并且不受静态物体还是动态物体的影响。当然，这种类型的反射探针需要花费更多的处理时间，因此，在使用时应当非常小心它们的性能。幸运的是，Unity允许我们从脚本中通过触发来精确控制反射探针的更新；  
+
+Custom，这种类型的探针既可以让我们从编辑器中烘焙它，也可以让我们使用一个自定义的Cubemap来作为反射映射，但自定义的Cubemap不会被实时更新。
+
+**全局光照**
+
+除了Standard Shader外，Unity还引入了一个重要的流水线——实时全局光照（Global Illumination, GI）流水线。使用GI，场景中的物体不仅可以受直接光照的影响，还可以接受间接光照的影响。
+
+**线性空间**
+
+基于物理的渲染需要使用线性空间来进行相关计算。
+
+亮度上的线性变化对人眼感知来说是非均匀的，人眼更容易感知暗部区域的变换，而对较亮区域的变化比较不敏感。
+
+摄影设备如果使用了8位空间来存储照片的话，会使用大约为0.45的编码伽马来对输入的亮度进行编码，得到一张编码后的图像。因此，图像中0.5像素值对应的亮度其实并不是0.5，而大约为0.22（$0.5\approx 0.22^{0.45}$）。
+
+当把图片放到显示器里显示时，我们应该对图像再进行一次解码操作，使得屏幕输出的亮度和捕捉到的亮度是符合线性的。
+
+![编码伽马和显示伽马](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-27-编码伽马和显示伽马.jfif)
+
+微软联合爱普生、惠普提供了**sRGB**颜色空间标准，推荐显示器的显示伽马值为2.2，并配合0.45的编码伽马就可以保证最后伽马曲线之间可以相互抵消（因为$2.2\times 0.45\approx1$）。绝大多数的摄像机、PC和打印机都使用了上述的sRGB标准。
+
+当我们选择**伽马空间**时，实际上就是“放任模式”，不会对Shader的输入进行任何处理，即使输入可能是非线性的；也不会对输出像素进行任何处理，这意味着输出的像素会经过显示器的显示伽马转换后得到非预期的亮度，通常表现为整个场景会比较昏暗。当选择**线性空间**时，Unity会把输入纹理设置为sRGB模式，在这种模式下，硬件在对纹理进行采样时会自动将其转换到线性空间中；并且，GPU会在Shader写入颜色缓冲前自动进行伽马校正或是保持线性在后面进行伽马校正，这取决于当前的渲染配置。
+
+如果有一天我们对图像的存储空间能够大大提升，通用的格式不再是8位时，例如是32位时，伽马也许就会消失。因为，我们有足够多的颜色空间可以利用，**不需要为了充分利用存储空间进行伽马编码**。
+
+**HDR ( High Dynamic Range )**
+
+Nvidia曾总结过使用HDR进行渲染的动机：让亮的物体可以真地非常亮，暗的物体可以真地非常暗，同时又可以看到两者之间的细节。
+
+HDR使用远远高于8位的精度（如32位）来记录亮度信息，使得我们可以表示超过0～1内的亮度值，从而可以更加精确地反映真实的光照环境。尽管最后我们仍然需要把它们转换到LDR进行显示，但我们可以使用**色调映射**（tonemapping）技术来控制这个转换的过程，从而允许我们最大限度地保留需要的亮度细节。
+
+**PBS优点**
+
+PBS并不意味着游戏画面需要追求和照片一样真实的效果。事实上，很多游戏都不需要刻意去追求与照片一样的真实感，玩家眼中的真实感大多也并不是如此。PBS的优点在于，我们只需要一个万能的shader就可以渲染相当一大部分类型的材质，而不是使用传统的做法为每种材质写一个特定的shader。同时，PBS可以保证在各种光照条件下，材质都可以自然地和光源进行交互，而不需要我们反复地调整材质参数。
 
 #### 18.6 参考文献
 
@@ -2326,6 +3041,10 @@ Unity支持两种流行的基于物理的工作流程：**金属工作流**（Me
 [7] Blinn J F. Models of light reflection for computer synthesized pictures[C]//ACM SIGGRAPH Computer Graphics. ACM, 1977, 11(2): 192-198。
 
 [8] Schlick C. An inexpensive BRDF model for physically-based rendering[C]//Computer graphics forum. 1994, 13(3): 233-246。
+
+### 第19章 Unity 5更新了什么
+
+### 第20章 还有更多内容吗
 
 ## 注意点
 

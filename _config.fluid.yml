@@ -265,7 +265,7 @@ about:
   icons:
     - { class: 'iconfont icon-github-fill', link: 'https://github.com/bit704', tip: 'GitHub' }
     - { class: 'iconfont icon-mail', link: 'mailto:mhn.bit@qq.com', tip: 'mail' }
-    - { class: 'iconfont icon-zhihu-fill', link: 'https://www.zhihu.com/people/bit704', tip: '知乎' }
+    # - { class: 'iconfont icon-zhihu-fill', link: 'https://www.zhihu.com/people/bit704', tip: '知乎' }
     - { class: 'iconfont icon-bilibili-fill', link: 'https://space.bilibili.com/23718828', tip: 'bilibili' }
 
 #---------------------------
