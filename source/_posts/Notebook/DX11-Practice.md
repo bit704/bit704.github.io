@@ -717,3 +717,52 @@ void ID3D11DeviceContext::RSSetState(
 利用几何着色器对字符森林关于z=2平面作镜像。
 
 ![06 Geometry](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-26-06%20Geometry.png)
+
+## 09 纹理
+
+为了方便贴图，更改顶点数据，仅渲染一个平面。几何着色器以x=2平面对称再镜像一个。
+
+上一节使用的顶点类型为`VertexPosNormalColor`，更换为 `VertexPosNormalTex`，将颜色换为纹理坐标，更改着色器和C++端输入装配阶段。
+
+在着色器端增加纹理和采样器状态：
+
+```c
+Texture2D g_Tex : register(t0);
+SamplerState g_SamLinear : register(s0);
+```
+
+在C++端初始化纹理和采样器状态：
+
+```c++
+//GameApp.h
+ComPtr<ID3D11ShaderResourceView> m_pPhoto;			    // 照片纹理
+ComPtr<ID3D11SamplerState> m_pSamplerState;				// 采样器状态
+
+//GameApp.cpp 
+//bool GameApp::InitResource()
+
+// 初始化照片纹理
+HR(CreateWICTextureFromFile(m_pd3dDevice.Get(), L"Texture\\photo.png", nullptr, m_pPhoto.GetAddressOf()));
+
+// 初始化采样器状态
+D3D11_SAMPLER_DESC sampDesc;
+ZeroMemory(&sampDesc, sizeof(sampDesc));
+sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;
+sampDesc.MinLOD = 0;
+sampDesc.MaxLOD = D3D11_FLOAT32_MAX;
+HR(m_pd3dDevice->CreateSamplerState(&sampDesc, m_pSamplerState.GetAddressOf()));
+
+// PS设置采样器和纹理
+m_pd3dImmediateContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
+m_pd3dImmediateContext->PSSetShaderResources(0, 1, m_pPhoto.GetAddressOf());
+
+//调试
+D3D11SetDebugObjectName(m_pSamplerState.Get(), "SSLinearWrap");
+```
+
+## 作业7
+
