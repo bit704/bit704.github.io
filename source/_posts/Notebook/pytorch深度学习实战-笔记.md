@@ -4,6 +4,7 @@ categories: [Essay]
 tags: [Python,AI,Pytorch]
 index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-pytorch深度学习实战笔记.jpg
 banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-pytorch深度学习实战笔记.jpg
+sticky: 100
 ---
 
 原书作者  *Eli Stevens   Luca Antiga   Thomas Viehmann*

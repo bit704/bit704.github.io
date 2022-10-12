@@ -4,6 +4,7 @@ categories: [Notebook]
 tags: [Unity]
 index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
 banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
+sticky: 100
 ---
 
 作者    冯乐乐

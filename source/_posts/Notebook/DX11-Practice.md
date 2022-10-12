@@ -2,6 +2,7 @@
 title: DX11-Practice
 categories: [Notebook]
 tags: [DirectX,CG]
+sticky: 100
 ---
 
 DX11练手
