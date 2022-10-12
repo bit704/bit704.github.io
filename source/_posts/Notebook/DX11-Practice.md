@@ -86,7 +86,7 @@ HRESULT WINAPI D3D11CreateDevice(
 
 ### OnResize()
 
-在窗口大小发生改变后调用该函数，大致流程如下：
+在初始化Direct3D时和窗口大小发生改变后调用该函数，大致流程如下：
 
 1. 获取交换链后备缓冲区的`ID3D11Texture2D`接口对象
 2. 为后备缓冲区创建渲染目标视图`ID3D11RenderTargetView`
@@ -720,18 +720,26 @@ void ID3D11DeviceContext::RSSetState(
 
 ## 09 纹理
 
-为了方便贴图，更改顶点数据，仅渲染一个平面。几何着色器以x=2平面对称再镜像一个。
+包含`DDSTextureLoader11.h`和`WICTextureLoader11.h`进项目，以读取创建纹理。
 
-上一节使用的顶点类型为`VertexPosNormalColor`，更换为 `VertexPosNormalTex`，将颜色换为纹理坐标，更改着色器和C++端输入装配阶段。
+> 第一种：在[DirectXTex](https://github.com/Microsoft/DirectXTex)中找到`DDSTextureLoader`文件夹和`WICTextureLoader`文件夹中分别找到对应的头文件和源文件(不带12的)，并加入到你的项目中。
+>
+> 第二种：将[DirectXTK](https://github.com/Microsoft/DirectXTK)库添加到你的项目中。
 
-在着色器端增加纹理和采样器状态：
+为了方便贴图，仅渲染一个平面贴上照片。
+
+汉字使用的顶点类型为`VertexPosNormalColor`，平面使用的顶点类型为 `VertexPosNormalTex`，因此有两套着色器和C++端输入装配阶段。
+
+对于 `VertexPosNormalTex`类型顶点：
+
+1. 在着色器端增加纹理和采样器状态
 
 ```c
 Texture2D g_Tex : register(t0);
 SamplerState g_SamLinear : register(s0);
 ```
 
-在C++端初始化纹理和采样器状态：
+2. 在C++端初始化纹理和采样器状态
 
 ```c++
 //GameApp.h
@@ -764,5 +772,106 @@ m_pd3dImmediateContext->PSSetShaderResources(0, 1, m_pPhoto.GetAddressOf());
 D3D11SetDebugObjectName(m_pSamplerState.Get(), "SSLinearWrap");
 ```
 
+3. 每次渲染平面时单独设置着色器和输入装配
+
+```c++
+//设置Plane
+void GameApp::SetPlane()
+{
+    // ******************
+    // 设置顶点缓冲区和索引缓冲区
+    //
+    
+    // 释放旧资源
+    m_pVertexBuffer.Reset();
+    m_pIndexBuffer.Reset();
+
+    // 创建Plane顶点
+    VertexPosNormalTex* vertices = nullptr;
+    Plane::CreateVertexs_PosNormalTex(&vertices, m_VertexCount_Plane);
+
+    // 设置顶点缓冲区描述
+    D3D11_BUFFER_DESC vbd;
+    ZeroMemory(&vbd, sizeof(vbd));
+    vbd.Usage = D3D11_USAGE_IMMUTABLE;
+    vbd.ByteWidth = m_VertexCount_Plane * sizeof VertexPosNormalTex;
+    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+    vbd.CPUAccessFlags = 0;
+    // 新建顶点缓冲区
+    D3D11_SUBRESOURCE_DATA InitData;
+    ZeroMemory(&InitData, sizeof(InitData));
+    InitData.pSysMem = vertices;
+    HR(m_pd3dDevice->CreateBuffer(&vbd, &InitData, m_pVertexBuffer.GetAddressOf()));
+
+    // 输入装配阶段的顶点缓冲区设置
+    UINT stride = sizeof(VertexPosNormalTex);	// 跨越字节数
+    UINT offset = 0;							// 起始偏移量
+
+    m_pd3dImmediateContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(), &stride, &offset);
+
+    // 创建Plane索引
+    DWORD* indices = nullptr;
+    Plane::CreateIndices(&indices, m_IndexCount_Plane);
+
+    // 设置索引缓冲区描述
+    D3D11_BUFFER_DESC ibd;
+    ZeroMemory(&ibd, sizeof(ibd));
+    ibd.Usage = D3D11_USAGE_IMMUTABLE;
+    ibd.ByteWidth = m_IndexCount_Plane * sizeof(DWORD);
+    ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+    ibd.CPUAccessFlags = 0;
+    // 新建索引缓冲区
+    InitData.pSysMem = indices;
+    HR(m_pd3dDevice->CreateBuffer(&ibd, &InitData, m_pIndexBuffer.GetAddressOf()));
+    // 输入装配阶段的索引缓冲区设置
+    m_pd3dImmediateContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+    // 设置调试对象名
+    D3D11SetDebugObjectName(m_pVertexBuffer.Get(), "VertexBuffer");
+    D3D11SetDebugObjectName(m_pIndexBuffer.Get(), "IndexBuffer");
+
+    //释放堆内存
+    delete [] vertices;
+    delete [] indices;
+
+    // ******************
+    // 给渲染管线各个阶段绑定好所需资源
+    //
+
+    // 设置图元类型，设定输入布局
+    m_pd3dImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_pd3dImmediateContext->IASetInputLayout(m_pVertexLayout_Plane.Get());
+
+    // 绑定VS
+    m_pd3dImmediateContext->VSSetShader(m_pVertexShader_Plane.Get(), nullptr, 0);
+    // VS常量缓冲区对应HLSL寄存于b0的常量缓冲区
+    m_pd3dImmediateContext->VSSetConstantBuffers(0, 1, m_pConstantBuffers[0].GetAddressOf());
+    // 绑定PS
+    m_pd3dImmediateContext->PSSetShader(m_pPixelShader_Plane.Get(), nullptr, 0);
+    // PS常量缓冲区对应HLSL寄存于b1的常量缓冲区
+    m_pd3dImmediateContext->PSSetConstantBuffers(1, 1, m_pConstantBuffers[1].GetAddressOf());
+    // PS设置采样器和纹理
+    m_pd3dImmediateContext->PSSetSamplers(0, 1, m_pSamplerState.GetAddressOf());
+    m_pd3dImmediateContext->PSSetShaderResources(0, 1, m_pPhoto.GetAddressOf());
+
+    // ******************
+    // 设置调试对象名
+    //
+    D3D11SetDebugObjectName(m_pVertexLayout_Plane.Get(), "VertexPosNormalColorLayout_Plane");
+    D3D11SetDebugObjectName(m_pVertexShader_Plane.Get(), "VS_Plane");
+    D3D11SetDebugObjectName(m_pPixelShader_Plane.Get(), "PS_Plane");
+
+    //更新常量缓冲区
+    UpdateConstantBuffer();
+    // 绘制顶点
+    m_pd3dImmediateContext->DrawIndexed(m_IndexCount_Plane, 0, 0);
+}
+```
+
 ## 作业7
 
+添加一个正方形面片，贴上照片纹理，放置在x=1平面处，两侧字符森林通过GS以X=1平面对称。
+
+在PS常量缓冲区增加g_Time变量传入时间，随时间在PS里移动纹理坐标实现平移动画。
+
+![07 Texture](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-10-08-07%20Texture.png)

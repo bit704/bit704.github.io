@@ -221,7 +221,7 @@ category:
 
   # 层级的折叠深度，0 是全部折叠，大于 0 后如果存在子分类则默认展开
   # Collapse depth. If 0, all posts collapsed. If greater than 0, it will be expanded by default if there are subcategories
-  collapse_depth: 1
+  collapse_depth: 0
 
   # 文章的排序字段，前面带减号是倒序，不带减号是正序
   # Sort field for posts, with a minus sign is reverse order
@@ -265,7 +265,6 @@ about:
   icons:
     - { class: 'iconfont icon-github-fill', link: 'https://github.com/bit704', tip: 'GitHub' }
     - { class: 'iconfont icon-mail', link: 'mailto:mhn.bit@qq.com', tip: 'mail' }
-    # - { class: 'iconfont icon-zhihu-fill', link: 'https://www.zhihu.com/people/bit704', tip: '知乎' }
     - { class: 'iconfont icon-bilibili-fill', link: 'https://space.bilibili.com/23718828', tip: 'bilibili' }
 
 #---------------------------
