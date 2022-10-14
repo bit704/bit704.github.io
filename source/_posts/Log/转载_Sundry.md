@@ -49,7 +49,9 @@ mathjax: false
 
 [关于C++中的虚拟继承的一些总结 - VincentPass - 博客园](https://www.cnblogs.com/BeyondAnyTime/archive/2012/06/05/2537451.html)
 
+## Python
 
+[深入理解Python中的GIL（全局解释器锁） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/75780308)
 
 ## CMake
 

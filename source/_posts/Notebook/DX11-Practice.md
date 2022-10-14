@@ -876,3 +876,175 @@ void GameApp::SetPlane()
 在PS常量缓冲区增加g_Time变量传入时间，随时间在PS里移动纹理坐标实现平移动画。
 
 ![07 Texture](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-10-08-07%20Texture.png)
+
+## 08 Transparent and Mirror
+
+初始化混合状态：
+
+```c++
+//GameApp.h
+ComPtr<ID3D11BlendState> BSTransparent = nullptr;     //透明混合状态
+
+//GameApp.pp
+// ***********
+// 初始化混合状态
+//
+D3D11_BLEND_DESC blendDesc;
+ZeroMemory(&blendDesc, sizeof(blendDesc));
+auto& rtDesc = blendDesc.RenderTarget[0];
+// 透明混合模式
+// Color = SrcAlpha * SrcColor + (1 - SrcAlpha) * DestColor 
+// Alpha = SrcAlpha
+blendDesc.AlphaToCoverageEnable = false;
+blendDesc.IndependentBlendEnable = false;
+rtDesc.BlendEnable = true;
+rtDesc.SrcBlend = D3D11_BLEND_SRC_ALPHA;
+rtDesc.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+rtDesc.BlendOp = D3D11_BLEND_OP_ADD;
+rtDesc.SrcBlendAlpha = D3D11_BLEND_ONE;
+rtDesc.DestBlendAlpha = D3D11_BLEND_ZERO;
+rtDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;
+//不能省略
+rtDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+HR(m_pd3dDevice->CreateBlendState(&blendDesc, BSTransparent.GetAddressOf()));
+```
+
+在PS里将纹理alpha改为0.3。设置混合状态后绘制，注意先绘制不透明的。到这一步就实现了透明效果：
+
+```c++
+m_pd3dImmediateContext->OMSetBlendState(BSTransparent.Get(), nullptr, 0xFFFFFFFF);
+DrawHanzi(scale, theta, phi, rotateAngle);
+DrawPlane();
+```
+
+初始化要用的深度/模板状态：
+
+```c++
+// 写入模板值的深度/模板状态
+// 这里不写入深度信息
+// 无论是正面还是背面，原来指定的区域的模板值都会被写入StencilRef
+dsDesc.DepthEnable = true;
+dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+dsDesc.StencilEnable = true;
+dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+
+dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+//使用StencilRef的值替换模板模板值
+dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+//总是返回真
+dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+// 对于背面的几何体我们是不进行渲染的，所以这里的设置无关紧要
+dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
+dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+
+HR(m_pd3dDevice->CreateDepthStencilState(&dsDesc, DSSWriteStencil.GetAddressOf()));
+
+// 对指定模板值进行绘制的深度/模板状态
+// 对满足模板值条件的区域才进行绘制，并更新深度
+dsDesc.DepthEnable = true;
+dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
+
+dsDesc.StencilEnable = true;
+dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+
+dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+// 对于背面的几何体我们是不进行渲染的，所以这里的设置无关紧要
+dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;
+
+HR(m_pd3dDevice->CreateDepthStencilState(&dsDesc, DSSDrawWithStencil.GetAddressOf()));
+```
+
+绘制过程：
+
+```c++
+ m_pd3dImmediateContext->ClearRenderTargetView(m_pRenderTargetView.Get(), reinterpret_cast<const float*>(&Colors::Black));
+ m_pd3dImmediateContext->ClearDepthStencilView(m_pDepthStencilView.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+// 1. 单独写入镜子的模板值为1，不写入颜色
+
+m_pd3dImmediateContext->RSSetState(nullptr);
+m_pd3dImmediateContext->OMSetDepthStencilState(DSSWriteStencil.Get(), 1);
+m_pd3dImmediateContext->OMSetBlendState(BSNoColorWrite.Get(), nullptr, 0xFFFFFFFF);
+DrawMirror();
+
+// 2. 绘制镜面反射汉字
+
+// 开启反射绘制
+m_CBStates.isReflection = true;
+D3D11_MAPPED_SUBRESOURCE mappedData;
+HR(m_pd3dImmediateContext->Map(m_pConstantBuffers[2].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
+memcpy_s(mappedData.pData, sizeof(CBDrawingStates), &m_CBStates, sizeof(CBDrawingStates));
+m_pd3dImmediateContext->Unmap(m_pConstantBuffers[2].Get(), 0);
+
+// 顺时针裁剪
+// 仅对模板值为1的镜面区域绘制
+m_pd3dImmediateContext->RSSetState(RSCullClockWise.Get());
+m_pd3dImmediateContext->OMSetDepthStencilState(DSSDrawWithStencil.Get(), 1);
+m_pd3dImmediateContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
+
+DrawHanzi(scale, theta, phi, rotateAngle);
+
+// 3. 绘制镜面反射透明照片
+
+// 关闭顺逆时针裁剪
+// 仅对模板值为1的镜面区域绘制
+// 透明混合
+m_pd3dImmediateContext->RSSetState(RSNoCull.Get());
+m_pd3dImmediateContext->OMSetDepthStencilState(DSSDrawWithStencil.Get(), 1);
+m_pd3dImmediateContext->OMSetBlendState(BSTransparent.Get(), nullptr, 0xFFFFFFFF);
+
+DrawPlane();
+DrawMirror();
+
+// 关闭反射绘制
+m_CBStates.isReflection = false;
+HR(m_pd3dImmediateContext->Map(m_pConstantBuffers[2].Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedData));
+memcpy_s(mappedData.pData, sizeof(CBDrawingStates), &m_CBStates, sizeof(CBDrawingStates));
+m_pd3dImmediateContext->Unmap(m_pConstantBuffers[2].Get(), 0);
+
+// 4. 绘制汉字
+
+m_pd3dImmediateContext->RSSetState(nullptr);
+m_pd3dImmediateContext->OMSetDepthStencilState(nullptr, 0);
+m_pd3dImmediateContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
+
+DrawHanzi(scale, theta, phi, rotateAngle);
+
+// 5. 绘制透明照片
+
+// 关闭裁剪
+// 透明混合
+m_pd3dImmediateContext->RSSetState(RSNoCull.Get());
+m_pd3dImmediateContext->OMSetDepthStencilState(nullptr, 0);
+m_pd3dImmediateContext->OMSetBlendState(BSTransparent.Get(), nullptr, 0xFFFFFFFF);
+
+DrawPlane();
+
+// 下面这句话会触发ImGui在Direct3D的绘制
+// 因此需要在此之前将后备缓冲区绑定到渲染管线上
+ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+HR(m_pSwapChain->Present(0, 0));
+```
+
+## 作业8
+
+在PS里将照片的alpha通道修改为0.3，设置混合状态实现透明。
+
+渲染平面镜实现镜像效果。渲染顺序为：镜子模板值 -> 反射字符森林 -> 反射透明照片->汉字->透明照片。
+
+![08 Transparent and Mirror](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-10-14-08%20Transparent%20and%20Mirror.png)
+
