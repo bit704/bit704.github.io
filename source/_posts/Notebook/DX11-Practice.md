@@ -28,7 +28,7 @@ commit SHA：fd2745d2b9ca89347b1255276728e0e51ef848f3
 
 务必在项目属性页-C/C++ -命令行中添加`/utf-8`来强制指定代码页。否则会无端报C2065等错。原因是项目中存在不同代码页所致。
 
-![项目属性设置](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E9%A1%B9%E7%9B%AE%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE.jpg)
+![项目属性设置](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E9%A1%B9%E7%9B%AE%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE.jpg)
 
 务必在`d3dApp.h`添加：
 
@@ -119,7 +119,7 @@ void GameApp::DrawScene()
 
 ### 渲染管线
 
-![渲染流水线的各个阶段](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9A%84%E5%90%84%E4%B8%AA%E9%98%B6%E6%AE%B5.jpg)
+![渲染流水线的各个阶段](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9A%84%E5%90%84%E4%B8%AA%E9%98%B6%E6%AE%B5.jpg)
 
 D3D设备可以创建出以上6种着色器
 
@@ -134,7 +134,7 @@ D3D设备可以创建出以上6种着色器
 
 本章仅考虑如下情况：
 
-![初学者管线](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E5%88%9D%E5%AD%A6%E8%80%85%E7%AE%A1%E7%BA%BF.png)
+![初学者管线](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%88%9D%E5%AD%A6%E8%80%85%E7%AE%A1%E7%BA%BF.png)
 
 ### 着色器
 
@@ -183,12 +183,12 @@ float4 PS(VertexOut pIn) : SV_Target
 
 用到的语义如下：
 
-| 语义名      | 具体含义                                                     |
-| ----------- | ------------------------------------------------------------ |
-| POSITION    | 描述该变量是一个坐标点                                       |
+| 语义名      | 具体含义                                                                                           |
+| ----------- | -------------------------------------------------------------------------------------------------- |
+| POSITION    | 描述该变量是一个坐标点                                                                             |
 | SV_POSITION | 说明该顶点的位置在从顶点着色器输出后，后续的着色器都不能改变它的值，作为光栅化时最终确定的像素位置 |
-| COLOR       | 描述该变量是一个颜色                                         |
-| SV_Target   | 说明输出的颜色值将会直接保存到渲染目标视图的后备缓冲区对应位置 |
+| COLOR       | 描述该变量是一个颜色                                                                               |
+| SV_Target   | 说明输出的颜色值将会直接保存到渲染目标视图的后备缓冲区对应位置                                     |
 
 创建与HLSL中VertexIn结构体对应的C++结构体：
 
@@ -388,11 +388,11 @@ void GameApp::UpdateScene(float dt)
 
 作业1 Rendering a 2D Hanzi
 
-![01 Rendering a 2D Hanzi](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-01%20Rendering%20a%202D%20Hanzi.png)
+![01 Rendering a 2D Hanzi](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-01%20Rendering%20a%202D%20Hanzi.png)
 
 作业2 Rendering a 3D Hanzi
 
-![02 Rendering a 3D Hanzi](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-02%20Rendering%20a%203D%20Hanzi.png)
+![02 Rendering a 3D Hanzi](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-02%20Rendering%20a%203D%20Hanzi.png)
 
 
 
@@ -402,11 +402,11 @@ Direct3D使用**左手坐标系**，而OpenGL与我们平日接触到的数学�
 
 纹理坐标系：
 
-![纹理坐标系](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E7%BA%B9%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB.png)
+![纹理坐标系](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E7%BA%B9%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB.png)
 
 屏幕坐标系：
 
-![屏幕坐标系](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E7%B3%BB.png)
+![屏幕坐标系](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E7%B3%BB.png)
 
 的DirectXMath数学库中生成的矩阵都是行矩阵。这也意味着矩阵乘法通常被表示为行向量乘以行矩阵的形式。这不仅在编写C++的代码中有所体现，在HLSL中我们也将习惯写成上述形式。
 
@@ -484,7 +484,7 @@ typedef union __declspec(intrin_type) __declspec(align(16)) __m128 {
 
 每个汉字有两个汉字围绕其旋转
 
-![03 Rendering Much 3D Hanzi](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-03%20Rendering%20Much%203D%20Hanzi.png)
+![03 Rendering Much 3D Hanzi](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-03%20Rendering%20Much%203D%20Hanzi.png)
 
 作业4 Roaming 
 
@@ -492,7 +492,7 @@ typedef union __declspec(intrin_type) __declspec(align(16)) __m128 {
 
 WASD 水平前后左右移动     QE 滚筒旋转      视角跟随鼠标移动
 
-![04 Roaming](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-04%20Roaming.png)
+![04 Roaming](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-04%20Roaming.png)
 
 ## 07 光照、常用几何模型、光栅化状态
 
@@ -620,7 +620,7 @@ void ID3D11DeviceContext::RSSetState(
 
 使用Blinn-Phong替换Phong计算光照。
 
-![05 Lighting](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-20-05%20Lighting.png)
+![05 Lighting](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-20-05%20Lighting.png)
 
 ## 08 几何着色器
 
@@ -717,7 +717,7 @@ void ID3D11DeviceContext::RSSetState(
 
 利用几何着色器对字符森林关于z=2平面作镜像。
 
-![06 Geometry](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-26-06%20Geometry.png)
+![06 Geometry](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-26-06%20Geometry.png)
 
 ## 09 纹理
 
@@ -875,7 +875,7 @@ void GameApp::SetPlane()
 
 在PS常量缓冲区增加g_Time变量传入时间，随时间在PS里移动纹理坐标实现平移动画。
 
-![07 Texture](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-10-08-07%20Texture.png)
+![07 Texture](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-10-08-07%20Texture.png)
 
 ## 08 Transparent and Mirror
 
@@ -1046,5 +1046,5 @@ HR(m_pSwapChain->Present(0, 0));
 
 渲染平面镜实现镜像效果。渲染顺序为：镜子模板值 -> 反射字符森林 -> 反射透明照片->汉字->透明照片。
 
-![08 Transparent and Mirror](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-10-14-08%20Transparent%20and%20Mirror.png)
+![08 Transparent and Mirror](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-10-14-08%20Transparent%20and%20Mirror.png)
 

@@ -2,8 +2,8 @@
 title: 《Unity Shader入门精要》笔记
 categories: [Notebook]
 tags: [Unity]
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-UnityShader入门精要.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-UnityShader入门精要.jpg
 sticky: 100
 ---
 
@@ -13,7 +13,7 @@ sticky: 100
 
 人民邮电出版社
 
-![封面](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityShader入门精要_s.jpg)
+![封面](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-UnityShader入门精要_s.jpg)
 
 [代码仓库](https://github.com/candycat1992/Unity_Shaders_Book)
 
@@ -56,7 +56,7 @@ sticky: 100
 
   - 对上一个阶段得到的逐顶点数据（例如纹理坐标、顶点颜色等）进行插值，然后再进行逐像素处理。
 
-![渲染流水线中的3个概念阶段](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-渲染流水线中的3个概念阶段.jfif)
+![渲染流水线中的3个概念阶段](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-渲染流水线中的3个概念阶段.jfif)
 
 #### 2.2 CPU和GPU之间的通信
 
@@ -70,11 +70,11 @@ sticky: 100
 
 #### 2.3 GPU流水线
 
-![GPU的渲染流水线实现](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-GPU的渲染流水线实现.jfif)
+![GPU的渲染流水线实现](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-GPU的渲染流水线实现.jfif)
 
 1. 顶点着色器（Vertex Shader）是完全可编程的，它通常用于实现顶点的**空间变换、顶点着色**等功能。一个最基本的顶点着色器必须完成的一个工作是，把顶点坐标**从模型空间转换到齐次裁剪空间**，接着通常再由硬件做透视除法后，最终得到归一化的设备坐标（Normalized Device Coordinates , NDC）。
 
-   ![变换到齐次裁剪坐标空间](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-变换到齐次裁剪坐标空间.jfif)
+   ![变换到齐次裁剪坐标空间](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-变换到齐次裁剪坐标空间.jfif)
 
    **图中给出的坐标范围是OpenGL同时也是Unity使用的NDC，它的z分量范围在[-1, 1]之间，而在DirectX中，NDC的z分量范围是[0, 1]。**
 
@@ -94,7 +94,7 @@ sticky: 100
 
    片元 -> 模板测试-> 深度测试-> 混合 -> 颜色缓冲区
 
-   ![模板测试和深度测试](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-模板测试和深度测试.jfif)
+   ![模板测试和深度测试](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-模板测试和深度测试.jfif)
 
    对于不透明物体，开发者可以关闭混合（Blend）操作。这样片元着色器计算得到的颜色值就会直接覆盖掉颜色缓冲区中的像素值。但对于半透明物体，我们就需要使用混合操作来让这个物体看起来是透明的。
 
@@ -211,13 +211,13 @@ SubShader中定义了一系列**Pass**以及可选的**状态**（[RenderSetup]�
 
 ShaderLab提供了一系列渲染状态的设置指令，这些指令可以设置显卡的各种状态，例如是否开启混合/深度测试等。
 
-![常见的渲染状态设置选项](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-常见的渲染状态设置选项.jfif)
+![常见的渲染状态设置选项](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-常见的渲染状态设置选项.jfif)
 
 **标签**
 
 标签是一个键值对，它的键和值都是字符串类型。这些键值对是SubShader和渲染引擎之间的沟通桥梁。
 
-![SubShader的标签类型](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-SubShader的标签类型.jfif)
+![SubShader的标签类型](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-SubShader的标签类型.jfif)
 
 **Pass**
 
@@ -244,7 +244,7 @@ UsePass  "MyShader/MYPASSNAME"
 
 由于Unity内部会把所有Pass的名称转换成大写字母的表示，因此，在使用UsePass命令时必须使用**大写形式的名字**。
 
-![Pass的标签类型](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Pass的标签类型.jfif)
+![Pass的标签类型](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Pass的标签类型.jfif)
 
 Unity Shader还支持一些特殊的Pass:
 
@@ -312,9 +312,9 @@ Shader  "Custom/Simple  VertexFragment  Shader"  {
 
 #### 4.8 Unity Shader的内置变量（数学篇）
 
-![Unity内置的变换矩阵](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Unity内置的变换矩阵.jfif)
+![Unity内置的变换矩阵](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Unity内置的变换矩阵.jfif)
 
-![Unity内置的摄像机和屏幕参数](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Unity内置的摄像机和屏幕参数.jfif)
+![Unity内置的摄像机和屏幕参数](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Unity内置的摄像机和屏幕参数.jfif)
 
 #### 附录
 
@@ -393,7 +393,7 @@ Shader "Unity Shaders Book/Chapter 5/Simple Shader" {
 }
 ```
 
-![结果1](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果1.png)
+![结果1](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果1.png)
 
 #### 5.3 强大的援手：Unity提供的内置文件和变量
 
@@ -401,11 +401,11 @@ Shader "Unity Shaders Book/Chapter 5/Simple Shader" {
 
 CGIncludes文件夹在Mac上位于：/Applications/Unity/Unity.app/Contents/CGIncludes；在Windows上位于：Unity的安装路径/Data/CGIncludes。
 
-![Unity中一些常用的包含文件](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Unity中一些常用的包含文件.jfif)
+![Unity中一些常用的包含文件](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Unity中一些常用的包含文件.jfif)
 
-![UnityCG.cginc中一些常用的结构体](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityCG.cginc中一些常用的结构体.jfif)
+![UnityCG.cginc中一些常用的结构体](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-UnityCG.cginc中一些常用的结构体.jfif)
 
-![UnityCG.cginc中一些常用的帮助函数](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-UnityCG.cginc中一些常用的帮助函数.jfif)
+![UnityCG.cginc中一些常用的帮助函数](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-UnityCG.cginc中一些常用的帮助函数.jfif)
 
 #### 5.4 Unity提供的CG/HLSL语义
 
@@ -415,11 +415,11 @@ CGIncludes文件夹在Mac上位于：/Applications/Unity/Unity.app/Contents/CGIn
 
 > 一些Shader会使用POSITION而非SV_POSITION来修饰顶点着色器的输出。SV_POSITION是DirectX 10中引入的系统数值语义，在绝大多数平台上，它和POSITION语义是等价的，但在某些平台（例如索尼PS4）上必须使用SV_POSITION来修饰顶点着色器的输出，否则无法让Shader正常工作。同样的例子还有COLOR和SV_Target。因此，为了让我们的Shader有更好的跨平台性，对于这些有特殊含义的变量我们最好使用以SV开头的语义进行修饰。
 
-![从应用阶段传递模型数据给顶点着色器时Unity支持的常用语义](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-从应用阶段传递模型数据给顶点着色器时Unity支持的常用语义.jfif)
+![从应用阶段传递模型数据给顶点着色器时Unity支持的常用语义](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-从应用阶段传递模型数据给顶点着色器时Unity支持的常用语义.jfif)
 
-![从顶点着色器传递数据给片元着色器时Unity使用的常用语义](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-从顶点着色器传递数据给片元着色器时Unity使用的常用语义.jfif)
+![从顶点着色器传递数据给片元着色器时Unity使用的常用语义](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-从顶点着色器传递数据给片元着色器时Unity使用的常用语义.jfif)
 
-![片元着色器输出时Unity支持的常用语义](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-片元着色器输出时Unity支持的常用语义.jfif)
+![片元着色器输出时Unity支持的常用语义](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-片元着色器输出时Unity支持的常用语义.jfif)
 
 #### 5.5 程序员的烦恼：Debug
 
@@ -591,7 +591,7 @@ $$
 
 左起逐顶点漫反射光照、逐像素漫反射光照、逐像素半兰伯特光照：
 
-![结果2](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果2.png)
+![结果2](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果2.png)
 
 #### 6.5 在Unity Shader中实现高光反射光照模型
 
@@ -753,7 +753,7 @@ Shader "Unity Shaders Book/Chapter 7/Single Texture" {
 }
 ```
 
-![结果3](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果3.png)
+![结果3](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果3.png)
 
 Wrap Mode : 一种是Repeat，在这种模式下，如果纹理坐标超过了1，那么它的整数部分将会被舍弃，而直接使用小数部分进行采样，这样的结果是纹理将会不断重复；另一种是Clamp，在这种模式下，如果纹理坐标大于1，那么将会截取到1，如果小于0，那么将会截取到0。
 
@@ -1065,7 +1065,7 @@ Shader "Unity Shaders Book/Chapter 7/Normal Map In World Space" {
 
 ```
 
-![结果4](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果4.png)
+![结果4](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果4.png)
 
 #### 7.3 渐变纹理
 
@@ -1142,7 +1142,7 @@ Shader "Unity Shaders Book/Chapter 7/Ramp Texture" {
 }
 ```
 
-![结果5](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果5.png)
+![结果5](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果5.png)
 
 #### 7.4 遮罩纹理
 
@@ -1238,7 +1238,7 @@ Shader "Unity Shaders Book/Chapter 7/Mask Texture" {
 
 在真实的游戏制作过程中，遮罩纹理已经不止限于保护某些区域使它们免于某些修改，而是可以存储任何我们希望逐像素控制的表面属性。通常，我们会充分利用一张纹理的RGBA四个通道，用于存储不同的属性。例如，我们可以把高光反射的强度存储在R通道，把边缘光照的强度存储在G通道，把高光反射的指数部分存储在B通道，最后把自发光强度存储在A通道。
 
-![结果6](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果6.png)
+![结果6](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果6.png)
 
 ### 第8章 透明效果
 
@@ -1275,7 +1275,7 @@ Unity为了解决渲染顺序的问题提供了**渲染队列**（render queue�
 
 Unity在内部使用一系列整数索引来表示每个渲染队列，且索引号越小表示越早被渲染。在Unity 5中，Unity提前定义了5个渲染队列（与Unity 5之前的版本相比多了一个AlphaTest渲染队列），在每个队列中间我们可以使用其他队列。
 
-![Unity提前定义的5个渲染队列](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Unity提前定义的5个渲染队列.jfif)
+![Unity提前定义的5个渲染队列](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Unity提前定义的5个渲染队列.jfif)
 
 #### 8.3 透明度测试
 
@@ -1353,7 +1353,7 @@ Shader "Unity Shaders Book/Chapter 8/Alpha Test" {
 }
 ```
 
-![结果7](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果7.png)
+![结果7](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果7.png)
 
 #### 8.4 透明度混合
 
@@ -1432,7 +1432,7 @@ Shader "Unity Shaders Book/Chapter 8/Alpha Blend" {
 }
 ```
 
-![结果8](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果8.png)
+![结果8](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果8.png)
 
 #### 8.5 开启深度写入的半透明效果
 
@@ -1440,7 +1440,7 @@ Shader "Unity Shaders Book/Chapter 8/Alpha Blend" {
 
 当模型本身有复杂的遮挡关系或是包含了复杂的非凸网格的时候，就会有各种各样因为排序错误而产生的错误的透明效果。
 
-![结果9](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果9.png)
+![结果9](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果9.png)
 
 只需要在渲染Pass之前增加一个Pass：
 
@@ -1459,7 +1459,7 @@ ColorMask RGB | A | 0 | 其他任何R、G、B、A的组合
 
 设为0时，意味着该Pass不写入任何颜色通道，即不会输出任何颜色。
 
-![结果10](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果10.png)
+![结果10](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果10.png)
 
 #### 8.6 ShaderLab的混合命令
 
@@ -1469,13 +1469,13 @@ ColorMask RGB | A | 0 | 其他任何R、G、B、A的组合
 
 参考8.4中列出的Blend命令。命令使用的混合因子如下：
 
-![ShaderLab中的混合因子](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-ShaderLab中的混合因子.jfif)
+![ShaderLab中的混合因子](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-ShaderLab中的混合因子.jfif)
 
 可以使用ShaderLab的BlendOp BlendOperation命令决定源颜色和目标颜色与它们对应的混合因子相乘后两者之间的操作。
 
 当使用Min或Max混合操作时，混合因子实际上是不起任何作用的，它们仅会判断原始的源颜色和目的颜色之间的比较结果。
 
-![ShaderLab中的混合操作](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-ShaderLab中的混合操作.jfif)
+![ShaderLab中的混合操作](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-ShaderLab中的混合操作.jfif)
 
 ```c
 // 正常（Normal），即透明度混合
@@ -1525,7 +1525,7 @@ Off：就会关闭剔除功能
 
 对于透明度混合，只需要把8.4的Shader的Pass复制一个，在两个Pass中分别使用Cull指令剔除不同朝向的渲染图元。这是因为关闭了深入写入，无法保证同一个物体的正面和背面图元的渲染顺序，就有可能得到错误的半透明效果。(这个例子我只用一个Pass Cull Off也没有区别)
 
-![结果11](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-结果11.png)
+![结果11](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-结果11.png)
 
 ## 第3篇 中级篇
 
@@ -1539,7 +1539,7 @@ Off：就会关闭剔除功能
 
 2020.3.26版本在Edit->Project Settings->Graphics->Tier Settings中设置默认Rendering Path。每个相机可以单独覆盖设置。
 
-![LightMode标签支持的渲染路径设置选项](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-22-LightMode标签支持的渲染路径设置选项.jfif)
+![LightMode标签支持的渲染路径设置选项](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-22-LightMode标签支持的渲染路径设置选项.jfif)
 
 **前向渲染路径**
 
@@ -1556,13 +1556,13 @@ Unity使用的判断规则如下：
 - 渲染模式被设置成Important的光源，会按逐像素处理。
 - 如果根据以上规则得到的逐像素光源数量小于Quality Setting中的逐像素光源数量(Pixel Light Count)，会有更多的光源以逐像素的方式进行渲染。
 
-![前向渲染的两种Pass](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-epub_22691473_355.jfif)
+![前向渲染的两种Pass](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-24-epub_22691473_355.jfif)
 
 对于前向渲染来说，一个Unity Shader通常会定义一个Base Pass（Base Pass也可以定义多次，例如需要双面渲染等情况）以及一个Additional Pass。一个Base Pass仅会执行一次（定义了多个Base Pass的情况除外），而一个Additional Pass会根据影响该物体的其他逐像素光源的数目被多次调用，即每个逐像素光源会执行一次Additional Pass。
 
-![前向渲染可以使用的内置光照变量](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-前向渲染可以使用的内置光照变量.jfif)
+![前向渲染可以使用的内置光照变量](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-24-前向渲染可以使用的内置光照变量.jfif)
 
-![前向渲染可以使用的内置光照函数](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-前向渲染可以使用的内置光照函数.jfif)
+![前向渲染可以使用的内置光照函数](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-24-前向渲染可以使用的内置光照函数.jfif)
 
 **顶点照明渲染路径**
 
@@ -1897,7 +1897,7 @@ $F_0$是一个反射系数，用于控制菲涅耳反射的强度，v是视角�
 
 #### 11.1 Unity Shader中的内置变量（时间篇）
 
-![Unity内置的时间变量](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-24-Unity内置的时间变量.jfif)
+![Unity内置的时间变量](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-24-Unity内置的时间变量.jfif)
 
 #### 11.2 纹理动画
 
@@ -2275,7 +2275,7 @@ Shader "Unity Shaders Book/Chapter 12/Brightness Saturation And Contrast" {
 
 利用一些边缘检测算子对图像进行卷积（convolution）操作。
 
-![3种常见的边缘检测算子](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-27-3种常见的边缘检测算子.jfif)
+![3种常见的边缘检测算子](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-27-3种常见的边缘检测算子.jfif)
 
 #### 12.4 高斯模糊
 
@@ -2860,7 +2860,7 @@ Unity实际会在背后为表面着色器生成真正的顶点/片元着色器�
 
 **菲涅耳等式**（Fresnel equations）描述有多少百分比的光会被反射（另一部分就是被折射了）：
 
-![菲涅耳等式](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-菲涅耳等式.jfif)
+![菲涅耳等式](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-菲涅耳等式.jfif)
 
 物体的表面和光照发生的各种行为，更像是一系列微小的光学平滑平面和光交互的结果，其中每个小平面会把光分割成不同的方向。光滑表面的微平面的法线变化较小，反射光线的方向变化也更小。粗糙表面的微平面的法线变化较大，反射光线的方向变化也更大
 
@@ -2886,7 +2886,7 @@ BRDF满足交换律和能量守恒。交换率即交换$I$和$v$，BRDF值不变
 
 **BRDF中用于描述表面反射的部分被称为高光反射项（specular term），以及用于描述次表面散射的漫反射项（diffuse term）。**
 
-![高光反射和漫反射](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-高光反射和漫反射.jfif)
+![高光反射和漫反射](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-高光反射和漫反射.jfif)
 
 **漫反射项**
 
@@ -3005,7 +3005,7 @@ Custom，这种类型的探针既可以让我们从编辑器中烘焙它，也�
 
 当把图片放到显示器里显示时，我们应该对图像再进行一次解码操作，使得屏幕输出的亮度和捕捉到的亮度是符合线性的。
 
-![编码伽马和显示伽马](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-27-编码伽马和显示伽马.jfif)
+![编码伽马和显示伽马](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-27-编码伽马和显示伽马.jfif)
 
 微软联合爱普生、惠普提供了**sRGB**颜色空间标准，推荐显示器的显示伽马值为2.2，并配合0.45的编码伽马就可以保证最后伽马曲线之间可以相互抵消（因为$2.2\times 0.45\approx1$）。绝大多数的摄像机、PC和打印机都使用了上述的sRGB标准。
 

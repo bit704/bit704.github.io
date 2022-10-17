@@ -2,8 +2,8 @@
 title: Win32笔记
 categories: [Notebook]
 tags: [C++,API]
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Win32笔记.jfif
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Win32笔记.jfif
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Win32笔记.jfif
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Win32笔记.jfif
 ---
 
 使用 C++ 和 Win32 API 为Windows电脑生成桌面应用
@@ -32,13 +32,13 @@ banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09
 
 窗口之间有两种关系，拥有关系和亲子关系：
 
-![窗口关系](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E7%AA%97%E5%8F%A3%E5%85%B3%E7%B3%BB.png)
+![窗口关系](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E7%AA%97%E5%8F%A3%E5%85%B3%E7%B3%BB.png)
 
 窗口句柄的数据类型是 **HWND**，通过将其作为参数的函数来操作它。句柄不是指针。
 
 原点始终在左上角：
 
-![屏幕和窗口坐标](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E5%B1%8F%E5%B9%95%E5%92%8C%E7%AA%97%E5%8F%A3%E5%9D%90%E6%A0%87.png)
+![屏幕和窗口坐标](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%B1%8F%E5%B9%95%E5%92%8C%E7%AA%97%E5%8F%A3%E5%9D%90%E6%A0%87.png)
 
 每个窗口程序都包含一个名为 **WinMain** 或 **wWinMain** 的入口点函数。
 
@@ -153,7 +153,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 关闭窗口的消息流程：
 
-![关闭窗口流程](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E5%85%B3%E9%97%AD%E7%AA%97%E5%8F%A3%E6%B5%81%E7%A8%8B.png)
+![关闭窗口流程](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%85%B3%E9%97%AD%E7%AA%97%E5%8F%A3%E6%B5%81%E7%A8%8B.png)
 
 [管理应用程序状态 - Win32 apps ](https://docs.microsoft.com/zh-cn/windows/win32/learnwin32/managing-application-state-)
 
@@ -268,7 +268,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, int nCmdShow
 
 每个 COM 对象都维护内部计数。 这称为引用计数。 引用计数跟踪对象当前处于活动状态的引用数。 当引用数降至零时，对象将删除自身。 最后一部分值得重复：对象删除自身。 程序永远不会显式删除对象。
 
-![COM管理过程](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-COM%E7%AE%A1%E7%90%86%E8%BF%87%E7%A8%8B.png)
+![COM管理过程](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-COM%E7%AE%A1%E7%90%86%E8%BF%87%E7%A8%8B.png)
 
 ```C++
 HRESULT QueryInterface(REFIID riid, void **ppvObject);

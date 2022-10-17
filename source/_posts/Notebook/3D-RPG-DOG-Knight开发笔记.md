@@ -1,7 +1,7 @@
 ---
 title: 【3D-RPG】DOG-Knight开发笔记
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-DirectX-12-3D-游戏开发实战-笔记.png
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-DirectX-12-3D-游戏开发实战-笔记.png
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-DirectX-12-3D-游戏开发实战-笔记.png
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-DirectX-12-3D-游戏开发实战-笔记.png
 layout: post
 categories: [Notebook]
 tags: [Unity]

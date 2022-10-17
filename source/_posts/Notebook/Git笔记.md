@@ -1,7 +1,7 @@
 ---
 title: Git笔记
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Git笔记.png
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Git笔记.png
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Git笔记.png
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Git笔记.png
 layout: post
 categories: [Notebook]
 tags: [Git]
@@ -15,7 +15,7 @@ tags: [Git]
 
 ### 1.工作区域
 
-![区域构成1](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E5%8C%BA%E5%9F%9F%E6%9E%84%E6%88%901.png)
+![区域构成1](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%8C%BA%E5%9F%9F%E6%9E%84%E6%88%901.png)
 
 **workspace**: 工作区，电脑上当前可见的目录。
 
@@ -25,11 +25,11 @@ tags: [Git]
 
 **Remote**: 远程仓库，托管代码的服务器。
 
-![区域构成2](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E5%8C%BA%E5%9F%9F%E6%9E%84%E6%88%902.jpg)
+![区域构成2](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%8C%BA%E5%9F%9F%E6%9E%84%E6%88%902.jpg)
 
 ### 2.文件状态
 
-![文件状态1](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%811.png)
+![文件状态1](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%811.png)
 
 GIT不关心文件两个版本之间的具体差别，而是关心文件的整体是否有改变，若文件被改变，在添加提交时就生成文件新版本的快照，而判断文件整体是否改变的方法就是用**SHA-1算法**计算文件的校验和。
 
@@ -41,7 +41,7 @@ GIT不关心文件两个版本之间的具体差别，而是关心文件的整�
 
 **Staged**: 文件位于暂存区。执行git commit则将修改同步到版本中。执行git reset HEAD filename取消暂存,文件状态为Modified。
 
-![文件状态2](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%812.png)
+![文件状态2](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%812.png)
 
 ## 二.命令
 

@@ -1,7 +1,7 @@
 ---
 title: 《DirectX 12 3D 游戏开发实战》笔记
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-DX123D.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-DX123D.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-DX123D.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-DX123D.jpg
 layout: post
 categories: [Notebook]
 tags: [DirectX]
@@ -17,7 +17,7 @@ Introduction to 3D Game Programming with DirectX 12
 
 人民邮电出版社
 
-![封面](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-DX123D_s.jpg)
+![封面](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-DX123D_s.jpg)
 
 ### 前置说明
 
@@ -344,7 +344,7 @@ Direct3D 12并不支持创建MSAA交换链，因此也就不能在运行时改�
 
 一般来说，128位颜色值常用于高精度的颜色运算（例如位于像素着色器中的各种运算）。在这种情况下，由于运算所用的精度较高，因此可有效降低计算过程中所产生的误差。但是，最终存储在后台缓冲区中的像素颜色数据，却往往都是以32位颜色值来表示。而目前的物理显示设备仍不足以充分发挥出更高色彩分辨率的优势
 
-![渲染流水线的各个阶段](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9A%84%E5%90%84%E4%B8%AA%E9%98%B6%E6%AE%B5.jpg)
+![渲染流水线的各个阶段](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9A%84%E5%90%84%E4%B8%AA%E9%98%B6%E6%AE%B5.jpg)
 
 输入装配器（Input Assembler，IA）阶段会从显存中读取几何数据（顶点和索引，vertex and index），再将它们装配为几何图元（geometric primitive，亦译作几何基元，如三角形和线条这种构成图形的基本元素）。
 

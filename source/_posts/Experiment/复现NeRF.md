@@ -126,7 +126,7 @@ dependencies:
 
 tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM when allocating tensor with shape[4194304,90] and type float on /job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc [Op:ConcatV2] name: concat
 
-![显存不足](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E6%98%BE%E5%AD%98%E4%B8%8D%E8%B6%B3.png)
+![显存不足](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E6%98%BE%E5%AD%98%E4%B8%8D%E8%B6%B3.png)
 
 应该是因为我的3060的6G显存不如作者使用的nvidia v100。
 
@@ -148,19 +148,19 @@ N_importance = 16
 
 实际运行中的GPU情况：
 
-![GPU使用情况](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-GPU%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5.png)
+![GPU使用情况](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-GPU%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5.png)
 
 **Terminal输出：**
 
-![Terminal输出](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Terminal%E8%BE%93%E5%87%BA.png)
+![Terminal输出](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Terminal%E8%BE%93%E5%87%BA.png)
 
 **tesnorboard输出：**
 
 使用命令tensorboard --logdir=logs/summaries --port=6006，查看网页
 
-![tensorboard1](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-tensorboard1.png)
+![tensorboard1](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-tensorboard1.png)
 
-![tensorboard2](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-tensorboard2.png)
+![tensorboard2](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-tensorboard2.png)
 
 最后输出的视频位于logs/fern_test文件夹中
 
@@ -197,51 +197,51 @@ tf.debugging.check_numerics(ret[k], 'output {}'.format(k))
 
 ### 3.1 输入参数列表
 
-| 参数名         | 默认值           | 作用                                                         |
-| :------------- | ---------------- | :----------------------------------------------------------- |
-| config         |                  | 配置文件路径                                                 |
-| expname        |                  | 实验名                                                       |
-| basedir        | ./logs/          | 存放ckpts和logs的路径                                        |
-| datadir        | ./data/llff/fern | 输入数据路径                                                 |
-| netdepth       | 8                | 网络层数                                                     |
-| netwidth       | 256              | 每层的通道数                                                 |
-| N_rand         | 32\*32\*4        | 批大小 (每一梯度步的随即光线数)                              |
-| lrate          | 5e-4             | 学习率                                                       |
-| lrate_decay    | 250              | 指数学习率下降(1000s内)                                      |
-| chunk          | 1024\*32         | 平行处理的光线数(内存不足时应减小)                           |
-| netchunk       | 1024\*64         | 网络里平行发送的pts数(内存不足时应减小)                      |
-| no_batching    | False            | 一次只从一张图片获取随机光线                                 |
-| no_reload      | False            | 不从保存的模型中重载权重                                     |
-| ft_path        | None             | 专为coarse网络重载的权重npy文件                              |
-| random_seed    | None             | 确保结果可以复现的固定随机种子                               |
-| precrop_iters  | 0                | 在central crops训练的步数                                    |
-| precrop_frac   | 0.5              | 为central crops拿的图片部分                                  |
-| N_samples      | 64               | 每道光线的粗采样数                                           |
-| N_importance   | 0                | 每道光线的附加细采样数                                       |
-| perturb        | 1.               | 0. for no jitter, 1. for jitter                              |
-| use_viewdirs   | False            | 使用5D而不是3D输入                                           |
-| i_embed        | 0                | 0对应默认位置编码，1对应None                                 |
-| multires       | 10               | 位置编码的最大频率对数（3D位置）                             |
-| multires_views | 4                | 位置编码的最大频率对数（2D方向）                             |
-| raw_noise_std  | 0.               | std dev of noise added to regularize sigma_a output, 1e0 recommended |
-| render_only    | False            | do not optimize, reload weights and render out render_poses path |
-| render_test    | False            | render the test set instead of render_poses path             |
-| render_factor  | 0                | downsampling factor to speed up rendering, set 4 or 8 for fast preview |
-| dataset_type   | llff             | 三个选项：llff / blender / deepvoxels                        |
+| 参数名         | 默认值           | 作用                                                                               |
+| :------------- | ---------------- | :--------------------------------------------------------------------------------- |
+| config         |                  | 配置文件路径                                                                       |
+| expname        |                  | 实验名                                                                             |
+| basedir        | ./logs/          | 存放ckpts和logs的路径                                                              |
+| datadir        | ./data/llff/fern | 输入数据路径                                                                       |
+| netdepth       | 8                | 网络层数                                                                           |
+| netwidth       | 256              | 每层的通道数                                                                       |
+| N_rand         | 32\*32\*4        | 批大小 (每一梯度步的随即光线数)                                                    |
+| lrate          | 5e-4             | 学习率                                                                             |
+| lrate_decay    | 250              | 指数学习率下降(1000s内)                                                            |
+| chunk          | 1024\*32         | 平行处理的光线数(内存不足时应减小)                                                 |
+| netchunk       | 1024\*64         | 网络里平行发送的pts数(内存不足时应减小)                                            |
+| no_batching    | False            | 一次只从一张图片获取随机光线                                                       |
+| no_reload      | False            | 不从保存的模型中重载权重                                                           |
+| ft_path        | None             | 专为coarse网络重载的权重npy文件                                                    |
+| random_seed    | None             | 确保结果可以复现的固定随机种子                                                     |
+| precrop_iters  | 0                | 在central crops训练的步数                                                          |
+| precrop_frac   | 0.5              | 为central crops拿的图片部分                                                        |
+| N_samples      | 64               | 每道光线的粗采样数                                                                 |
+| N_importance   | 0                | 每道光线的附加细采样数                                                             |
+| perturb        | 1.               | 0. for no jitter, 1. for jitter                                                    |
+| use_viewdirs   | False            | 使用5D而不是3D输入                                                                 |
+| i_embed        | 0                | 0对应默认位置编码，1对应None                                                       |
+| multires       | 10               | 位置编码的最大频率对数（3D位置）                                                   |
+| multires_views | 4                | 位置编码的最大频率对数（2D方向）                                                   |
+| raw_noise_std  | 0.               | std dev of noise added to regularize sigma_a output, 1e0 recommended               |
+| render_only    | False            | do not optimize, reload weights and render out render_poses path                   |
+| render_test    | False            | render the test set instead of render_poses path                                   |
+| render_factor  | 0                | downsampling factor to speed up rendering, set 4 or 8 for fast preview             |
+| dataset_type   | llff             | 三个选项：llff / blender / deepvoxels                                              |
 | testskip       | 8                | will load 1/N images from test/val sets, useful for large datasets like deepvoxels |
-| shape          | greek            | 四个选项：armchair / cube / greek / vase                     |
-| white_bkgd     | False            | set to render synthetic data on a white bkgd (always use for dvoxels) |
-| half_res       | False            | load blender synthetic data at 400x400 instead of 800x800    |
-| factor         | 8                | LLFF图片的降采样因子                                         |
-| no_ndc         | False            | do not use normalized device coordinates (set for non-forward facing scenes) |
-| lindisp        | False            | sampling linearly in disparity rather than depth             |
-| spherify       | False            | set for spherical 360 scenes                                 |
-| llffhold       | 8                | will take every 1/N images as LLFF test set, paper uses 8    |
-| i_print        | 100              | 控制台打印频率                                               |
-| i_img          | 500              | tesnorboard图片注册频率                                      |
-| i_weights      | 1000             | 权重模型保存频率                                             |
-| i_testset      | 5000             | 测试集保存频率                                               |
-| i_video        | 5000             | 渲染姿态视频保存频率                                         |
+| shape          | greek            | 四个选项：armchair / cube / greek / vase                                           |
+| white_bkgd     | False            | set to render synthetic data on a white bkgd (always use for dvoxels)              |
+| half_res       | False            | load blender synthetic data at 400x400 instead of 800x800                          |
+| factor         | 8                | LLFF图片的降采样因子                                                               |
+| no_ndc         | False            | do not use normalized device coordinates (set for non-forward facing scenes)       |
+| lindisp        | False            | sampling linearly in disparity rather than depth                                   |
+| spherify       | False            | set for spherical 360 scenes                                                       |
+| llffhold       | 8                | will take every 1/N images as LLFF test set, paper uses 8                          |
+| i_print        | 100              | 控制台打印频率                                                                     |
+| i_img          | 500              | tesnorboard图片注册频率                                                            |
+| i_weights      | 1000             | 权重模型保存频率                                                                   |
+| i_testset      | 5000             | 测试集保存频率                                                                     |
+| i_video        | 5000             | 渲染姿态视频保存频率                                                               |
 
 ### 3.2 训练过程
 
@@ -276,7 +276,7 @@ Shader not supported by your hardware!
 ERROR: SiftGPU not fully supported.
 ```
 
-![SiftGPU](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-SiftGPU.png)
+![SiftGPU](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-SiftGPU.png)
 
 这个问题我完全不知道怎么解决，可能3060及其驱动又和程序出现了兼容性问题。
 
@@ -292,15 +292,15 @@ ERROR: SiftGPU not fully supported.
 
 手动安装的colmap终于可用了，但我遇到了一个全新的问题。（[相同的issue](https://github.com/Fyusion/LLFF/issues/36)）
 
-![error1](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-error1.png)
+![error1](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-error1.png)
 
 根据我自己的实验，colmap在作者提供的数据集上运行的很完美，说明只是我只是拍的照片不够“好”，不足以让colmap匹配这些图片。（这种情况是，如果我对自己拍摄的照片进行降采样，就会使colmap无法匹配）
 
 我自己用手机拍摄的一个数据集：
 
-![toyset](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-toyset.png)
+![toyset](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-toyset.png)
 
-![toy](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-toy.JPG)
+![toy](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-toy.JPG)
 
 ​			实验证明可以用colmap生成相机参数并输入nerf或grf训练。
 

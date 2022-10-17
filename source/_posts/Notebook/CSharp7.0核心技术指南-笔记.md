@@ -1,7 +1,7 @@
 ---
 title: 《C# 7.0核心技术指南（原书第7版）》笔记
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-CSharp7.0核心技术指南-笔记.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-CSharp7.0核心技术指南-笔记.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-CSharp7.0核心技术指南-笔记.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-CSharp7.0核心技术指南-笔记.jpg
 layout: post
 categories: [Notebook]
 tags: [C#]
@@ -17,7 +17,7 @@ C# 7.0 in a Nutshell: The Definitive Reference
 
 机械工业出版社
 
-![封面](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-CSharp7.0核心技术指南-笔记_s.jpg)
+![封面](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-CSharp7.0核心技术指南-笔记_s.jpg)
 
 ## 第1章 C#和.NET Framework简介
 

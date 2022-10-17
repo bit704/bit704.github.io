@@ -1,7 +1,7 @@
 ---
 title: 转载_Sundry
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-转载_Sundry.jfif
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-转载_Sundry.jfif
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-转载_Sundry.jfif
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-转载_Sundry.jfif
 layout: post
 categories: [Log,Reprint]
 mathjax: false
@@ -116,6 +116,8 @@ mathjax: false
 [hexo mathjax无法渲染 - 简书 (jianshu.com)](https://www.jianshu.com/p/d43535c17ce2)
 
 [使用Github+picGo搭建图床，保姆级教程来了 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/489236769)
+
+[Typora+PicGo+阿里云OSS搭建博客图床（超详细）_慕雪华年的博客-CSDN博客](https://blog.csdn.net/muxuen/article/details/122441469)
 
 ## 软件工程
 

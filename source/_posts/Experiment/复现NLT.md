@@ -48,7 +48,7 @@ dependencies:
 
 但是作者的自己写的第三方库并没有兼容windows，运行会报错:
 
-![windows不兼容](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-windows%E4%B8%8D%E5%85%BC%E5%AE%B9.png)
+![windows不兼容](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-windows%E4%B8%8D%E5%85%BC%E5%AE%B9.png)
 
 <font color=red>非常坑的一点就是中断之后重新运行，不会加载原来保存的checkpoint而是直接覆盖输出目录重新从0开始训练，记得把配置文件里的overwrite改为False。</font>
 
@@ -56,7 +56,7 @@ dependencies:
 
 dragon_specular.zip训练结果：
 
-![dragon_specular_ckpt-100_pred_2fps](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-dragon_specular_ckpt-100_pred_2fps.gif)
+![dragon_specular_ckpt-100_pred_2fps](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-dragon_specular_ckpt-100_pred_2fps.gif)
 
 dragon_sss.zip训练所需的神经网络学习率是前者的1/4，且深度是前者的4倍，可能会慢很多。并且将其batch size减半依然超出6G显存，暂时没有训练。
 

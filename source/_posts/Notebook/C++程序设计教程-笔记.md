@@ -1,7 +1,7 @@
 ---
 title: 《C++程序设计教程（第3版）（通用版）》笔记
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-C++程序设计教程-笔记.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-C++程序设计教程-笔记.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-C++程序设计教程-笔记.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-C++程序设计教程-笔记.jpg
 layout: post
 categories: [Notebook]
 tags: [C++]
@@ -13,7 +13,7 @@ tags: [C++]
 
 清华大学出版社
 
-![封面](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-C++程序设计教程-笔记_s.jpg)
+![封面](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-C++程序设计教程-笔记_s.jpg)
 
 ## 第一部分 C++过程化语言基础
 

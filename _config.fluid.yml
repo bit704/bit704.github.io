@@ -111,7 +111,7 @@ deploy:
 
 index:
   # 本站图片来自 Twitter @HoDaRaKe
-  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-天国.png
+  banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-天国.png
   slogan:
     enable: false
     text:  
@@ -200,7 +200,7 @@ dark_mode:
 # Archive Page
 #---------------------------
 archive:
-  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-白堡.jpg
+  banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-白堡.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -210,7 +210,7 @@ archive:
 #---------------------------
 category:
   enable: true
-  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-寒冰教堂.jpg
+  banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-寒冰教堂.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -239,7 +239,7 @@ category:
 #---------------------------
 tag:
   enable: true
-  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-教堂.jpg
+  banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-教堂.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -255,11 +255,11 @@ tag:
 # About Page
 #---------------------------
 about:
-  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-仙境.jpg
+  banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-仙境.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
-  avatar: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-头像.jfif
+  avatar: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-头像.jfif
   name: "bit704"
   intro: "出生于1999年的程序员,20世纪的余烬"
   icons:
@@ -272,7 +272,7 @@ about:
 # Links Page
 #---------------------------
 links:
-  banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-巨门.jpg
+  banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-巨门.jpg
   banner_img_height: 60
   banner_mask_alpha: 0.3
 
@@ -287,17 +287,17 @@ links:
       title: 'CSDN',
       intro: 'CSDN主页',
       link: 'https://blog.csdn.net/CN_BIT',
-      avatar: 'https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-c.svg'
+      avatar: 'https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-c.svg'
     }
     - {
       title: 'Leetcode',
       intro: 'Leetcode主页',
       link: 'https://leetcode.cn/u/oneonone/',
-      avatar: 'https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-leetcode.jpg'
+      avatar: 'https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-leetcode.jpg'
     }
     - {
       title: 'Repo',
       intro: '本站仓库',
       link: 'https://github.com/bit704/bit704.github.io',
-      avatar: 'https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-五角星.svg'
+      avatar: 'https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-五角星.svg'
     }

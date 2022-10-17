@@ -2,8 +2,8 @@
 title: 《pytorch深度学习实战》笔记
 categories: [Essay]
 tags: [Python,AI,Pytorch]
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-pytorch深度学习实战笔记.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-pytorch深度学习实战笔记.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-pytorch深度学习实战笔记.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-pytorch深度学习实战笔记.jpg
 sticky: 100
 ---
 
@@ -17,7 +17,7 @@ Deep learning with pytorch
 
 人民邮电出版社
 
-![封面](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-pytorch深度学习实战笔记_s.jpg)
+![封面](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-pytorch深度学习实战笔记_s.jpg)
 
 [代码仓库](https://github.com/deep-learning-with-pytorch/dlwpt-code)
 
@@ -423,7 +423,7 @@ Sequential(
 
 下图是seq_model的结构：
 
-![第一个简单神经网络结构](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.jpg)
+![第一个简单神经网络结构](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E7%AC%AC%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.jpg)
 
 ### 第7章 区分鸟和飞机：从图像学习
 
@@ -877,7 +877,7 @@ class LunaBlock(nn.Module):
 
 PyTorch JIT编译器在PyTorch 1.0中首次亮相，它是PyTorch许多创新的核心，其中最重要的是提供了一组丰富的部署选项。
 
-![4种调用PyTorch函数的方法](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-10-11-4种调用PyTorch函数的方法.jfif)
+![4种调用PyTorch函数的方法](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-10-11-4种调用PyTorch函数的方法.jfif)
 
 #### 15.4 LibTorch：C++中的PyTorch
 

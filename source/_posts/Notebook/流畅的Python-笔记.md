@@ -1,7 +1,7 @@
 ---
 title: 《流畅的Python》笔记
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-流畅的python.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-流畅的python.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-流畅的python.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-流畅的python.jpg
 categories: [Notebook]
 tags: [Python]
 ---
@@ -16,7 +16,7 @@ Fluent Python
 
 人民邮电出版社
 
-![封面](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-流畅的python_s.jpg)
+![封面](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-流畅的python_s.jpg)
 
 ## 前言
 

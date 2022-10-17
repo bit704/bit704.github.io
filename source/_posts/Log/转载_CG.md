@@ -1,7 +1,7 @@
 ---
 title: 转载_CG
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-转载_CG.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-转载_CG.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-转载_CG.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-转载_CG.jpg
 layout: post
 categories: [Log,Reprint]
 mathjax: false

@@ -1,7 +1,7 @@
 ---
 title: 《Java程序设计基础（第6版）》笔记
-index_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Java程序设计基础-笔记.jpg
-banner_img: https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Java程序设计基础-笔记.jpg
+index_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Java程序设计基础-笔记.jpg
+banner_img: https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Java程序设计基础-笔记.jpg
 layout: post
 categories: [Notebook]
 tags: [Java]
@@ -13,7 +13,7 @@ tags: [Java]
 
 清华大学出版社
 
-![封面](https://cdn.jsdelivr.net/gh/bit704/blog-image-bed@main/image/2022-09-18-Java程序设计基础-笔记_s.jpg)
+![封面](https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Java程序设计基础-笔记_s.jpg)
 
 ## 第1章 Java语言概述
 
