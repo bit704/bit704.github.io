@@ -49,6 +49,28 @@ mathjax: false
 
 [关于C++中的虚拟继承的一些总结 - VincentPass - 博客园](https://www.cnblogs.com/BeyondAnyTime/archive/2012/06/05/2537451.html)
 
+
+
+### libraries
+
+#### stb_image
+
+[C/C++ 使用 stb_image 加载 png / jpg / gif / bmp等常用图片-猿说编程 (codersrc.com)](https://www.codersrc.com/archives/15707.html)
+
+[stb_image图像解码库 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/466294684)
+
+### BUG
+
+#### 头文件
+
+[细说C++头文件 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/387773355)
+
+[头文件中能否进行函数的定义_M_jianjianjiao的博客-CSDN博客_头文件定义函数](https://blog.csdn.net/M_jianjianjiao/article/details/84109955)
+
+
+
+
+
 ## Python
 
 [深入理解Python中的GIL（全局解释器锁） - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/75780308)
