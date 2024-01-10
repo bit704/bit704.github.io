@@ -1,0 +1,940 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="使用 C++ 和 Win32 API 为Windows电脑生成桌面应用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Win32笔记">
+<meta property="og:url" content="https://reddish.fun/posts/Notebook/Win32-note/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="使用 C++ 和 Win32 API 为Windows电脑生成桌面应用">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-04T07:10:24.462Z">
+<meta property="article:modified_time" content="2024-01-08T12:34:39.242Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="CS">
+<meta property="article:tag" content="CPP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Win32笔记 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Win32笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-04 15:10" pubdate>
+          2023年1月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.3k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Win32笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>使用 C++ 和 Win32 API 为Windows电脑生成桌面应用</p>
+<span id="more"></span>
+<p class="note note-primary">
+二次整理自网络教程。
+</p>
+<h1 id="前言">0 前言</h1>
+<p>由于需要用到windows窗口，参考以下文档:</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/win32/">使用 Win32
+API 生成桌面Windows应用 - Win32 apps</a></p>
+<p>进入其中的：<a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/win32/learnwin32/learn-to-program-for-windows">Win32
+和 C++ 入门 - Win32 apps</a></p>
+<p>都是机翻的，得看英文原版。</p>
+<p>安装Windows SDK即可。注意其不支持硬件驱动程序开发。</p>
+<p>匈牙利表示法虽然仍在文档中存在，但已经不再使用。</p>
+<h1 id="第一个窗口程序">1 第一个窗口程序</h1>
+<h2 id="窗口简介">窗口简介</h2>
+<p>窗口之间有两种关系，拥有关系和亲子关系：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E7%AA%97%E5%8F%A3%E5%85%B3%E7%B3%BB.png" srcset="/img/loading.gif" lazyload
+alt="窗口关系" />
+<figcaption aria-hidden="true">窗口关系</figcaption>
+</figure>
+<p>窗口句柄的数据类型是
+<strong>HWND</strong>，通过将其作为参数的函数来操作它。句柄不是指针。</p>
+<p>原点始终在左上角：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%B1%8F%E5%B9%95%E5%92%8C%E7%AA%97%E5%8F%A3%E5%9D%90%E6%A0%87.png" srcset="/img/loading.gif" lazyload
+alt="屏幕和窗口坐标" />
+<figcaption aria-hidden="true">屏幕和窗口坐标</figcaption>
+</figure>
+<p>每个窗口程序都包含一个名为 <strong>WinMain</strong> 或
+<strong>wWinMain</strong> 的入口点函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> WINAPI <span class="hljs-title">wWinMain</span><span class="hljs-params">(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, <span class="hljs-type">int</span> nCmdShow)</span></span>;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><em>hInstance</em>
+称为“实例句柄”或“模块句柄”。操作系统使用此值在内存中加载可执行文件时标识可执行文件
+(EXE) 。 某些Windows函数需要实例句柄，例如加载图标或位图。</li>
+<li><em>hPrevInstance</em> 没有意义。 它在 16
+位Windows中使用，但现在始终为零。</li>
+<li><em>pCmdLine</em> 包含作为 Unicode 字符串的命令行参数。</li>
+<li><em>nCmdShow</em>
+是一个标志，指示主应用程序窗口是最小化、最大化还是正常显示。</li>
+</ul>
+<p><strong>WinMain</strong> 函数与 <strong>wWinMain</strong>
+相同，但命令行参数作为 ANSI 字符串传递。</p>
+<p><strong>WINAPI</strong> 是调用约定。
+<em>调用约定</em>定义函数如何从调用方接收参数。
+例如，它定义参数在堆栈上显示的顺序。</p>
+<h2 id="程序示例">程序示例</h2>
+<p>创建一个窗口。</p>
+<p>代码来自<a
+target="_blank" rel="noopener" href="https://github.com/microsoft/Windows-classic-samples/">microsoft/Windows-classic-samples</a>中的<strong>Samples/Win7Samples/begin/LearnWin32/HelloWorld/cpp</strong>。此后的程序示例均位于LearnWin32中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> UNICODE</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> UNICODE</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> </span><br><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><br><span class="hljs-function">LRESULT CALLBACK <span class="hljs-title">WindowProc</span><span class="hljs-params">(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)</span></span>;<br><br><span class="hljs-function"><span class="hljs-type">int</span> WINAPI <span class="hljs-title">wWinMain</span><span class="hljs-params">(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, <span class="hljs-type">int</span> nCmdShow)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">//填写WNDCLASS结构，注册窗口类。此类不是 C++ 意义上的“类”。相反，它是操作系统在内部使用的数据结构。 </span><br>    <span class="hljs-type">const</span> <span class="hljs-type">wchar_t</span> CLASS_NAME[]  = <span class="hljs-string">L&quot;Sample Window Class&quot;</span>;<br>    <br>    WNDCLASS wc = &#123; &#125;;<br><br>    wc.lpfnWndProc   = WindowProc; <span class="hljs-comment">//窗口过程,定义窗口的大部分行为</span><br>    wc.hInstance     = hInstance;  <span class="hljs-comment">//应用程序实例的句柄</span><br>    wc.lpszClassName = CLASS_NAME; <span class="hljs-comment">//标识窗口类的字符串</span><br>	<span class="hljs-comment">//向操作系统注册窗口类</span><br>    <span class="hljs-built_in">RegisterClass</span>(&amp;wc);<br><br>    <span class="hljs-comment">//创建窗口类</span><br>    HWND hwnd = <span class="hljs-built_in">CreateWindowEx</span>(<br>        <span class="hljs-number">0</span>,                              <span class="hljs-comment">//可选窗口行为</span><br>        CLASS_NAME,                     <span class="hljs-comment">//窗口类名称</span><br>        <span class="hljs-string">L&quot;Learn to Program Windows&quot;</span>,    <span class="hljs-comment">//窗口文本</span><br>        WS_OVERLAPPEDWINDOW,            <span class="hljs-comment">//窗口样式</span><br><br>        <span class="hljs-comment">//位置和大小， CW_USEDEFAULT表示使用默认值。</span><br>        CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,<br><br>        <span class="hljs-literal">NULL</span>,       <span class="hljs-comment">//父窗口或所有者窗口，NULL代表顶级窗口   </span><br>        <span class="hljs-literal">NULL</span>,       <span class="hljs-comment">// 定义菜单</span><br>        hInstance,  <span class="hljs-comment">// 应用程序实例的句柄</span><br>        <span class="hljs-literal">NULL</span>        <span class="hljs-comment">// 附加数据， void*</span><br>        );<br><br>    <span class="hljs-keyword">if</span> (hwnd == <span class="hljs-literal">NULL</span>)<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>    &#125;<br><br>    <span class="hljs-comment">//显示窗口。nCmdShow 参数可用于最小化或最大化窗口。</span><br>    <span class="hljs-built_in">ShowWindow</span>(hwnd, nCmdShow);<br><br>    <span class="hljs-comment">//程序将保留在此循环中，直到用户关闭窗口并退出应用程序。</span><br>    MSG msg = &#123; &#125;;<br>    <span class="hljs-comment">//GetMessage函数从队列的头中删除第一条消息。后三个参数用于筛选消息，几乎所有情况都默认为0。</span><br>    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">GetMessage</span>(&amp;msg, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) &gt; <span class="hljs-number">0</span>)<br>    &#123;<br>        <span class="hljs-comment">//将击键转换为字符</span><br>        <span class="hljs-built_in">TranslateMessage</span>(&amp;msg);<br>        <span class="hljs-comment">//告知操作系统调用消息的目标窗口的窗口过程</span><br>        <span class="hljs-built_in">DispatchMessage</span>(&amp;msg);<br>    &#125;<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">//入参：窗口句柄，消息代码，附加数据（后两个参数）</span><br><span class="hljs-function">LRESULT CALLBACK <span class="hljs-title">WindowProc</span><span class="hljs-params">(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">switch</span> (uMsg)<br>    &#123;<br>    <span class="hljs-keyword">case</span> WM_DESTROY:<br>        <span class="hljs-comment">//退出应用程序并中断消息循环。PostQuitMessage 函数在消息队列上放置WM_QUIT消息。 WM_QUIT 是一条特殊消息：它会导致 GetMessage 返回零，发出消息循环的结束信号。</span><br>        <span class="hljs-built_in">PostQuitMessage</span>(<span class="hljs-number">0</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>    <span class="hljs-keyword">case</span> WM_PAINT:<br>        &#123;<br>            PAINTSTRUCT ps;<br>            HDC hdc = <span class="hljs-built_in">BeginPaint</span>(hwnd, &amp;ps);<br><br>            <span class="hljs-comment">// 所有绘制发生在BeginPaint和EndPaint之间</span><br>            <span class="hljs-built_in">FillRect</span>(hdc, &amp;ps.rcPaint, (HBRUSH) (COLOR_WINDOW+<span class="hljs-number">1</span>));<br><br>            <span class="hljs-built_in">EndPaint</span>(hwnd, &amp;ps);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br><br>    &#125;<br>    <span class="hljs-comment">//执行默认操作。对于 WM_CLOSE，DefWindowProc 会自动调用 DestroyWindow。</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-built_in">DefWindowProc</span>(hwnd, uMsg, wParam, lParam);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/win32/winmsg/about-messages-and-message-queues">关于消息和消息队列
+- Win32 apps</a></p>
+<p>关闭窗口的消息流程：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%85%B3%E9%97%AD%E7%AA%97%E5%8F%A3%E6%B5%81%E7%A8%8B.png" srcset="/img/loading.gif" lazyload
+alt="关闭窗口流程" />
+<figcaption aria-hidden="true">关闭窗口流程</figcaption>
+</figure>
+<p><a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/win32/learnwin32/managing-application-state-">管理应用程序状态
+- Win32 apps</a></p>
+<h1 id="使用com">2 使用COM</h1>
+<h2 id="com简介">COM简介</h2>
+<p>COM 是
+<em>二进制标准</em>，而不是语言标准：它定义应用程序和软件组件之间的二进制接口。
+作为二进制标准，COM 是语言中立的，尽管它自然映射到某些 C++ 构造。</p>
+<p>COM接口的概念与C#、Java中的接口和C#中的纯虚类类似。使用名为“接口定义语言”
+(IDL) 的语言定义 COM 接口。 IDL 文件由 IDL 编译器处理，该编译器生成 C++
+头文件。</p>
+<h2 id="初始化">初始化</h2>
+<p>使用 COM 的任何Windows程序都必须通过调用 <a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/combaseapi/nf-combaseapi-coinitializeex"><strong>CoInitializeEx</strong></a>
+函数来初始化 COM 库。 使用 COM 接口的每个线程都必须单独调用此函数。</p>
+<p>对于 CoInitializeEx 的每个成功调用，必须在线程退出之前调用 <a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/combaseapi/nf-combaseapi-couninitialize"><strong>CoUninitialize</strong></a>
+。 此函数不采用任何参数，并且没有返回值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">HRESULT <span class="hljs-title">CoInitializeEx</span><span class="hljs-params">(LPVOID pvReserved, DWORD dwCoInit)</span></span>;<br><span class="hljs-built_in">CoUninitialize</span>();<br></code></pre></td></tr></table></figure>
+<p>CoInitializeEx第一个参数是保留的，必须为 <strong>NULL</strong>。
+第二个参数指定程序将使用的线程模型。</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">标志</th>
+<th style="text-align: left;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td
+style="text-align: left;"><strong>COINIT_APARTMENTTHREADED</strong></td>
+<td style="text-align: left;">单元线程。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>COINIT_MULTITHREADED</strong></td>
+<td style="text-align: left;">多线程。</td>
+</tr>
+</tbody>
+</table>
+<p>如果使用单元线程，你应该保证：</p>
+<ul>
+<li>你将从单个线程访问每个 COM 对象；不会在多个线程之间共享 COM
+接口指针。</li>
+<li>线程将有一个消息循环。</li>
+</ul>
+<p>COM 方法和函数返回 <strong>HRESULT</strong>
+类型的值要指示成功或失败。 <strong>HRESULT</strong> 是一个 32
+位整数，高阶位表示成功或失败， 0表示成功，1 表示失败。少量 COM
+方法不返回 <strong>HRESULT</strong> 值。 例如， <a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/unknwn/nf-unknwn-iunknown-addref"><strong>AddRef</strong></a>
+和 <a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/unknwn/nf-unknwn-iunknown-release"><strong>Release</strong></a>
+方法返回无符号长值。 Windows SDK 标头提供两个宏，<a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/winerror/nf-winerror-succeeded"><strong>SUCCEEDED</strong></a>
+宏和 <a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/winerror/nf-winerror-failed"><strong>FAILED</strong></a>
+宏，检查 COM 方法是否成功。</p>
+<h2 id="创建对象">创建对象</h2>
+<p><a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/desktop/api/combaseapi/nf-combaseapi-cocreateinstance"><strong>CoCreateInstance</strong></a>
+函数提供用于创建对象的泛型机制。两个 COM
+对象可以实现相同的接口，一个对象可以实现两个或多个接口。
+因此，创建对象的泛型函数需要两段信息：</p>
+<ul>
+<li>要创建的对象。</li>
+<li>要从对象中获取的接口。</li>
+</ul>
+<p>在 COM 中，通过为其分配 128
+位数字来标识对象或接口，该数字称为<em>全局唯一标识符</em> (GUID) 。GUID
+以有效唯一的方式生成。 GUID
+是解决如何在没有中央注册机构的情况下创建唯一标识符的问题。 GUID 有时称为
+<em>通用唯一标识符</em> (UUID) 。 在 COM 之前，它们用于 DCE/RPC
+(分布式计算环境/远程过程调用) 。 存在多个用于创建新 GUID
+的算法，并非所有算法都严格保证唯一性，但意外创建同一 GUID
+值的概率极小，实际上为零。</p>
+<h2 id="程序示例-1">程序示例</h2>
+<p>创建一个“打开”对话框。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;shobjidl.h&gt;</span> </span><br><br><span class="hljs-function"><span class="hljs-type">int</span> WINAPI <span class="hljs-title">wWinMain</span><span class="hljs-params">(HINSTANCE hInstance, HINSTANCE, PWSTR pCmdLine, <span class="hljs-type">int</span> nCmdShow)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">//初始化COM库</span><br>    HRESULT hr = <span class="hljs-built_in">CoInitializeEx</span>(<span class="hljs-literal">NULL</span>, COINIT_APARTMENTTHREADED | <br>        COINIT_DISABLE_OLE1DDE);<br>    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">SUCCEEDED</span>(hr))<br>    &#123;<br>        IFileOpenDialog *pFileOpen;<br><br>        <span class="hljs-comment">//创建FileOpenDialog对象。参数依次为：类标识符，NULL，执行上下文，接口标识符，指向接口的指针</span><br>        hr = <span class="hljs-built_in">CoCreateInstance</span>(CLSID_FileOpenDialog, <span class="hljs-literal">NULL</span>, CLSCTX_ALL, <br>                IID_IFileOpenDialog, <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">void</span>**&gt;(&amp;pFileOpen));<br>		<span class="hljs-comment">//创建成功</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">SUCCEEDED</span>(hr))<br>        &#123;<br>            <span class="hljs-comment">//展示对话框</span><br>            hr = pFileOpen-&gt;<span class="hljs-built_in">Show</span>(<span class="hljs-literal">NULL</span>);<br><br>            <span class="hljs-comment">// 从对话框获取文件名</span><br>            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">SUCCEEDED</span>(hr))<br>            &#123;<br>                <span class="hljs-comment">//实现 IShellItem 接口的 Shell 项表示用户选择的文件</span><br>                IShellItem *pItem;<br>                hr = pFileOpen-&gt;<span class="hljs-built_in">GetResult</span>(&amp;pItem);<br>                <span class="hljs-keyword">if</span> (<span class="hljs-built_in">SUCCEEDED</span>(hr))<br>                &#123;<br>                    PWSTR pszFilePath;<br>                    <span class="hljs-comment">// 此方法以字符串的形式获取文件路径</span><br>                    hr = pItem-&gt;<span class="hljs-built_in">GetDisplayName</span>(SIGDN_FILESYSPATH, &amp;pszFilePath);<br><br>                    <span class="hljs-comment">// Display the file name to the user.</span><br>                    <span class="hljs-keyword">if</span> (<span class="hljs-built_in">SUCCEEDED</span>(hr))<br>                    &#123;<br>                        <span class="hljs-comment">//显示显示文件路径的消息框</span><br>                        <span class="hljs-built_in">MessageBoxW</span>(<span class="hljs-literal">NULL</span>, pszFilePath, <span class="hljs-string">L&quot;File Path&quot;</span>, MB_OK);<br>                        <span class="hljs-built_in">CoTaskMemFree</span>(pszFilePath);<br>                    &#125;<br>                    pItem-&gt;<span class="hljs-built_in">Release</span>();<br>                &#125;<br>            &#125;<br>            pFileOpen-&gt;<span class="hljs-built_in">Release</span>();<br>        &#125;<br>        <span class="hljs-comment">//取消初始化COM库</span><br>        <span class="hljs-built_in">CoUninitialize</span>();<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="管理对象的生存期">管理对象的生存期</h2>
+<p>每个 COM 接口都必须直接或间接地从名为 <a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/unknwn/nn-unknwn-iunknown"><strong>IUnknown</strong></a>
+的接口继承。 此接口提供所有 COM
+对象必须支持的一些基线功能，它定义了三种方法：</p>
+<ul>
+<li><a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/unknwn/nf-unknwn-iunknown-queryinterface(q)"><strong>QueryInterface</strong></a></li>
+<li><a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-CN/windows/desktop/api/unknwn/nf-unknwn-iunknown-addref"><strong>AddRef</strong></a></li>
+<li><a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/windows/desktop/api/unknwn/nf-unknwn-iunknown-release"><strong>Release</strong></a></li>
+</ul>
+<p>为了释放资源，C++ 使用自动析构函数，而 C# 和 Java 则使用垃圾回收。COM
+使用称为 <em>引用计数</em>的方法。</p>
+<p>每个 COM 对象都维护内部计数。 这称为引用计数。
+引用计数跟踪对象当前处于活动状态的引用数。
+当引用数降至零时，对象将删除自身。 最后一部分值得重复：对象删除自身。
+程序永远不会显式删除对象。</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-COM-manage.png" srcset="/img/loading.gif" lazyload
+alt="COM管理过程" />
+<figcaption aria-hidden="true">COM管理过程</figcaption>
+</figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">HRESULT <span class="hljs-title">QueryInterface</span><span class="hljs-params">(REFIID riid, <span class="hljs-type">void</span> **ppvObject)</span></span>;<br></code></pre></td></tr></table></figure>
+<p>查询某个组件是否支持某个特定的接口。第一个参数标识客户所需的接口；第二个参数是指向接口的指针。</p>
+<p><a
+target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/win32/learnwin32/memory-allocation-in-com">COM
+中的内存分配 - Win32 apps</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Notebook/" class="category-chain-item">Notebook</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CS/">#CS</a>
+      
+        <a href="/tags/CPP/">#CPP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Win32笔记</div>
+      <div>https://reddish.fun/posts/Notebook/Win32-note/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Introduction-to-Probability-note/" title="《概率导论（第2版）》笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《概率导论（第2版）》笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Git-note/" title="Git笔记">
+                        <span class="hidden-mobile">Git笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

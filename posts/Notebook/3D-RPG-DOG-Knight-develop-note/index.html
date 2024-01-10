@@ -1,0 +1,940 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="unity开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【3D-RPG】DOG-Knight开发笔记">
+<meta property="og:url" content="https://reddish.fun/posts/Notebook/3D-RPG-DOG-Knight-develop-note/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="unity开发">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-05T09:23:36.261Z">
+<meta property="article:modified_time" content="2024-01-10T07:10:38.717Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="Unity">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【3D-RPG】DOG-Knight开发笔记 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【3D-RPG】DOG-Knight开发笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-05 17:23" pubdate>
+          2023年1月5日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          5.1k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">【3D-RPG】DOG-Knight开发笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>unity开发</p>
+<span id="more"></span>
+<p class="note note-primary">
+二次整理自网络教程。
+</p>
+<h1 id="前言">前言</h1>
+<p>本项目参考<a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1rf4y1k7vE?spm_id_from=333.999.0.0&amp;vd_source=1614cbf0a650cda8c72c85046d0d9e51">教程</a>开发。</p>
+<p>开发本项目的在于学习unity使用。</p>
+<p>前置教程：</p>
+<ul>
+<li>Unity官方 C#初级编程 <a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1oy4y1q7jJ">点击跳转</a></li>
+<li>Unity官方 C#中级编程 <a
+target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1f5411G7bp">点击跳转</a></li>
+</ul>
+<h1 id="一-准备工作">一 准备工作</h1>
+<p>开发环境：unity 2020.3.26f1c1 LTS</p>
+<p>IDE：VSCode</p>
+<p>创建3D项目，自行升级到URP渲染管线：</p>
+<ul>
+<li>安装URP插件，右键创建Pipeline Asset，放入Project
+Settings-&gt;Graphics/Quality中的可编程渲染管线设置。</li>
+<li>在素材商店选择合适的免费素材导入到工程中，可以点击素材中的.unitypackage文件升级到URP，也可以在Edit-&gt;Render
+Pipeline中升级。</li>
+</ul>
+<h1 id="二-搭建场景">二 搭建场景</h1>
+<p>Window-&gt;Rendering-&gt;Lighting 设置并烘焙灯光。</p>
+<p>Shadows在URP Asset里设置。</p>
+<p><strong>视点移动</strong>：</p>
+<ul>
+<li>alt+左键 第三人称转动<br />
+</li>
+<li>中键 平移<br />
+</li>
+<li>右键 第一人称转动</li>
+<li>右键+WASD 第一人称视角漫游</li>
+</ul>
+<p><strong>放置技巧</strong>：</p>
+<ul>
+<li><p>v选择顶点，按住拖拽自动吸附到其它顶点上；ctrl+shift，按住拖拽自动吸附到其它平面上</p></li>
+<li><p>ctrl+shift+F：快速定位相机到当前窗口</p></li>
+<li><p>scene面板中F或hierarchy窗口中双击：快速定位到选中物体</p></li>
+</ul>
+<p>安装的第三方工具可以通过Tools使用。Polybrush调整地形，快速刷上Prefab。Probuilder快速制作素材。ProGrids参考线辅助移动。</p>
+<p>使用Navigation烘焙智能导航</p>
+<p>cinemachine添加跟随人物的相机（CM FreeLook）。</p>
+<p>创建Global Volume生成各种效果（记得在Main
+Camera里面启动Rendering-&gt;Post Processing）。</p>
+<p>为人物自制Animator，不同Layer放置不同类别动画，在代码中Set
+Parameters来控制动画。可以通过Animator Override
+Controller基于现有Animator快速创建新的。可以为每个Animation添加单独的Behaviour脚本。</p>
+<p>使用Shader Graph自制材质。</p>
+<p>在URP Asset自带的Forward Render中添加Render
+Objects，为指定的Layer的游戏对象设置遮挡剔除（09课）。</p>
+<p>想让游戏对象不阻挡射线，可以设置为Ignore Raycast Layer或者关闭Mesh
+Collider。</p>
+<h1 id="三-代码编写">三 代码编写</h1>
+<h2 id="managers">3.1 Managers</h2>
+<p>此类代码用于全局管理，都是单例的。单例泛型类实现如下.</p>
+<p>此外，它们不随关卡变化销毁，需在各自<code>Awake()</code>方法里加上<code>DontDestroyOnLoad(this);</code>。</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> System.Collections.Generic;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span>&lt;<span class="hljs-title">T</span>&gt; : <span class="hljs-title">MonoBehaviour</span> <span class="hljs-keyword">where</span> <span class="hljs-title">T</span> : <span class="hljs-title">Singleton</span>&lt;<span class="hljs-title">T</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> T instance;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> T Instance<br>    &#123;<br>        <span class="hljs-keyword">get</span> =&gt; instance;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">bool</span> IsInitialized<br>    &#123;<br>        <span class="hljs-keyword">get</span> =&gt; instance != <span class="hljs-literal">null</span>;<br>    &#125;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (instance != <span class="hljs-literal">null</span>)<br>            Destroy(gameObject);<br>        <span class="hljs-keyword">else</span><br>            instance = (T)<span class="hljs-keyword">this</span>;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnDestory</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (instance == <span class="hljs-keyword">this</span>)<br>        &#123;<br>            instance = <span class="hljs-literal">null</span>;<br>        &#125;<br>    &#125;<br><br><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="mousemanager">3.1.1 MouseManager</h2>
+<p><strong>通过观察者模式控制鼠标点击触发的操作</strong></p>
+<p>继承<code>UnityEngine.Events</code>中的<code>UnityEvent&lt;&gt;</code>可以建立事件类。（由于没有继承自MonoBehaviour，需要给类加上[System.Serializable]，其变量才能在窗口中显示出来。）在窗口中控制事件类的对象触发的操作。</p>
+<p>也可以自行创建委托代替事件类，编写代码控制委托触发的操作。这里我是用这种方法。</p>
+<p><strong>Update()</strong></p>
+<p><code>Camera.main.ScreenPointToRay(Input.mousePosition)</code>获取摄像机向鼠标位置发出的光线，<code>Physics.Raycast(ray, out hitInfo)</code>获取光线碰撞信息到hitInfo，然后根据hitInfo获取游戏对象的tag，根据tag设置鼠标的纹理<code>Cursor.SetCursor</code>。</p>
+<p><code>Input.GetMouseButtonDown(0)</code>当鼠标左键点击时，根据当前点击游戏对象的tag触发委托，进行移动、攻击等操作。</p>
+<h2 id="gamemanager">3.1.2 GameManager</h2>
+<p>创建IEndGameObserver接口作为观察者：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">IEndGameObserver</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">EndNotify</span>()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>使用列表<code>List&lt;IEndGameObserver&gt;</code>储存观察者，主体包含一下管理观察者的方法：</p>
+<figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddObserver</span>(<span class="hljs-params">IEndGameObserver observer</span>)</span><br>&#123;<br>    endGameObservers.Add(observer);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">RemoveObserver</span>(<span class="hljs-params">IEndGameObserver observer</span>)</span><br>&#123;<br>    endGameObservers.Remove(observer);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">NotifyObservers</span>()</span><br>&#123;<br>    <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">var</span> observer <span class="hljs-keyword">in</span> endGameObservers)<br>    &#123;<br>        observer.EndNotify();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>此外在GameManager中添加玩家状态、相机这些需要全局使用的游戏对象。</p>
+<h2 id="savemanager">3.1.3 SaveManager</h2>
+<p>将游戏数据用JsonUtility转化为json，利用PlayerPrefs保存游戏数据。Windows的默认保存位置在注册表HKEY_CURRENT_USER。</p>
+<p><strong>Update()</strong></p>
+<p>根据键盘输入进行保存和加载操作。</p>
+<h2 id="character">3.2 Character</h2>
+<p>此类代码用于游戏主角/敌人的控制。仅简单描述其逻辑。</p>
+<h2 id="playercontroller">3.2.1 PlayerController</h2>
+<p><strong>Awake()</strong></p>
+<p>通过<code>GetComponent&lt;&gt;</code>获取身上的各种组件。</p>
+<p><strong>OnEnable()</strong></p>
+<p>将指定的方法添加到MouseManager的委托中，使其被鼠标点击触发。</p>
+<p>将玩家的CharacterStats注册到GameManager中。</p>
+<p><strong>Start()</strong></p>
+<p>加载存档数据。</p>
+<p><strong>OnDisable()</strong></p>
+<p>为了防止场景切换时发生错误，将指定的方法从MouseManager的委托中移除。</p>
+<p><strong>Update()</strong></p>
+<p>如果死亡，通过GameManager向所有观察者发布死亡消息。</p>
+<p>通过Animator切换/控制Animation。</p>
+<p>记录攻击CD的倒计时。</p>
+<p><strong>移动</strong></p>
+<p>中断所有协程。控制NavMeshAgent。</p>
+<p><strong>攻击</strong></p>
+<p>获取攻击目标，进行暴击判定。通过协程移动并攻击。</p>
+<p><code>Physics.OverlapSphere(transform.position, sightRadius)</code>找到视野内的所有colliders。</p>
+<p>使用Animation
+Event控制伤害造成的时机。对可击飞目标的Rigidbody加力。</p>
+<h2 id="enemycontroller">3.2.2 EnemyController</h2>
+<p>通过<code>[RequireComponent(typeof(NavMeshAgent))]</code>自动添加组件。</p>
+<p>通过<code>[Header("Basic Settings")]</code>设置窗口头部。</p>
+<p>使用枚举EnemyStates规定敌人的状态<code>GUARD,PATROL,CHASE,DEAD</code>。</p>
+<p>实现IEndGameObserver接口（以作为观察者）的<code>EndNotify()</code>方法，进行被通知之后的操作。</p>
+<p>创建ExtensionMethod为transform添加<code>IsFacingTarget(this Transform transform, Transform target)</code>扩展方法，便于判断角色是否面对目标</p>
+<p><strong>Awake()</strong></p>
+<p>通过<code>GetComponent&lt;&gt;</code>获取身上的各种组件。</p>
+<p><strong>Start()</strong></p>
+<p>通过GameManager添加自己为观察者。</p>
+<p><strong>OnDisable()</strong></p>
+<p>移除观察者。</p>
+<p><strong>Update()</strong></p>
+<p>根据当前状态行动（switch）。切换动画。记录攻击CD的倒计时。</p>
+<p>使用<code>Random.Range</code>和<code>NavMesh.SamplePosition</code>获得随机巡逻点。</p>
+<p><strong>OnDrawGizmosSelected()</strong></p>
+<p>绘制显示敌人视野范围的小组件。</p>
+<p><strong>子类Grunt</strong></p>
+<p>为Grunt添加击飞方法</p>
+<p><strong>子类Golem</strong></p>
+<p>为Golem添加击飞方法和扔石头方法</p>
+<h2 id="character-stats">3.3 Character Stats</h2>
+<p>此类代码用于记录游戏数据。</p>
+<p>CharacterData_SO、AttackData_SO继承自ScriptableObject，使用字段记录基本数据、攻击数据。CharacterStats类使用属性和方法提供对前者的控制。</p>
+<h2 id="ui">3.4 UI</h2>
+<p>使用canvas、image、button。</p>
+<h2 id="healthbarui">3.4.1 HealthBarUI</h2>
+<p>挂载在每个敌人身上。需要在敌人身上创建barPoint作为血条位置参考。</p>
+<p><strong>Awake()</strong></p>
+<p>将血条更新方法添加到CharacterStats的委托中，在收到伤害时触发。</p>
+<p><strong>OnEnable()</strong></p>
+<p>对于Render Mode为World Space的HealthBar
+Canvas，每个脚本均创建独立的Bar Holder，以红/绿image叠加显示血条。</p>
+<p><strong>LateUpdate()</strong></p>
+<p>更新血条位置（根据敌人位置）和朝向（根据相机朝向）</p>
+<p>刷新血条显示冷却时间。</p>
+<h2 id="playerhealthui">3.4.2 PlayerHealthUI</h2>
+<p>挂载在玩家身上。Render Mode为Screen
+Space。在每一帧更新血量和经验值。</p>
+<h2 id="mainmenu">3.4.3 MainMenu</h2>
+<p>挂载在Menu Canvas上。给主界面UI相应按钮注册鼠标点击事件。</p>
+<h2 id="scenefader">3.4.4 SceneFader</h2>
+<p>挂载在Fade Canvas上。利用Canvas Group的alpha通道实现渐入渐出。</p>
+<h2 id="transition">3.5 Transition</h2>
+<h2 id="transitiondesitination">3.5.1 TransitionDesitination</h2>
+<p>目的地枚举<code>ENTER, A, B, C, EXIT</code>。</p>
+<h2 id="transitionpoint">3.5.2 TransitionPoint</h2>
+<p>传送类型枚举<code>SameScene, DifferentScene</code>。</p>
+<p>传送门挂载TransitionPoint和
+TransitionDesitination，设定传送类型和目的地。</p>
+<p>将传送门的Box Collider标记为Is
+Trigger，通过<code>void OnTriggerStay(Collider other)</code>和<code>void OnTriggerExit(Collider other)</code>方法改变变量canTrans，标记是否可以传送。</p>
+<p><strong>Update()</strong></p>
+<p>按E传送。</p>
+<h2 id="scenecontroller">3.5.3 SceneController</h2>
+<p>单例模式。</p>
+<p>通过协程异步加载场景并传送。</p>
+<p>所有的传送方法均放在这里。</p>
+<h1 id="四-打包及运行">四 打包及运行</h1>
+<p>File-&gt;Build Settings中将所有场景加入，Edit-&gt;Project
+Settings-&gt;Player中设置游戏名。</p>
+<p>使用IL2CPP作为脚本后端打包，游戏更小性能更高。</p>
+<h1 id="版本控制">版本控制</h1>
+<p>版本控制系统<strong>plasticSCM</strong>有两种使用方式：</p>
+<ol type="1">
+<li><p>通过unity
+hub创建仓库把项目托管到plasticSCM，使用unity自带的plastichub作为服务器
+<a target="_blank" rel="noopener" href="https://plastichub.unity.cn/">Plastic Hub
+(unity.cn)</a>。</p></li>
+<li><p>在引擎里打开Window里的plasticSCM，通过uniy登录plasticSCM官网，创建仓库，使用官方
+<a target="_blank" rel="noopener" href="https://www.plasticscm.com/">Plastic
+SCM</a>作为服务器。</p></li>
+</ol>
+<p>以上两种方式建立的仓库的服务器不同，但在登录同一个plasticSCM账号的客户端都能看到。后者这个有更大的免费容量（50GB）。</p>
+<p>如果已经安装了plasticSCM客户端，此时不再需要安装plasticSCM插件。不然会出现编译错误（dll冲突）和奇怪BUG（Preference里的External
+Tools选项卡为空白）。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Notebook/" class="category-chain-item">Notebook</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Unity/">#Unity</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【3D-RPG】DOG-Knight开发笔记</div>
+      <div>https://reddish.fun/posts/Notebook/3D-RPG-DOG-Knight-develop-note/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Notebook/CMake-note/" title="CMake笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CMake笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Deep-Learning-with-Pytorch-note/" title="《pytorch深度学习实战》笔记">
+                        <span class="hidden-mobile">《pytorch深度学习实战》笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

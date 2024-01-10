@@ -1,0 +1,1574 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="初学时记录一些简单的复现，后不再更新。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="复现纪要">
+<meta property="og:url" content="https://reddish.fun/posts/Research/reproduction/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="初学时记录一些简单的复现，后不再更新。">
+<meta property="og:locale">
+<meta property="og:image" content="https://cdfg.csail.mit.edu/assets/images/brdf.jpg">
+<meta property="article:published_time" content="2023-01-01T00:58:42.588Z">
+<meta property="article:modified_time" content="2024-01-06T14:40:44.211Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdfg.csail.mit.edu/assets/images/brdf.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>复现纪要 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="复现纪要"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-01 08:58" pubdate>
+          2023年1月1日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          24k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">复现纪要</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>初学时记录一些简单的复现，后不再更新。</p>
+<span id="more"></span>
+<h1 id="复现nerf">复现NeRF</h1>
+<p>Mildenhall B , Srinivasan P P , Tancik M , et al. NeRF: Representing
+Scenes as Neural Radiance Fields for View Synthesis[J]. Springer, Cham,
+2020.</p>
+<h2 id="运行环境">1. 运行环境</h2>
+<h3 id="ubuntu">1.1 ubuntu</h3>
+<h4 id="软硬件">1.1.1 软硬件</h4>
+<p>设备：华硕魔霸新锐2021</p>
+<p>系统：Ubuntu 21.10</p>
+<p>显卡：NVIDIA GeForce RTX 3060 Laptop GPU</p>
+<p>python环境：（与项目原环境不同）</p>
+<p>conda</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 运行 conda env create -f environment.yml</span><br><span class="hljs-comment"># 以下是environment.yml中的内容</span><br><span class="hljs-attr">name:</span> <span class="hljs-string">nerf2</span><br><span class="hljs-attr">channels:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">conda-forge</span><br><span class="hljs-attr">dependencies:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">python=3.7</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">pip</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">numpy</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">matplotlib</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">imageio</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">imageio-ffmpeg</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">configargparse</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">imagemagick</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">pip:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-string">tensorflow-gpu==2.5.0</span><br></code></pre></td></tr></table></figure>
+<p>tensorflow-gpu==2.5.0也可以通过<em>pip install tensorflow-gpu==2.5.0
+(-i https://pypi.doubanio.com/simple</em> ,指定安装渠道) 安装。</p>
+<h4 id="备注">1.1.2 备注</h4>
+<ol type="1">
+<li><p>该项目的依赖imagemagick仅有linux和osx版本，没有windows版本，因此使用ubuntu。</p></li>
+<li><p>Ubuntu 21.10
+之前的LTS版本没有合适此设备的键盘驱动和WIFI驱动。</p></li>
+<li><p>3060只支持cuda11.1版本及以上，不兼容tensorflow1及相应cuda，运行项目会报错误（<a
+target="_blank" rel="noopener" href="https://github.com/bmild/nerf/issues/127">类似问题</a>），因此使用tensorflow2（<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/357652959">参考</a>)。</p></li>
+<li><p>由于使用tensorflow2，以脚本为主、手工为辅的方式（<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/248557773">参考</a>）将原代码由tensorflow1改造升级到tensorflow2。</p></li>
+<li><p>发现在conda中安装cudatoolkit和cudnn会找不到3060，因此手动安装（<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/393023811">参考</a>）。采用cudnn
+8.1+cuda
+11.2。nvdia-smi显示cuda版本大于等于nvcc显示的cuda版本即可。</p></li>
+<li><p>tensorflow-gpu==2.5.0不可使用conda安装，单独安装（<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/QAQIknow/article/details/118858870">参考</a>）</p></li>
+<li><p>测试gpu</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> tensorflow <span class="hljs-keyword">as</span> tf<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Num GPUs Available: &quot;</span>, <span class="hljs-built_in">len</span>(tf.config.experimental.list_physical_devices(<span class="hljs-string">&#x27;GPU&#x27;</span>)))<br></code></pre></td></tr></table></figure></li>
+<li><p>关闭ubuntu的合盖挂起。在使用GPU训练的时候如果挂机会导致nvidia驱动损坏，无法使用nvidia-smi，需要重装nvidia驱动（但不影响nvcc）。如果使用nvidia官方的驱动重装非常麻烦，并且可能会导致开机黑屏的bug，此刻需要进入ubuntu高级选项-恢复模式，通过root进入命令行，卸载nvidia驱动（直接使用命令卸载可能卸载不掉，需要使用nvidia驱动的安装文件卸载）。所以推荐使用标准ubuntu仓库进行驱动的自动安装。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">sudo ubuntu-drivers devices<br>sudo ubuntu-drivers autoinstall<br>sudo reboot<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="windows">1.2 windows</h3>
+<h4 id="软硬件-1">1.2.1 软硬件</h4>
+<p>设备：华硕魔霸新锐2021</p>
+<p>系统：windows 10</p>
+<p>显卡：NVIDIA GeForce RTX 3060 Laptop GPU</p>
+<p>python环境：（与项目原环境不同）</p>
+<p>conda</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># 运行 conda env create -f environment_win.yml</span><br><span class="hljs-comment"># 以下是environment_win.yml中的内容</span><br><span class="hljs-attr">name:</span> <span class="hljs-string">nerf2</span><br><span class="hljs-attr">channels:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">conda-forge</span><br><span class="hljs-attr">dependencies:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">python=3.7</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">pip</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">numpy</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">matplotlib</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">imageio</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">imageio-ffmpeg</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">configargparse</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">pip:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-string">tensorflow-gpu==2.5.0</span><br></code></pre></td></tr></table></figure>
+<h4 id="备注-1">1.2.2 备注</h4>
+<ol type="1">
+<li>windows10中需安装好cudnn 8.1+cuda 11.2。</li>
+<li>代码需要升级到tensorflow2。</li>
+<li>相比在ubuntu中配置环境时去掉了原作者的imagemagick依赖。可以正常训练。</li>
+<li>在conda中激活建立好的nerf2环境后，使用命令python run_nerf_RE.py
+--config ./configs/config_fern.txt开启训练fern模型。</li>
+</ol>
+<h2 id="实际运行">2.实际运行</h2>
+<h3 id="本地验证">2.1 本地验证</h3>
+<p>复现使用作者的<a
+target="_blank" rel="noopener" href="https://github.com/bmild/nerf">原代码</a>，在这里使用python
+run_nerf.py --config config_fern.txt 运行fern
+demo。（没有使用paper_configs里的llff_config，使用的作者提供的简化版config_fern.txt）</p>
+<p>如果直接使用原来的参数运行，由于训练规模过大，在训练一定轮次后，会报<strong>显存不够</strong>的错误：</p>
+<p>tensorflow.python.framework.errors_impl.ResourceExhaustedError: OOM
+when allocating tensor with shape[4194304,90] and type float on
+/job:localhost/replica:0/task:0/device:GPU:0 by allocator GPU_0_bfc
+[Op:ConcatV2] name: concat</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E6%98%BE%E5%AD%98%E4%B8%8D%E8%B6%B3.png" srcset="/img/loading.gif" lazyload
+alt="显存不足" />
+<figcaption aria-hidden="true">显存不足</figcaption>
+</figure>
+<p>应该是因为我的3060的6G显存不如作者使用的nvidia v100。</p>
+<p>因此，将config_fern.txt中的参数由：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">N_samples</span> = <span class="hljs-number">64</span><br><span class="hljs-attr">N_importance</span> = <span class="hljs-number">64</span><br></code></pre></td></tr></table></figure>
+<p>降低为：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">N_samples</span> = <span class="hljs-number">16</span><br><span class="hljs-attr">N_importance</span> = <span class="hljs-number">16</span><br></code></pre></td></tr></table></figure>
+<p>以减小训练规模，然后可以正常训练。</p>
+<p>实际运行中的GPU情况：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-GPU-usage.png" srcset="/img/loading.gif" lazyload
+alt="GPU使用情况" />
+<figcaption aria-hidden="true">GPU使用情况</figcaption>
+</figure>
+<p><strong>Terminal输出：</strong></p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-Terminal-output.png" srcset="/img/loading.gif" lazyload
+alt="Terminal输出" />
+<figcaption aria-hidden="true">Terminal输出</figcaption>
+</figure>
+<p><strong>tesnorboard输出：</strong></p>
+<p>使用命令tensorboard --logdir=logs/summaries --port=6006，查看网页</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-tensorboard1.png" srcset="/img/loading.gif" lazyload
+alt="tensorboard1" />
+<figcaption aria-hidden="true">tensorboard1</figcaption>
+</figure>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-tensorboard2.png" srcset="/img/loading.gif" lazyload
+alt="tensorboard2" />
+<figcaption aria-hidden="true">tensorboard2</figcaption>
+</figure>
+<p>最后输出的视频位于logs/fern_test文件夹中</p>
+<p>完成整个训练过程大概需要34个小时（跑完1000k
+iterations，没有收敛）。因此减小训练参数效果不好。</p>
+<h3 id="复现论文">2.2 复现论文</h3>
+<p>因为在本地6G显存的3060上无法复现论文，所以采用24G的3090进行复现。</p>
+<p><strong>3060与3090可以使用完全相同的环境。</strong></p>
+<p>实际复现时使用了17G显存，迭代了200k次，大概24个小时。PSNR达到了论文的效果。</p>
+<h3 id="训练细节">2.3 训练细节</h3>
+<p>llff类型数据：</p>
+<p>使用手机拍摄20张以上的照片，使用colmap自动生成相机参数。</p>
+<p>我使用的是和作者一个型号的手机，因此拍照照片大小一样，均为4096*3024。拍完后分别做四分之一降采样和八分之一降采样的照片备用。作者在论文中使用的是四分之一降采样的照片做训练。</p>
+<p>要求图片的长宽是16的整数倍，否则网络会做裁剪处理，可能会导致损失增大。</p>
+<p>手动拍摄的照片之间基线不能太宽，角度变化不能太大。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># render_rays函数的以下语句在处理360度环视场景时会报错</span><br>tf.debugging.check_numerics(ret[k], <span class="hljs-string">&#x27;output &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(k))<br></code></pre></td></tr></table></figure>
+<h2 id="代码分析">3.代码分析</h2>
+<p>以实际运行的fern demo为例子</p>
+<h3 id="输入参数列表">3.1 输入参数列表</h3>
+<table>
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">参数名</th>
+<th>默认值</th>
+<th style="text-align: left;">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">config</td>
+<td></td>
+<td style="text-align: left;">配置文件路径</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">expname</td>
+<td></td>
+<td style="text-align: left;">实验名</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">basedir</td>
+<td>./logs/</td>
+<td style="text-align: left;">存放ckpts和logs的路径</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">datadir</td>
+<td>./data/llff/fern</td>
+<td style="text-align: left;">输入数据路径</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">netdepth</td>
+<td>8</td>
+<td style="text-align: left;">网络层数</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">netwidth</td>
+<td>256</td>
+<td style="text-align: left;">每层的通道数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N_rand</td>
+<td>32*32*4</td>
+<td style="text-align: left;">批大小 (每一梯度步的随即光线数)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lrate</td>
+<td>5e-4</td>
+<td style="text-align: left;">学习率</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">lrate_decay</td>
+<td>250</td>
+<td style="text-align: left;">指数学习率下降(1000s内)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">chunk</td>
+<td>1024*32</td>
+<td style="text-align: left;">平行处理的光线数(内存不足时应减小)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">netchunk</td>
+<td>1024*64</td>
+<td
+style="text-align: left;">网络里平行发送的pts数(内存不足时应减小)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">no_batching</td>
+<td>False</td>
+<td style="text-align: left;">一次只从一张图片获取随机光线</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">no_reload</td>
+<td>False</td>
+<td style="text-align: left;">不从保存的模型中重载权重</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ft_path</td>
+<td>None</td>
+<td style="text-align: left;">专为coarse网络重载的权重npy文件</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">random_seed</td>
+<td>None</td>
+<td style="text-align: left;">确保结果可以复现的固定随机种子</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">precrop_iters</td>
+<td>0</td>
+<td style="text-align: left;">在central crops训练的步数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">precrop_frac</td>
+<td>0.5</td>
+<td style="text-align: left;">为central crops拿的图片部分</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">N_samples</td>
+<td>64</td>
+<td style="text-align: left;">每道光线的粗采样数</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">N_importance</td>
+<td>0</td>
+<td style="text-align: left;">每道光线的附加细采样数</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">perturb</td>
+<td>1.</td>
+<td style="text-align: left;">0. for no jitter, 1. for jitter</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">use_viewdirs</td>
+<td>False</td>
+<td style="text-align: left;">使用5D而不是3D输入</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">i_embed</td>
+<td>0</td>
+<td style="text-align: left;">0对应默认位置编码，1对应None</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">multires</td>
+<td>10</td>
+<td style="text-align: left;">位置编码的最大频率对数（3D位置）</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">multires_views</td>
+<td>4</td>
+<td style="text-align: left;">位置编码的最大频率对数（2D方向）</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">raw_noise_std</td>
+<td>0.</td>
+<td style="text-align: left;">std dev of noise added to regularize
+sigma_a output, 1e0 recommended</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">render_only</td>
+<td>False</td>
+<td style="text-align: left;">do not optimize, reload weights and render
+out render_poses path</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">render_test</td>
+<td>False</td>
+<td style="text-align: left;">render the test set instead of
+render_poses path</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">render_factor</td>
+<td>0</td>
+<td style="text-align: left;">downsampling factor to speed up rendering,
+set 4 or 8 for fast preview</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">dataset_type</td>
+<td>llff</td>
+<td style="text-align: left;">三个选项：llff / blender / deepvoxels</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">testskip</td>
+<td>8</td>
+<td style="text-align: left;">will load 1/N images from test/val sets,
+useful for large datasets like deepvoxels</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">shape</td>
+<td>greek</td>
+<td style="text-align: left;">四个选项：armchair / cube / greek /
+vase</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white_bkgd</td>
+<td>False</td>
+<td style="text-align: left;">set to render synthetic data on a white
+bkgd (always use for dvoxels)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">half_res</td>
+<td>False</td>
+<td style="text-align: left;">load blender synthetic data at 400x400
+instead of 800x800</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">factor</td>
+<td>8</td>
+<td style="text-align: left;">LLFF图片的降采样因子</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">no_ndc</td>
+<td>False</td>
+<td style="text-align: left;">do not use normalized device coordinates
+(set for non-forward facing scenes)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">lindisp</td>
+<td>False</td>
+<td style="text-align: left;">sampling linearly in disparity rather than
+depth</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">spherify</td>
+<td>False</td>
+<td style="text-align: left;">set for spherical 360 scenes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">llffhold</td>
+<td>8</td>
+<td style="text-align: left;">will take every 1/N images as LLFF test
+set, paper uses 8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">i_print</td>
+<td>100</td>
+<td style="text-align: left;">控制台打印频率</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">i_img</td>
+<td>500</td>
+<td style="text-align: left;">tesnorboard图片注册频率</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">i_weights</td>
+<td>1000</td>
+<td style="text-align: left;">权重模型保存频率</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">i_testset</td>
+<td>5000</td>
+<td style="text-align: left;">测试集保存频率</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">i_video</td>
+<td>5000</td>
+<td style="text-align: left;">渲染姿态视频保存频率</td>
+</tr>
+</tbody>
+</table>
+<h3 id="训练过程">3.2 训练过程</h3>
+<p>输入数据位于data/nerf_llff_data/fern</p>
+<p>输出数据位于logs/fern_test</p>
+<ul>
+<li>调用run_nerf.py train()函数
+<ul>
+<li>调用config_parser()函数，获取外部参数args</li>
+<li>确定random_seed</li>
+<li>确定数据类型，llff / blender / deepvoxels其中之一。</li>
+<li>复现使用数据类型为llff，因此调用load_llff.py
+load_llff_data()加载数据。
+<ul>
+<li>load_llff_data()传入数据路径（./data/nerf_llff_data/fern）、降采样因子（8）、recenter
+(True)，bd_factor(0.75)，spherify（False）</li>
+<li>根据根据降采样因子处理图片得到新图片（如果不存在）</li>
+<li>从poses_bounds.npy读取poses和bds，从图片文件夹读取imgs</li>
+</ul></li>
+<li>将使用的配置写入args.txt和config.txt</li>
+<li>使用create_nerf()建立模型</li>
+<li>如果render_only参数为真，从训练好的模型渲染出结果</li>
+<li>开启训练</li>
+<li>输出的视频为螺旋视角移动的视频</li>
+</ul></li>
+</ul>
+<h3 id="pose生成">3.3 Pose生成</h3>
+<p>论文作者推荐使用LLFF code<sup><a class=n href="#ref3">[3]</a></sup>
+里的脚本imgs2poses.py来生成Pose，然后将数据以llff类型传入模型。于是我先采用一下这个方法。</p>
+<p>（以下过程是在ubuntu上编译安装colmap，比较麻烦。在windows上直接安装很简单，下载好之后配上环境变量就行了。）</p>
+<p>我一开始使用conda直接安装colmap，但是运行时会报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">Shader not supported by your hardware!<br>ERROR: SiftGPU not fully supported.<br></code></pre></td></tr></table></figure>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-SiftGPU.png" srcset="/img/loading.gif" lazyload
+alt="SiftGPU" />
+<figcaption aria-hidden="true">SiftGPU</figcaption>
+</figure>
+<p>这个问题我完全不知道怎么解决，可能3060及其驱动又和程序出现了兼容性问题。</p>
+<p>可以从github的相关issue中看到<a
+target="_blank" rel="noopener" href="https://github.com/colmap/colmap/issues/971">有人提到</a> SiftGPU
+is rather old and not optimized with the latest GPU architecture, so it
+is very inefficient.</p>
+<p><del>但是我的驱动已经是为了在3060上训练模型专门选择过了的，我不想再次更换。</del></p>
+<p>于是我手动编译<a
+target="_blank" rel="noopener" href="https://colmap.github.io/install.html">安装colmap</a>，遇到了以下问题：</p>
+<ol type="1">
+<li>编译 <a target="_blank" rel="noopener" href="http://ceres-solver.org/">Ceres
+Solver</a>这一步会把16G的内存跑满，导致编译失败甚至电脑重启。最好的解决办法是把交换区扩大。我是参考<a
+target="_blank" rel="noopener" href="https://www.linuxidc.com/Linux/2019-07/159580.htm">这篇文章</a>把交换区从2G扩大到10G。</li>
+<li>编译colmap过程中，因为安装了anaconda导致系统库的路径被覆盖掉。进行到这里时，把~/.bashrc里的conda的环境变量注释掉。</li>
+<li>ubuntu21.10自带的gcc (Ubuntu 11.2.0-7ubuntu2) 11.2.0和g++ (Ubuntu
+11.2.0-7ubuntu2)
+11.2.0版本太高，无法正确编译colmap中的一些模块，因此安装9版本代替11版本（<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/Cxiazaiyu/article/details/106731687">参考</a>）。</li>
+</ol>
+<p>手动安装的colmap终于可用了，但我遇到了一个全新的问题。（<a
+target="_blank" rel="noopener" href="https://github.com/Fyusion/LLFF/issues/36">相同的issue</a>）</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-error1.png" srcset="/img/loading.gif" lazyload
+alt="error1" />
+<figcaption aria-hidden="true">error1</figcaption>
+</figure>
+<p>根据我自己的实验，colmap在作者提供的数据集上运行的很完美，说明只是我只是拍的照片不够“好”，不足以让colmap匹配这些图片。（这种情况是，如果我对自己拍摄的照片进行降采样，就会使colmap无法匹配）</p>
+<p>我自己用手机拍摄的一个数据集：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-toyset.png" srcset="/img/loading.gif" lazyload
+alt="toyset" />
+<figcaption aria-hidden="true">toyset</figcaption>
+</figure>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-toy.JPG" srcset="/img/loading.gif" lazyload
+alt="toy" />
+<figcaption aria-hidden="true">toy</figcaption>
+</figure>
+<p>​ 实验证明可以用colmap生成相机参数并输入nerf或grf训练。</p>
+<h2 id="评价标准">4.评价标准</h2>
+<h3 id="psnr">4.1 PSNR</h3>
+<p>Peak Signal to Noise Ratio 峰值信躁比</p>
+<p>它是基于对应像素点间误差的图像质量评价。</p>
+<blockquote>
+<p>由于并未考虑到人眼的视觉特性（人眼对空间频率较低的对比差异敏感度较高，人眼对亮度对比差异的敏感度较色度高，人眼对一个区域的感知结果会受到其周围邻近区域的影响等），因而经常出现评价结果与人的主观感觉不一致的情况。</p>
+</blockquote>
+<p><span class="math display">\[
+MSE=\frac{1}{H\times W} \sum_{i=1}^{H} \sum_{j=1}^{W}(X(i,j)-Y(i,j))^2
+\]</span></p>
+<p><span class="math display">\[
+PSNR=10\log_{10}{(\frac{(2^{n}-1)^2}{MSE} )}
+\]</span></p>
+<p>其中，MSE表示当前图像X和参考图像Y的均方误差（Mean Square
+Error)，H、W分别为图像的高度和宽度；n为每像素的比特数，一般取8，即像素灰阶数为256。</p>
+<p><span
+class="math inline">\(PSNR\)</span>的单位是dB，数值越大表示失真越小。</p>
+<p>一般来说，<span
+class="math inline">\(PSNR\)</span>高于40dB说明图像质量几乎与原图一样好；在30-40dB之间通常表示图像质量的失真损失在可接受范围内；在20-30dB之间说明图像质量比较差；低于20dB说明图像失真严重。</p>
+<h3 id="ssim">4.2 SSIM</h3>
+<p>Structural Similarity 结构相似性</p>
+<p>它分别从照明度(luminance)、对比度 (contrast) 和结构
+(structure)三方面度量图像相似性。 <span class="math display">\[
+l(X,Y)=\frac{2\mu_{x}\mu_{y}+C_{1}}{\mu_{x}^2+\mu_{y}^2+C_{1}}
+\]</span></p>
+<p><span class="math display">\[
+c(X,Y)=\frac{2\sigma_{x}\sigma_{y}+C_{2}}{\sigma_{x}^2+\sigma_{y}^2+C_{2}}
+\]</span></p>
+<p><span class="math display">\[
+s(X,Y)=\frac{\sigma_{xy}+C_{3}}{\sigma_{x}\sigma_{y}+C_{3}}
+\]</span></p>
+<p>其中<span class="math inline">\(\mu_{x}\)</span>、<span
+class="math inline">\(\mu_{y}\)</span>分别表示图像X和Y的均值，<span
+class="math inline">\(\sigma_{x}\)</span>、<span
+class="math inline">\(\sigma_{y}\)</span>分别表示图像X和Y的方差，<span
+class="math inline">\(\sigma_{xy}\)</span>表示图像X和Y的协方差。</p>
+<p><span class="math inline">\(C_{1}\)</span>、<span
+class="math inline">\(C_{1}\)</span>、<span
+class="math inline">\(C_{3}\)</span>为常数，为了避免分母为0的情况，通常取<span
+class="math inline">\(C_{1}=(K_{1}*L)^2\)</span>, <span
+class="math inline">\(C_{2}=(K_{2}*L)^2\)</span>, <span
+class="math inline">\(C_{3}=C_{2}/2\)</span>，一般地<span
+class="math inline">\(K_{1}=0.01\)</span>, <span
+class="math inline">\(K_{2}=0.03\)</span>, <span
+class="math inline">\(L=255\)</span>。 <span class="math display">\[
+SSIM(X,Y)=l(X,Y)c(X,Y)s(X,Y)\sim[0,1]
+\]</span> <span class="math inline">\(SSIM\)</span>取值范围<span
+class="math inline">\([0,1]\)</span>，值越大，表示图像失真越小。</p>
+<h3 id="lpips">4.3 LPIPS</h3>
+<p>Learned Perceptual Image Patch Similarity 学习感知图像块相似度</p>
+<p>它也称为“感知损失”(perceptual
+loss)，用于度量两张图像之间的差别。<sup><a class=n href="#ref2">[2]</a></sup></p>
+<p><span
+class="math inline">\(LPIPS\)</span>的值越低表示两张图像越相似，反之，则差异越大。</p>
+<h2 id="参考文献">参考文献</h2>
+<p><a name="ref1">[1] Mildenhall B , Srinivasan P P , Tancik M , et al.
+NeRF: Representing Scenes as Neural Radiance Fields for View
+Synthesis[J]. Springer, Cham, 2020.</a></p>
+<p><a name="ref2">[2] Zhang R , Isola P , Efros A A , et al. The
+Unreasonable Effectiveness of Deep Features as a Perceptual Metric[J].
+IEEE, 2018.</a></p>
+<p><a name="ref3">[3]  Mildenhall B , Srinivasan P P , Ortiz-Cayon R ,
+et al. Local Light Field Fusion: Practical View Synthesis with
+Prescriptive Sampling Guidelines[J]. ACM Transactions on Graphics, 2019,
+38(4):1-14.</a></p>
+<h1 id="复现extracting">复现Extracting</h1>
+<p>Munkberg J, Hasselgren J, Shen T, et al. Extracting Triangular 3D
+Models, Materials, and Lighting From Images[C]//Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition. 2022:
+8280-8290.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/NVlabs/nvdiffrec">代码仓库</a></p>
+<p>装环境的时候使用国内源不要使用-c pytorch</p>
+<p>驱动要求：</p>
+<p>https://github.com/NVlabs/nvdiffrec/issues/46</p>
+<p>安装 CUDA Toolkit 11.7 <a
+target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-downloads?target_os=Windows&amp;target_arch=x86_64&amp;target_version=10&amp;target_type=exe_network">link</a></p>
+<p>安装 Vulkan SDK (someone mentioned to do this in a linux post) NOTE!
+Make sure that the Vulkan SDK is in your PATH environment variables: <a
+target="_blank" rel="noopener" href="https://vulkan.lunarg.com/doc/view/1.2.148.1/windows/getting_started.html">Vulkan
+SDK Install Instructions</a></p>
+<h1 id="复现grf">复现GRF</h1>
+<p>Trevithick A , Yang B . GRF: Learning a General Radiance Field for 3D
+Scene Representation and Rendering[J]. 2020.</p>
+<h2 id="运行环境-1">1.运行环境</h2>
+<p>可以使用与《复现NeRF》完全相同的环境。GRF的代码一部分基于NeRF。</p>
+<h2 id="实验内容">2.实验内容</h2>
+<p>参考论文中的实验部分。一共四个实验，前三个实验分别验证在不同物体、不同类别、不同场景的泛化能力，最后一个实验验证其在单个场景上的表现也胜过以往。</p>
+<h3 id="不同物体泛化">2.1 不同物体泛化</h3>
+<p>使用<a
+target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/1OkYgeRcIcLOFu1ft5mRODWNQaPJ0ps90">SRN
+cars and chairs
+datasets</a>，在cars和chairs这两个数据集上分别训练单独的模型。对每个训练好的模型：</p>
+<ol type="1">
+<li>喂入一个新物体的2个视角的图片，然后推断其他251个视角的图片。</li>
+<li>同上，但只喂入一个视角的图片。</li>
+</ol>
+<h3 id="不同类别泛化">2.2 不同类别泛化</h3>
+<p>使用<a
+target="_blank" rel="noopener" href="https://github.com/Xharlie/ShapenetRender_more_variation">DISN
+MultiShapenet dataset</a>,在 {chair,bench,car,airplane,table,speaker}
+6个类别的数据集上训练，在{cabinet,display,lamp,phone,rifle,sofa,watercraft}
+7个新类别上验证。对于训练好模型：</p>
+<ol type="1">
+<li>喂入属于新类别的一个新物体的2个视角的图片，然后推断全部36个视角的图片。</li>
+<li>同上，喂入6个视角的图片。</li>
+</ol>
+<h3 id="不同场景泛化">2.3 不同场景泛化</h3>
+<p>使用<a
+target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1">NeRF
+dataset</a>，对于其中的8个合成场景，随机选取4个场景进行训练。对于训练好的模型：</p>
+<ol type="1">
+<li>将它直接在其它4个新场景上进行验证。</li>
+<li>将它分别在其他4个新场景上进行微调（分别训练100,1k,10k次）,这样就得到3*4=12个新模型。使用NeRF分别在这4个新场景上训练（分别训练100,1k,10k次），然后与之对比。</li>
+</ol>
+<h3 id="单个场景表现">2.4 单个场景表现</h3>
+<p>使用<a
+target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1">NeRF
+dataset</a>，在单个场景上进行训练，与NeRF对比。</p>
+<h2 id="实际运行-1">3. 实际运行</h2>
+<h3 id="不同物体泛化-1">3.1 不同物体泛化</h3>
+<p>因为chairs数据集太大了，这里只使用cars数据集。将cars_test.zip，cars_train.zip，cars_train_test.zip，cars_train_val.zip，cars_val.zip五个压缩包下载下来，解压并把文件夹名字<strong>去掉“cars_”前缀</strong>。</p>
+<p>使用python run.py --config
+config_shapenet_cars.txt运行程序。这里使用和作者一摸一样的配置。</p>
+<p><strong>注意事项：</strong></p>
+<ol type="1">
+<li><p>如果在windows下运行，config文件中数据路径写的windows路径，记得将load_shapenet_rewrite_lowmem.py里的load_shapenet_data函数中对文件路径操作时用的分隔符从'/'换成'//'。</p></li>
+<li><p>数据集中有部分数据不合法，不满足load_shapenet_rewrite_lowmem.py里的read_scene函数中的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">assert</span> <span class="hljs-built_in">len</span>(rgb_files) == <span class="hljs-built_in">len</span>(pose_files), scene_path<br></code></pre></td></tr></table></figure>
+<p>因此加上if判定忽视掉不合法数据使程序正常运行。</p></li>
+<li><p>run.py中的render_rays函数最后的检查语句会报错，因此将其注释掉：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">tf.debugging.check_numerics(ret[k], <span class="hljs-string">&#x27;output &#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(k))<br></code></pre></td></tr></table></figure>
+<p>这很奇怪，因为我采用与作者一摸一样的配置。</p>
+<p>备注：GRF的render_rays函数与NeRF中的render_rays函数基本相同。NeRF中这个检查语句在我训练forward-facing场景时不会报错，训练360度场景时则会报错，但训练结果都是正常的。</p></li>
+<li><p>第一次训练后发现没有tensorboard输出。后续有空给代码加上。</p></li>
+</ol>
+<p><strong>训练情况：</strong></p>
+<p>使用24G的3090，显存基本占满。根据作者的说法他将32G的V100占满了。</p>
+<p>GRF开始的训练是正常的，过了一段时间之后acm_loss全部变成nan。</p>
+<p>根据作者在Github
+Issue中的说法，训练400k次应该是足够的，因此我训练了30个小时完成400次。</p>
+<h1 id="复现ibrdf">复现iBRDF</h1>
+<p>Chen Z, Nobuhara S, Nishino K. Invertible neural BRDF for object
+inverse rendering[J]. IEEE Transactions on Pattern Analysis and Machine
+Intelligence, 2021.</p>
+<h2 id="环境">1 环境</h2>
+<p><strong>操作系统</strong></p>
+<p>Distributor ID: Ubuntu</p>
+<p>Description: Ubuntu 22.04.1 LTS</p>
+<p>Release: 22.04</p>
+<p>Codename: jammy</p>
+<p><strong>Docker</strong></p>
+<p>Client: Docker Engine - Community</p>
+<p>​ Version: 20.10.17</p>
+<p>​ API version: 1.41</p>
+<p>​ Go version: go1.17.11</p>
+<p>​ Git commit: 100c701</p>
+<p>​ Built: Mon Jun 6 23:02:46 2022</p>
+<p>​ OS/Arch: linux/amd64</p>
+<p>​ Context: default</p>
+<p>​ Experimental: true</p>
+<p>Server: Docker Engine - Community</p>
+<p>​ Engine:</p>
+<p>​ Version: 20.10.17</p>
+<p>​ API version: 1.41 (minimum version 1.12)</p>
+<p>​ Go version: go1.17.11</p>
+<p>​ Git commit: a89b842</p>
+<p>​ Built: Mon Jun 6 23:00:51 2022</p>
+<p>​ OS/Arch: linux/amd64</p>
+<p>​ Experimental: false</p>
+<p>​ containerd:</p>
+<p>​ Version: 1.6.7</p>
+<p>​ GitCommit: 0197261a30bf81f1ee8e6a4dd2dea0ef95d67ccb</p>
+<p>​ runc:</p>
+<p>​ Version: 1.1.3</p>
+<p>​ GitCommit: v1.1.3-0-g6724737</p>
+<p>​ docker-init:</p>
+<p>​ Version: 0.19.0</p>
+<p>​ GitCommit: de40ad0</p>
+<p><strong>依赖</strong>：</p>
+<ol type="1">
+<li>A C++ 17-compatible compiler</li>
+<li>CUDA 10.2</li>
+<li>CMake</li>
+<li>LibTorch 1.6.0</li>
+<li>OptiX 7.0.0</li>
+<li>TinyEXR (bundled)</li>
+</ol>
+<h2 id="实验过程">2 实验过程</h2>
+<p>使用docker/下的脚本构建容器ranix。</p>
+<p>如果运行容器时报错<a
+target="_blank" rel="noopener" href="https://github.com/NVIDIA/nvidia-docker/issues/1243">找不到设备驱动</a>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker: Error response from daemon: could not select device driver <span class="hljs-string">&quot;&quot;</span> with capabilities: [[gpu]].<br></code></pre></td></tr></table></figure>
+<p>可以按照<a
+target="_blank" rel="noopener" href="https://collabnix.com/introducing-new-docker-cli-api-support-for-nvidia-gpus-under-docker-engine-19-03-0-beta-release/">教程</a>安装NVIDIA
+Container
+Runtime，使用<code>systemctl restart  docker</code>重启服务，解决这个问题。</p>
+<p>下载<a target="_blank" rel="noopener" href="https://cdfg.csail.mit.edu/wojciech/brdfdatabase">MERL
+BRDF</a>，将二进制文件放到./datasets/merl目录下。挂vpn无法一次性下载全部，只能逐部下载。</p>
+<figure>
+<img src="https://cdfg.csail.mit.edu/assets/images/brdf.jpg" srcset="/img/loading.gif" lazyload
+alt="MERL BRDF数据库包含一百种不同材质的反射函数" />
+<figcaption aria-hidden="true">MERL
+BRDF数据库包含一百种不同材质的反射函数</figcaption>
+</figure>
+<p>下载<a
+target="_blank" rel="noopener" href="https://github.com/chenzhekl/iBRDF">代码</a>到iBRDF-main。</p>
+<p>下载指定版本<a
+target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_43742643/article/details/114156298#cxx11_ABI_168">libtorch</a>和<a
+target="_blank" rel="noopener" href="https://developer.nvidia.com/designworks/optix/download">optix</a>到./iBRDF-main/third_party/下。</p>
+<p>运行容器ranix，将iBRDF-main和datasets复制到ranix:/root/workspace中。</p>
+<p>进入iBRDF-main，使用cmake编译项目。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> build<br><span class="hljs-built_in">cd</span> build<br>cmake ..<br>make<br></code></pre></td></tr></table></figure>
+<p>建立文件夹../datasets/merl_processed，进入iBRDF-main运行脚本转换BRDF数据格式适合训练：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python ./scripts/preprocess_merl.py ../datasets/merl ../datasets/merl_processed<br></code></pre></td></tr></table></figure>
+<p>训练iBRDF</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">Usage: ./build/bin/ibrdf_train [MERL root] [Number of BRDFs per batch] [Number of samples per BRDF] [Number of epochs] [Output]<br><br>Example: ./build/bin/ibrdf_train ../datasets/merl_processed 50 10000 10000 ./run/ibrdf<br></code></pre></td></tr></table></figure>
+<p>报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs bash">terminate called after throwing an instance of <span class="hljs-string">&#x27;c10::Error&#x27;</span><br>  what():  CUDA error: no kernel image is available <span class="hljs-keyword">for</span> execution on the device<br>Exception raised from distribution_nullary_kernel at /pytorch/aten/src/ATen/native/cuda/DistributionTemplates.h:169 (most recent call first):<br>frame <span class="hljs-comment">#0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string&lt;char, std::char_traits&lt;char&gt;, std::allocator&lt;char&gt; &gt;) + 0x69 (0x7ff957bdeeb9 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libc10.so)</span><br>frame <span class="hljs-comment">#1: void at::native::(anonymous namespace)::distribution_nullary_kernel&lt;float, float, 4, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::TensorIterator&amp;, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt;), &amp;(void at::native::templates::cuda::normal_and_transform&lt;float, float, 4ul, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt; &gt;(at::TensorIterator&amp;, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt;)), 2u&gt;&gt;, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt; &gt;(at::TensorIterator&amp;, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::TensorIterator&amp;, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt;), &amp;(void at::native::templates::cuda::normal_and_transform&lt;float, float, 4ul, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt; &gt;(at::TensorIterator&amp;, at::CUDAGeneratorImpl*, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt;)), 2u&gt;&gt; const&amp;, __nv_dl_wrapper_t&lt;__nv_dl_tag&lt;void (*)(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*), &amp;(void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*)), 2u&gt;, float, float&gt;) + 0x2e6 (0x7ff959f7bc76 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cuda.so)</span><br>frame <span class="hljs-comment">#2: void at::native::templates::cuda::normal_kernel&lt;at::CUDAGeneratorImpl*&gt;(at::Tensor&amp;, double, double, at::CUDAGeneratorImpl*) + 0x3af (0x7ff959f7db9f in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cuda.so)</span><br>frame <span class="hljs-comment">#3: at::native::normal_kernel(at::Tensor&amp;, double, double, c10::optional&lt;at::Generator&gt;) + 0x89 (0x7ff959f79d49 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cuda.so)</span><br>frame <span class="hljs-comment">#4: &lt;unknown function&gt; + 0xcc0a84 (0x7ff997ac9a84 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#5: &lt;unknown function&gt; + 0xcc11b0 (0x7ff997aca1b0 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#6: at::native::normal_(at::Tensor&amp;, double, double, c10::optional&lt;at::Generator&gt;) + 0x32 (0x7ff997aac6a2 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#7: &lt;unknown function&gt; + 0x1383085 (0x7ff99818c085 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#8: &lt;unknown function&gt; + 0x13a940b (0x7ff9981b240b in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#9: &lt;unknown function&gt; + 0x142c851 (0x7ff998235851 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#10: at::Tensor::normal_(double, double, c10::optional&lt;at::Generator&gt;) const + 0x67 (0x7ff998208c07 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#11: at::native::randn(c10::ArrayRef&lt;long&gt;, c10::optional&lt;at::Generator&gt;, c10::TensorOptions const&amp;) + 0x6c (0x7ff997cf9a6c in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#12: at::native::randn(c10::ArrayRef&lt;long&gt;, c10::TensorOptions const&amp;) + 0x30 (0x7ff997cf9b70 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#13: &lt;unknown function&gt; + 0x138095f (0x7ff99818995f in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#14: &lt;unknown function&gt; + 0x11ab07d (0x7ff997fb407d in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#15: &lt;unknown function&gt; + 0x11a5a98 (0x7ff997faea98 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#16: &lt;unknown function&gt; + 0x11ab07d (0x7ff997fb407d in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#17: at::randn(c10::ArrayRef&lt;long&gt;, c10::TensorOptions const&amp;) + 0xe7 (0x7ff9980b7557 in /root/workspace/iBRDF-main/third_party/libtorch/lib/libtorch_cpu.so)</span><br>frame <span class="hljs-comment">#18: &lt;unknown function&gt; + 0x18f1f (0x55a212218f1f in ./build/bin/ibrdf_train)</span><br>frame <span class="hljs-comment">#19: &lt;unknown function&gt; + 0x18fbc (0x55a212218fbc in ./build/bin/ibrdf_train)</span><br>frame <span class="hljs-comment">#20: &lt;unknown function&gt; + 0x14278 (0x55a212214278 in ./build/bin/ibrdf_train)</span><br>frame <span class="hljs-comment">#21: __libc_start_main + 0xe7 (0x7ff9563aec87 in /lib/x86_64-linux-gnu/libc.so.6)</span><br>frame <span class="hljs-comment">#22: &lt;unknown function&gt; + 0x1212a (0x55a21221212a in ./build/bin/ibrdf_train)</span><br><br>Aborted (core dumped)<br></code></pre></td></tr></table></figure>
+<p>可能是libtorch版本并不能用1.6.0</p>
+<h1 id="复现ingp">复现ingp</h1>
+<p>Müller T, Evans A, Schied C, et al. Instant neural graphics
+primitives with a multiresolution hash encoding[J]. arXiv preprint
+arXiv:2201.05989, 2022.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/NVlabs/instant-ngp">代码仓库</a></p>
+<h2 id="实验环境">1.实验环境</h2>
+<p>RTX3090</p>
+<p>CUDA 11.4</p>
+<p>VS2019</p>
+<p>编译过程中可能会遇到很多问题，具体参考github里的issue</p>
+<p>远程控制主机，若主机不连接显示器，opengl渲染会出现白屏。</p>
+<p>经过一次更新之后（https://github.com/NVlabs/instant-ngp/issues/36#issuecomment-1036198048），ingp对显存的需求量大大降低。</p>
+<h2
+id="使用即时神经图形基元训练nerf模型的技巧">2.使用即时神经图形基元训练NeRF模型的技巧</h2>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/NVlabs/instant-ngp/blob/master/docs/nerf_dataset_tips.md">link</a></p>
+<p>我们的NeRF实现期望初始相机参数以 transforms.
+json的格式提供，和原始的NeRF代码库兼容。我们提供了一个方便的脚本，scripts/colmap2nerf.py，它可以用来处理视频文件或图像序列，使用开源的COLMAP（
+structure from motion，SFM软件）来提取必要的摄像机数据。</p>
+<p>训练过程可能对数据集非常挑剔。例如，重要的是数据集要有良好的覆盖率，不要包含错误标记的相机数据，不要包含模糊的帧(运动模糊和离焦模糊都是有问题的)。这篇问题试图给出一些技巧。一个很好的经验法则是，如果你的NeRF模型在20秒左右没有收敛，那么在长时间的训练之后，它就不太可能变得更好。因此，我们建议调整数据，以在培训的早期阶段获得明确的结果。对于大型的真实世界场景，可以通过最多几分钟的训练获得一点额外的清晰度。几乎所有的收敛都发生在最初的几秒钟。</p>
+<p>数据集最常见的问题是相机位置的不正确比例或偏移（更多细节见下面）。第二个最常见的问题是图像太少，或者图像的相机参数不准确(例如，如果COLMAP失败)。在这种情况下，您可能需要获取更多的图像，或者调整计算相机位置的过程。这超出了instant-npg实现的范围。</p>
+<h3 id="已有数据集">2.1 已有数据集</h3>
+<p>默认情况下，instant-ngp的NeRF实现只将射线通过从[0,0,0]到[1,1,1]的单元边界框。默认情况下，数据加载器在输入JSON文件中接受摄像机转换，并将位置缩放0.33，偏移量[0.5,0.5,0.5]，以便将输入数据的原点映射到立方体的中心。缩放因子的选择是为了适应原始NeRF论文中的合成数据集，以及我们的脚本/colmap2nerf.py脚本的输出。</p>
+<p>通过在UI的 "Debug visualization"中选择 "Debug visualization"和
+"Visualize unit cube"
+来检查你的摄像机与这个包围框的对齐方式是值得的，如下图所示:</p>
+<p><img
+src="https://github.com/NVlabs/instant-ngp/blob/master/docs/assets/nerfbox.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p>对于单位立方体外有可见背景的自然场景，需要在
+transforms.json文件中把参数aabb_scale设置为2次幂(即1、2、4、8或16)，在最外层的作用域(与现有的camera_angle_x参数相同的嵌套)。data/nerf/fox/transforms.json是个例子。</p>
+<p>效果如下图所示:</p>
+<p><img
+src="https://github.com/NVlabs/instant-ngp/blob/master/docs/assets/nerfboxrobot.jpg" srcset="/img/loading.gif" lazyload /></p>
+<p>摄像机仍然以单位立方体中的“感兴趣的对象”为中心;然而，aabb_scale参数，在这里设置为16，导致NeRF实现跟踪射线到一个更大的边界框(边长16)，包含背景元素，中心在[0.5,0.5,0.5]。</p>
+<h3 id="扩展现有的数据集">2.2 扩展现有的数据集</h3>
+<p>如果你有一个transform.json格式的数据集，它应该以原点为中心，并和原始的NeRF
+synthetic
+datasets规模近似。当你把它加载到NGP中时，如果你发现它没有收敛，首先要检查的是相机相对于立方体单元的位置，使用上面描述的调试功能。如果数据集不在单元立方体中占主导地位，则值得将其移到那里。你可以通过调整转换本身来做到这一点，或者你可以在json的外部范围中添加全局参数。</p>
+<p>您可以设置以下任何参数，其中列出的值为默认值。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>	<span class="hljs-attr">&quot;aabb_scale&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">16</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;scale&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.33</span><span class="hljs-punctuation">,</span><br>	<span class="hljs-attr">&quot;offset&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.5</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.5</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.5</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>	...	<br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>实现细节和附加选项参见nerf_loader. cu。</p>
+<h3 id="准备新的nerf数据集">2.3 准备新的NeRF数据集</h3>
+<p>确保您已经安装了COLMAP，并且它在您的PATH中可用。如果您使用一个视频文件作为输入，也要确保安装FFmpeg，并确保它在您的PATH中可用。要检查这种情况，从一个终端窗口，您应该能够运行colmap和ffmpeg
+-?并从中看到一些帮助文本。</p>
+<p>如果您正在从视频文件中进行训练，请在包含视频的文件夹中运行scripts/colmap2nerf.py脚本，并使用以下推荐参数:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">data-folder$ python [path-to-instant-ngp]/scripts/colmap2nerf.py --video_in &lt;filename of video&gt; --video_fps 2 --run_colmap --aabb_scale 16<br></code></pre></td></tr></table></figure>
+<p>上面假设输入一个视频文件，然后按指定的帧率(2)提取帧。建议选择帧率在50-150左右的图像。对于一分钟的视频，——video_fps
+2是理想的。</p>
+<p>如果从图像中进行训练，将它们放在名为images的子文件夹中，然后使用合适的选项，如下面的选项:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">data-folder$ python [path-to-instant-ngp]/scripts/colmap2nerf.py --colmap_matcher exhaustive --run_colmap --aabb_scale 16<br></code></pre></td></tr></table></figure>
+<p>脚本将根据需要运行FFmpeg和/或COLMAP，然后执行转换到所需transforms.json格式的步骤，该步骤将写入当前目录。</p>
+<p>默认情况下，脚本使用“顺序匹配器”调用colmap，它适用于从平滑变化的摄像机路径中拍摄的图像，比如视频。如果图像没有特定的顺序，则穷举匹配器更合适，如上面的图像示例所示。要了解更多选项，可以使用——help运行脚本。有关COLMAP更高级的使用或具有挑战性的场景，请参阅COLMAP文档;您可能需要修改脚本/colmap2nerf.py脚本本身。</p>
+<p>aabb_scale参数是最重要的instant-ngp特定参数。它指定场景的范围，默认值为1;也就是说，场景被缩放，使得摄像机位置距离原点的平均距离为1个单位。对于小型的合成场景，如原始NeRF数据集，默认的aabb_scale为1是理想的，可以获得最快的训练。NeRF模型假设训练图像可以完全被包含在这个边界框中的场景所解释。然而，在自然场景中，背景超出了这个边界框，NeRF模型会在框的边界出现“飞蚊”。通过将aabb_scale设置为2的更大的幂(最高为16)，NeRF模型将射线扩展到一个更大的边界框。注意，这可能会轻微影响训练速度。如果有疑问，对于自然场景，首先将aabb_scale设置为16，然后如果可能的话将其缩小。值可以在
+transforms.
+json输出文件直接编辑，无需重新运行scripts/colmap2nerf.py脚本。</p>
+<p>假设成功，你现在可以训练你的NeRF模型如下，从instant-ngp文件夹开始:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">instant-ngp$ ./build/testbed --mode nerf --scene [path to training data folder containing transforms.json]<br></code></pre></td></tr></table></figure>
+<h3 id="nerf训练数据的技巧">2.4 NeRF训练数据的技巧</h3>
+<p>NeRF模型在50-150张图像之间训练得最好，这些图像需要表现出最小的场景移动，运动模糊或其他人为模糊。COLMAP能够从图像中提取准确的相机参数，从而保证了重建的质量。有关如何验证这一点的信息，请参阅前面的部分。</p>
+<p>colmap2nerf.py脚本假设所有训练图像都大约指向一个共享的兴趣点，它将这个点放置在原点。这个点是通过所有对训练图像的中心像素对光线之间最近的接近点取加权平均来找到的。在实践中，这意味着当训练图像指向感兴趣的对象时，脚本工作得最好，尽管它们不需要完成该对象的360度全景。如果将aabb_scale设置为大于1的数值，则感兴趣对象后面的任何可见背景仍然会被重建，如上所述。</p>
+<h1 id="复现mip-nerf">复现Mip-NeRF</h1>
+<p>Barron J T, Mildenhall B, Tancik M, et al. Mip-NeRF: A Multiscale
+Representation for Anti-Aliasing Neural Radiance Fields[J]. arXiv
+preprint arXiv:2103.13415, 2021.</p>
+<h2 id="运行环境-2">1. 运行环境</h2>
+<h3 id="ubuntu-1">1.1 ubuntu</h3>
+<p>系统版本：21.10</p>
+<p>显卡：NVIDIA GeForce RTX 3060 Laptop GPU</p>
+<p>python环境：按照作者github的原环境安装即可，记得使用国内源加速 -i
+https://pypi.doubanio.com/simple。建议手动安装，直接pip install -r
+requirements.txt会下载很多多余的包，并且手动安装可以选择适配自己环境的。我安装的是tensorflow-gpu==2.5.0。</p>
+<p>tensorflow
+2.x不再区分是否gpu，当检测到gpu并安装cuda后，自动调用gpu。</p>
+<h2 id="实验内容-1">2.实验内容</h2>
+<p>作者使用<a
+target="_blank" rel="noopener" href="https://drive.google.com/drive/folders/128yBriW1IG_3NJ5Rp7APSTZsJqdJdfc1">NeRF官方数据集</a>。使用以下命令从nerf_synthetic生成multiscale数据集:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python scripts/convert_blender_data.py --blenderdir /nerf_synthetic --outdir /multiscale<br></code></pre></td></tr></table></figure>
+<p>batch_size默认4096 ，我的显存6G，将batch_size调小为512。</p>
+<p>直接运行，会报错：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">E external/org_tensorflow/tensorflow/stream_executor/cuda/cuda_dnn.cc:364] Could not create cudnn handle: CUDNN_STATUS_INTERNAL_ERROR<br></code></pre></td></tr></table></figure>
+<p>这个怀疑是因为显存分配有问题。</p>
+<p>并且，偶尔进程会被系统kill，怀疑是因为16G内存不够用。</p>
+<h1 id="复现neutex">复现NeuTex</h1>
+<p>Xiang F , Xu Z , Haan M , et al. NeuTex: Neural Texture Mapping for
+Volumetric Neural Rendering[J]. 2021.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/fbxiang/NeuTex">代码仓库</a></p>
+<h2 id="运行环境-3">1. 运行环境</h2>
+<h3 id="ubuntu-2">1.1 ubuntu</h3>
+<p>系统版本：21.10</p>
+<p>显卡：NVIDIA GeForce RTX 3060 Laptop GPU</p>
+<p>python环境：pytorch gpu版本加上trimesh、hdf5、h5py</p>
+<p>备注：直接pip install
+torch的话会装成cpu版本，特别是添加了其他channel的情况下。另外，系统中安装了cuda就不需要按照官网的安装命令在conda中安装cudatoolkit,
+会发生冲突。我的显卡环境是cuda11.2+cudnn8.1，我的pytorch安装命令如下。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio===0.9.0 -f https://download.pytorch.org/whl/torch_stable.html<br></code></pre></td></tr></table></figure>
+<h3 id="windows-1">1.2 windows</h3>
+<p>系统版本：windows10</p>
+<p>显卡：NVIDIA GeForce RTX 3060 Laptop GPU</p>
+<p>python环境：和ubuntu一摸一样</p>
+<p>将原工程里的dtu.sh重写为dtu.bat即可在windows下运行。在Anaconda
+prompt中在配好的环境下执行 ..bat 114即可。</p>
+<h2 id="实验内容-2">2.实验内容</h2>
+<h3 id="运行作者提供的dtu-scene">2.1 运行作者提供的DTU scene</h3>
+<p>首先，程序根据入参的dataset_name（“dtu”）加载实现写好的dtu_dataset.py类，用这个类从入参的data_root（"DTU/scan%1%/trainData"，%1%为入参114）下加载训练数据。它加载的就是存在hdf5里的图片数据和一些相机参数以及点云，还有用来分离图片背景的mask。</p>
+<p>运行没有问题。</p>
+<p>要使用自己的输入数据的话，需要根据作者的要求写一个自己的数据加载类，加载指定需要的数据即可（而类中的加载方式怎么写都行，所以源数据格式不重要）。</p>
+<h1 id="复现nlt">复现NLT</h1>
+<p>Zhang X , Fanello S , Tsai Y T , et al. Neural Light Transport for
+Relighting and View Synthesis[J]. 2020.</p>
+<h2 id="运行环境-4">1.运行环境</h2>
+<p>原工程在ubuntu下测试，并且作者自己写的第三方库不兼容windows，因此其不能在windows上运行。</p>
+<p>为了使其在3060、cuda11.2.0、cudnn8.1.1下运行，将原conda环境更改如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">name:</span> <span class="hljs-string">nlt</span><br><span class="hljs-attr">channels:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">conda-forge</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">anaconda</span><br><span class="hljs-attr">dependencies:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">python=3.6</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">pip</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">numpy</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">ipython</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">pillow</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">opencv</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">tqdm</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-attr">pip:</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-string">tensorflow==2.5.0</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-string">tensorflow-addons==0.13.0</span><br>        <span class="hljs-bullet">-</span> <span class="hljs-string">tensorflow-probability==0.13.0</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">mpmath</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">matplotlib</span><br></code></pre></td></tr></table></figure>
+<h2 id="实验内容-3">2.实验内容</h2>
+<h3 id="使用作者的数据复现">2.1 使用作者的数据复现</h3>
+<p>在作者的<a
+target="_blank" rel="noopener" href="http://nlt.csail.mit.edu/">项目主页</a>下载dragon_specular.zip，dragon_sss.zip。</p>
+<p>可以在环境变量中添加作者自己的第三方库，也可以在pycharm的configurations中添加运行时的环境变量，注意ubuntu中的环境变量用:隔开。</p>
+<p>原代码是在ubuntu上运行的，因此配置文件里在文件名中使用:，而这在windows下是不允许的，可以将其修改为$。</p>
+<p>但是作者的自己写的第三方库并没有兼容windows，运行会报错:</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-windows%E4%B8%8D%E5%85%BC%E5%AE%B9.png" srcset="/img/loading.gif" lazyload
+alt="windows不兼容" />
+<figcaption aria-hidden="true">windows不兼容</figcaption>
+</figure>
+<p><font color=red>非常坑的一点就是中断之后重新运行，不会加载原来保存的checkpoint而是直接覆盖输出目录重新从0开始训练，记得把配置文件里的overwrite改为False。</font></p>
+<p>作者配置文件里的bs对应batch_size，值是4。直接跑的话可能会因为显存不够进程挂掉（有时候不会），改为2进行训练。大概需要30个小时完成训练（3060,6G显存）。</p>
+<p>dragon_specular.zip训练结果：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-dragon_specular_ckpt-100_pred_2fps.gif" srcset="/img/loading.gif" lazyload
+alt="dragon_specular_ckpt-100_pred_2fps" />
+<figcaption
+aria-hidden="true">dragon_specular_ckpt-100_pred_2fps</figcaption>
+</figure>
+<p>dragon_sss.zip训练所需的神经网络学习率是前者的1/4，且深度是前者的4倍，可能会慢很多。并且将其batch
+size减半依然超出6G显存，暂时没有训练。</p>
+<h1 id="复现plenoxel">复现plenoxel</h1>
+<p>Fridovich-Keil S, Yu A, Tancik M, et al. Plenoxels: Radiance Fields
+Without Neural Networks[C]//Proceedings of the IEEE/CVF Conference on
+Computer Vision and Pattern Recognition. 2022: 5501-5510.</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/sxyu/svox2">代码仓库</a></p>
+<h2 id="运行环境-5">1.运行环境</h2>
+<p>注释掉原environment.yml中的pytorch、torchvision、cudatoolkit。直接pip
+install torch的话会装成cpu版本。应使用如下命令安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html<br></code></pre></td></tr></table></figure>
+<p>使用以下命令安装库(svox2)：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pip install .<br></code></pre></td></tr></table></figure>
+<h2 id="运行">2.运行</h2>
+<p>下载作者训练好的模型，直接进行评估。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">python .\opt\render_imgs_circle.py .\ckpt\ckpt.npz .\data\fern\<br></code></pre></td></tr></table></figure>
+<p>在RTX3060上，渲染一个40秒、30帧的视频需要20分钟左右的时间和4-5G显存。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Research/" class="category-chain-item">Research</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>复现纪要</div>
+      <div>https://reddish.fun/posts/Research/reproduction/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月1日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Research/script-on-camera-parameters/" title="相机参数相关脚本">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">相机参数相关脚本</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Research/tiny-cuda-nn-usage/" title="tiny-cuda-nn使用">
+                        <span class="hidden-mobile">tiny-cuda-nn使用</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

@@ -1,0 +1,917 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="计算机相关技术书籍阅读记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="技术书籍">
+<meta property="og:url" content="https://reddish.fun/posts/Log/technical-book/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="计算机相关技术书籍阅读记录">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-02T01:02:10.825Z">
+<meta property="article:modified_time" content="2023-12-28T16:58:03.942Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="Log">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>技术书籍 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="技术书籍"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-02 09:02" pubdate>
+          2023年1月2日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          2.5k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">技术书籍</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>计算机相关技术书籍阅读记录</p>
+<span id="more"></span>
+<h1 id="编程语言">编程语言</h1>
+<p>C Primer Plus 第六版 / Stephen Prata</p>
+<ul>
+<li>入门语言</li>
+</ul>
+<p>C++程序设计教程 / 钱能</p>
+<p>C++ Primer 第五版 / Stanley B. Lippman, Josée Lajoie, Barbara E.
+Moo</p>
+<ul>
+<li>经典全面。</li>
+</ul>
+<p>C++ Primer Plus 第六版 / Stephen Prata</p>
+<ul>
+<li>同样经典全面。最后专门讨论了C++11。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://google.github.io/styleguide/cppguide.html">Google
+C++ Style Guide</a> <span
+class="math inline">\(\stackrel{中文版}{\longrightarrow}\)</span> <a
+target="_blank" rel="noopener" href="https://zh-google-styleguide.readthedocs.io/en/latest/google-cpp-styleguide/contents/">Google
+C++ 风格指南</a></p>
+<p>深度探索C++对象模型 / Stanley B. Lippman</p>
+<ul>
+<li>站在编译器开发者的角度分析C++。</li>
+</ul>
+<p>Effective C++ 第三版 / Scott Meyers</p>
+<p>More Effective C++ / Scott Meyers</p>
+<p>Effective STL / Scott Meyers</p>
+<p>Effective Modern C++ / Scott Meyers</p>
+<p><a target="_blank" rel="noopener" href="https://changkun.de/modern-cpp/">现代 C++ 教程: 高速上手 C++
+11/14/17/20</a> / 欧长坤</p>
+<p>STL源码剖析 / 侯捷</p>
+<p>⬜C++并发编程实战 第二版 / Anthony Williams</p>
+<p>⬜Linux多线程服务端编程——使用muduo C++网络库 / 陈硕</p>
+<p>⬜x86汇编语言：从实模式道保护模式 第二版 / 李忠，王晓波，余洁</p>
+<p>⬜C++反汇编与逆向分析技术解谜 第二版 / 钱林松，张延清</p>
+<p>⬜老“码”识途 / 韩宏，李林</p>
+<p>流畅的Python / Luciano Ramalho</p>
+<ul>
+<li>适合python精进。</li>
+</ul>
+<p>C# 7.0核心技术指南 / Joseph Albahari, Ben Albahari</p>
+<p>Java程序设计基础 / 陈国君</p>
+<p>Java编程逻辑 / 马俊昌</p>
+<ul>
+<li>并发部分讲的很好。</li>
+</ul>
+<p>阿里巴巴Java开发手册</p>
+<h1 id="cg">CG</h1>
+<p>Unity Shader 入门精要 / 冯乐乐</p>
+<ul>
+<li>少有的讲shaderlab的书。</li>
+</ul>
+<p>Fundamentals of Computer Graphics 第五版 / Steve Marschner, Peter
+Shirley etc.</p>
+<ul>
+<li>GAMS101的参考书。</li>
+</ul>
+<p>DirectX 11 高级图形开发技术实战 / 韩元利，王汉东</p>
+<ul>
+<li>好看懂。</li>
+</ul>
+<p>Computer Graphics with OpenGL 第四版 / Donald Hearn etc.</p>
+<ul>
+<li>基于GLUT库，原理讲得细致。LearnOpenGL基于GLFW库。</li>
+</ul>
+<p>⬜DirectX 12 3D 游戏开发实战 / Frank D. Luna</p>
+<ul>
+<li>初学者不好看懂，建议从DX11入门后再看。</li>
+</ul>
+<p>⬜Physically Based Rendering 第三版 / Matt Pharr etc.</p>
+<p>⬜Real-Time Rendering 第四版 / Tomas Akenine-Moller etc.</p>
+<h1 id="游戏设计与开发">游戏设计与开发</h1>
+<p>游戏设计梦工厂 <em>以游玩体验为核心，创造开创性的游戏</em> 第四版 /
+Tracy Fullerton</p>
+<ul>
+<li><p>游戏设计完整入门</p></li>
+<li><p>原名 Game Design Workshop <em>A Playcentric Approach to Creating
+Innovative Games</em></p></li>
+</ul>
+<p>体验引擎：游戏设计全景探秘 / 西尔韦斯特</p>
+<ul>
+<li>作者为Rimworld游戏的开发者。非常专业，结合现实案例高度总结了游戏设计理念和游戏开发流程。</li>
+<li>侧重于从心理学角度分析。</li>
+<li>原名 Designing Games: A Guide to Engineering Experiences。</li>
+</ul>
+<p>游戏设计的236个技巧：游戏机制、关卡设计和镜头窍门 / 大野宫二</p>
+<ul>
+<li>结合具体游戏细致分析了使游戏有趣的详细设计技巧。</li>
+</ul>
+<p>屠龙记：创造游戏世界的艺术 / 罗伯特·丹顿·布莱恩特</p>
+<ul>
+<li>主要讲叙事设计。</li>
+</ul>
+<p>平衡掌控者 游戏数值战斗设计 / 似水无痕</p>
+<p>平衡掌控者 游戏数值经济设计 / 似水无痕</p>
+<p>游戏概论 / 李瑞森，焦锟</p>
+<ul>
+<li>系统整理了历史、行业、策划、美术、引擎等。</li>
+</ul>
+<p>游戏设计、原型与开发：基于unity与C#从构思到实现 第二版 / Jeremy
+Gibson Bond</p>
+<ul>
+<li>介绍了三种经典游戏设计框架，提出了新框架分层四元法。</li>
+<li>MDA：机制（mechanics）、动态（dynamic）、美学（aesthetics）。</li>
+<li>形式（formal）、戏剧（dramatic）、动态元素（dynamic
+elements）：《游戏设计梦工厂》提出。</li>
+<li>四元法（elemental
+tetrad）：机制、美学、技术、剧情，《全景探秘游戏设计艺术》提出。</li>
+<li>分层四元法：内嵌层、动态层、文化层三层，每层包括机制、美学、技术、叙事（narrative），本书基于前人提出。</li>
+<li>原名 Introduction to Game Design, Prototyping, and Development: From
+Concept to Playable Game with Unity and C#。</li>
+</ul>
+<h1 id="ai">AI</h1>
+<p>深度学习之模型设计：核心算法与案例实践 / 言有三</p>
+<ul>
+<li>主要了解深度学习思想。</li>
+</ul>
+<p>深度学习之Tensorflow：入门、原理与进阶实战 / 李金洪</p>
+<ul>
+<li>这本书2018年出版，基于tensorflow1.4。</li>
+</ul>
+<p>从零开始学Tensorflow 2.0 / 赵铭，欧铁军</p>
+<ul>
+<li>大部分是代码，类似官方文档，对入门不好，但实用性不错。</li>
+</ul>
+<p>pytorch深度学习实战 / Eli Stevens, Luca Antiga, Thomas Viehmann</p>
+<ul>
+<li>非常适合pytorch入门。</li>
+</ul>
+<h1 id="计算机基础">计算机基础</h1>
+<p>计算机科学导论 / Behrouz Forouzan, Firouz Mosharraf</p>
+<p>⬜深入理解计算机系统 / Randal E.Bryant , David O'Hallaron</p>
+<p>现代操作系统 / Andrew S. Tanenbaum</p>
+<p>计算机网络：自顶向下方法 / James F. Kurose，Keith W. Ross</p>
+<p>设计模式：可复用面向对象软件的基础 / Erich Gamma, Richard Helm, Ralph
+Johnson, John Vlissides</p>
+<blockquote>
+<p>学校的专业课主要包括数据结构、算法、计算机组成原理、操作系统、计算机网络、数据库、编译原理、软件工程、电路、具体编程语言、具体应用开发，以及细分方向的课（如网安、大数据、AI、云计算等）。教材何其多。</p>
+</blockquote>
+<h1 id="其它">其它</h1>
+<p>Python爬虫开发：从入门到实战 / 谢乾坤</p>
+<ul>
+<li>自己玩玩。</li>
+</ul>
+<p>深入理解BootLoader / 胡尔佳</p>
+<ul>
+<li>铺垫了一堆基础。对ELF文件的介绍也不全面，只提Section不讲Segment。</li>
+</ul>
+<p>树莓派开始，玩转Linux / Vamei，周昕梓</p>
+<p>Hadoop大数据技术开发实战 / 张伟洋</p>
+<p>Kafka入门与实践 / 牟大恩</p>
+<p>Spark编程基础 / 林子雨，赖永炫，陶继平</p>
+<p>Spark Streaming实时流式大数据处理实战 / 肖力涛</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Log/" class="category-chain-item">Log</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Log/">#Log</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>技术书籍</div>
+      <div>https://reddish.fun/posts/Log/technical-book/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Log/video-game/" title="电子游戏🎮">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">电子游戏🎮</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Log/personal-recipe/" title="个人菜谱">
+                        <span class="hidden-mobile">个人菜谱</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

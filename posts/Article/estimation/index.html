@@ -1,0 +1,1129 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="估计">
+<meta property="og:type" content="article">
+<meta property="og:title" content="估计">
+<meta property="og:url" content="https://reddish.fun/posts/Article/estimation/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="估计">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-03T06:03:06.251Z">
+<meta property="article:modified_time" content="2023-12-26T16:27:22.279Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>估计 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="估计"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-03 14:03" pubdate>
+          2023年1月3日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          8.3k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">估计</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>估计</p>
+<span id="more"></span>
+<p class="note note-primary">
+二次整理自课程学习。
+</p>
+<h1 id="parameter-estimation">Parameter Estimation</h1>
+<p>假定概率密度的特定形式（比如高斯分布），只需要估计参数（比如均值、方差）即可。比如Bayes和ML。</p>
+<p>Criterion for Classification Decision Rule：</p>
+<ul>
+<li><p>MAP (Maximum A Posteriori) Criterion</p></li>
+<li><p>ML (Maximum Likelihood) Criterion</p></li>
+<li><p>Bayes Criterion</p></li>
+<li><p>Other Criterion</p></li>
+</ul>
+<p>假定总体<span class="math inline">\(X\)</span>的PDF为<span
+class="math inline">\(f(x\mid\theta)\)</span>，观测到一组样本<span
+class="math inline">\((X_1,X_2,...,X_n)=(x_1,x_2,...,x_n)\)</span>，需要估计参数<span
+class="math inline">\(\theta\)</span>。</p>
+<h2 id="bayes">Bayes</h2>
+<p><strong>贝叶斯估计</strong>是贝叶斯学派观点。<span
+class="math inline">\(\theta\)</span>是随机的，只能估计其分布。 <span
+class="math display">\[
+\pi (\boldsymbol \theta|\boldsymbol x)=\frac {f(\boldsymbol
+x|\boldsymbol \theta)\pi (\boldsymbol \theta)}{m(\boldsymbol x)}=\frac
+{f(\boldsymbol x|\boldsymbol \theta)\pi (\boldsymbol \theta)}{\int
+f(\boldsymbol x|\boldsymbol \theta)\pi (\boldsymbol \theta)d(\boldsymbol
+\theta)}
+\]</span> $() <span class="math inline">\(为参数\)</span> $
+的先验分布（prior distribution），表示对参数$ <span
+class="math inline">\(的主观认识，是非样本信息。\)</span> (|x) <span
+class="math inline">\(为参数\)</span> <span
+class="math inline">\(的后验分布（posterior
+distribution）。因此，贝叶斯估计可以看作是，在假定\)</span> $服从 <span
+class="math inline">\(\pi (\boldsymbol \theta)\)</span>
+的先验分布前提下，根据样本信息去校正先验分布，得到后验分布 <span
+class="math inline">\(\pi (\boldsymbol \theta|\boldsymbol x)\)</span>
+。由于后验分布是一个条件分布，通常我们取后验分布的期望作为参数的估计值。</p>
+<p>使用<strong>贝叶斯风险</strong>用来度量一个估计量的好坏。对于待估参数<span
+class="math inline">\(\theta\)</span>和<span
+class="math inline">\(x\)</span>，参数<span
+class="math inline">\(\theta\)</span>的贝叶斯估计值为<span
+class="math inline">\(\hat{\theta}\)</span>，那么贝叶斯风险为： <span
+class="math display">\[
+\R=E_{\theta,x}[l(\theta,\hat{\theta})]
+\]</span> <span
+class="math inline">\(l\)</span>为评价风险的损失函数。</p>
+<h2 id="map">MAP</h2>
+<p>可以看作Bayes的特殊情况。</p>
+<p>贝叶斯估计中后验分布的计算往往是非常棘手的。<strong>最大后验（MAP）估计</strong>利用了无法从观测样本获得的来自先验的信息，是贝叶斯估计的一种近似解。使后验分布<span
+class="math inline">\(\pi (\boldsymbol \theta|\boldsymbol
+x)\)</span>极大化的<span
+class="math inline">\(\hat{\theta}_{map}\)</span>是<span
+class="math inline">\(\theta\)</span>的MAP估计值。 <span
+class="math display">\[
+\boldsymbol {\hat \theta}_{map}=arg \underset {\boldsymbol \theta}{\max}
+\pi (\boldsymbol \theta|\boldsymbol x)=arg \underset {\boldsymbol
+\theta}{\max} \frac {f(\boldsymbol x|\boldsymbol \theta)\pi (\boldsymbol
+\theta)}{m(\boldsymbol x)}=arg \underset {\boldsymbol \theta}{\max}
+{f(\boldsymbol x|\boldsymbol \theta)\pi (\boldsymbol \theta)}=arg
+\underset {\boldsymbol \theta}{\max} (\log {f(\boldsymbol x|\boldsymbol
+\theta)+ \log \pi (\boldsymbol \theta))}
+\]</span> 如果将机器学习结构风险中的正则化项对应为上式的<span
+class="math inline">\(\log \pi (\boldsymbol
+\theta)\)</span>，那么带有这种正则化项的ML学习就可以被解释为MAP。</p>
+<h2 id="ml">ML</h2>
+<p>可以看作MAP的特殊情况。</p>
+<p><strong>极大似然（ML）估计</strong>是频率学派观点。<span
+class="math inline">\(\theta\)</span>客观存在，只是未知。</p>
+<p>使样本<span
+class="math inline">\((X_1,X_2,...,X_n)=(x_1,x_2,...,x_n)\)</span>更容易观测到（发生概率更大）的<span
+class="math inline">\(\hat{\theta}_{ml}\)</span>是<span
+class="math inline">\(\theta\)</span>的ML估计值。 <span
+class="math display">\[
+L(\boldsymbol \theta|\boldsymbol x)=f(\boldsymbol x|\boldsymbol
+\theta)=f(x_1,x_2,\dots,x_n|\boldsymbol
+\theta)=\prod^{n}_{i=1}f(x_i|\boldsymbol \theta)
+\]</span> <span class="math display">\[
+\boldsymbol {\hat \theta}_{mle}=arg\underset {\boldsymbol \theta}{\max}
+L(\boldsymbol \theta|\boldsymbol x)
+\]</span></p>
+<h2 id="eg.-mapml">eg. MAP&amp;ML</h2>
+<p>拿到一枚未知的硬币，估计其正面出现概率<span
+class="math inline">\(\theta\)</span>。</p>
+<p>观测到样本<span
+class="math inline">\(X\)</span>：反正正正正反正正正反</p>
+<p>似然函数：<span
+class="math inline">\(f(X\mid\theta)=(1-\theta)\times\theta\times\theta\times\theta\times\theta\times(1-\theta)\times\theta\times\theta\times\theta\times(1-\theta)=\theta^7(1-\theta)^3\)</span></p>
+<p>求<span
+class="math inline">\(f(X\mid\theta)\)</span>图像和使其最大的<span
+class="math inline">\(\theta\)</span>值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><br>x = np.linspace(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">100</span>)<br>y = x**<span class="hljs-number">7</span>*(<span class="hljs-number">1</span>-x)**<span class="hljs-number">3</span><br><br>plt.plot(x,y)<br>plt.show()<br><br><span class="hljs-built_in">print</span>(x[y.argmax()])<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-30-ML估计值.png" srcset="/img/loading.gif" lazyload /></p>
+<p>0.696969696969697</p>
+</blockquote>
+<p>得出使其最大的<span
+class="math inline">\(\theta\)</span>大约是0.7。此即ML估计。</p>
+<p>引入<span
+class="math inline">\(\theta\)</span>的先验分布为高斯分布，即<span
+class="math inline">\(f(\theta)\)</span>为均值0.5，方差0.1的高斯函数。
+<span class="math display">\[
+f(\theta)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(\theta-\mu)^2}{2\sigma^2}},\mu=0.5,\sigma=0.1
+\]</span> 求<span
+class="math inline">\(f(X\mid\theta)f(\theta)\)</span>图像和使其最大的<span
+class="math inline">\(\theta\)</span>值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><br>x = np.linspace(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">100</span>)<br>y = x**<span class="hljs-number">7</span>*(<span class="hljs-number">1</span>-x)**<span class="hljs-number">3</span><br><br>sigma = <span class="hljs-number">0.1</span><br>mu = <span class="hljs-number">0.5</span><br>gauss = <span class="hljs-number">1</span>/(sigma * np.sqrt(<span class="hljs-number">2</span>*np.pi)) * np.power(np.e,-((x-mu)**<span class="hljs-number">2</span>)/(<span class="hljs-number">2</span>*sigma**<span class="hljs-number">2</span>))<br>y *= gauss<br><br>plt.plot(x,y)<br>plt.show()<br><br><span class="hljs-built_in">print</span>(x[y.argmax()])<br></code></pre></td></tr></table></figure>
+<blockquote>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-30-MAP估计值.png" srcset="/img/loading.gif" lazyload /></p>
+<p>0.5555555555555556</p>
+</blockquote>
+<p>得出使其最大的<span
+class="math inline">\(\theta\)</span>大约是0.56。此即MAP估计。</p>
+<h2 id="mixture-models">Mixture models</h2>
+<p>以Gaussian mixture
+model为例，一个复杂的曲线可以用若干个组合起来的高斯函数来逼近。</p>
+<h2 id="em">EM</h2>
+<p>当模型的变量都是观测变量时，可以直接通过前面的ML、MAP估计模型参数。但是当模型包含隐变量时，就不能简单的使用这些估计方法。比如K-means算法，除了给定的样本（也就是观测变量）<span
+class="math inline">\(X\)</span>以及参数<span
+class="math inline">\(\theta\)</span>
+（也就是那些聚类的中心）之外，还包含一个隐变量（记为<span
+class="math inline">\(Z\)</span>，每个样本的所属类别）。</p>
+<p>Expectation-Maximum是最常见的<strong>隐变量</strong>估计方法，在机器学习中有极为广泛的用途，例如常被用来学习GMM的参数、隐式马尔科夫算法（HMM）、LDA主题模型的变分推断等等。</p>
+<p>给定一组观测数据记为<span
+class="math inline">\(X=(x_1,x_2,\dots,x_n)\)</span> 及参数 <span
+class="math inline">\(\theta\)</span> 。因为 <span
+class="math inline">\(x_1,x_2,\dots,x_n\)</span>
+是独立同分布，所以有以下对数似然函数： <span class="math display">\[
+\begin{align} \ell(\theta|X)&amp;=\log{P\left(X|\theta\right)}
+=\log\left( \prod_{i=1}^n P\left(x_i|\theta\right) \right) =\sum_{i=1}^n
+\log P(x_i|\theta) \end{align}
+\]</span> 可以通过极大似然估计来求解最优参数，即： <span
+class="math display">\[
+\begin{align} \hat{\theta}&amp;=\arg \max_\theta
+\log{\ell\left(\theta|X\right)} =\arg \max_\theta \sum_{i=1}^n \log
+P(x_i|\theta) \end{align}
+\]</span> 但是由于隐变量的存在， <span
+class="math inline">\(\log{P\left(X|\theta\right)}\)</span> 变为 <span
+class="math display">\[
+\begin{align} \log{P\left(X\middle|\theta\right)}&amp;=\log{\sum_{Z}\
+P\left(X,Z|\theta\right)}\\
+&amp;=\log{\left(\sum_{Z}\
+P\left(X|\theta,Z\right)P\left(Z|\theta\right)\right)} \end{align}
+\]</span>
+下面构造一个容易优化的——关于对数似然函数的——下界函数，通过不断的优化这个下界，迭代逼近最优参数。</p>
+<p>引入隐变量 <span class="math inline">\(Z\)</span> 的概率分布 <span
+class="math inline">\(q(Z)\)</span> ，满足 <span class="math display">\[
+\sum_Z q(Z)=1
+\]</span> 并且以下等式成立 <span class="math display">\[
+P\left(X|\theta\right)=\frac{P\left(X,Z|\theta\right)}{P\left(Z|X,\theta\right)}=\frac{P\left(X,Z|\theta\right)/q\left(Z\right)}{P\left(Z|X,\theta\right)/q\left(Z\right)}
+\]</span> 两边同时取对数 <span class="math display">\[
+\begin{align}
+\log{P\left(X|\theta\right)}&amp;=\log{\frac{P\left(X,Z|\theta\right)/q\left(Z\right)}{P\left(Z|X,\theta\right)/q\left(Z\right)}}
+\end{align}
+\]</span> 同时求两边在 Z 上的期望 <span class="math display">\[
+\mathbb{E}_Z\left[\log{P\left(X|\theta\right)}\right]=\mathbb{E}_Z\left[\log{\frac{P\left(X,Z|\theta\right)/q\left(Z\right)}{P\left(Z|X,\theta\right)/q\left(Z\right)}}\right]
+\]</span> 因为 <span
+class="math inline">\(\log{P\left(X|\theta\right)}\)</span> 与 Z
+无关，所以求期望仍然不变： <span class="math display">\[
+\begin{align}
+\mathbb{E}_Z\left[\log{P\left(X|\theta\right)}\right]&amp;=\sum_{Z}{q\left(Z\right)\log{P\left(X|\theta\right)}}\\
+&amp;=\log{P\left(X|\theta\right)}\sum_{Z} q\left(Z\right)\\
+&amp;=\log{P\left(X|\theta\right)} \end{align}
+\]</span> 然后将右边展开 <span class="math display">\[
+\begin{align}
+\mathbb{E}_Z\left[\log{\frac{P\left(X,Z|\theta\right)/q\left(Z\right)}{P\left(Z|X,\theta\right)/q\left(Z\right)}}\right]&amp;=\sum_{Z}{q\left(Z\right)\log{\frac{P\left(X,Z|\theta\right)/q\left(Z\right)}{P\left(Z|X,\theta\right)/q\left(Z\right)}}}\\
+&amp;=\sum_{Z}{q\left(Z\right)\log{\frac{P\left(X,Z|\theta\right)}{q\left(Z\right)}}}-\sum_{Z}{q\left(Z\right)\log{\frac{P\left(Z|X,\theta\right)}{q\left(Z\right)}}}\\
+&amp;=\sum_{Z}{q\left(Z\right)\log{\frac{P\left(X,Z|\theta\right)}{q\left(Z\right)}}}+\sum_{Z}{q\left(Z\right)\log{\frac{q\left(Z\right)}{P\left(Z|X,\theta\right)}}}\\
+&amp;=\sum_{Z}{q\left(Z\right)\log{\frac{P\left(X,Z|\theta\right)}{q\left(Z\right)}}}+KL\left(q\left(Z\right)||P\left(Z|X,\theta\right)\right)\\
+&amp;\geq\sum_{Z}{q\left(Z\right)\log{\frac{P\left(X,Z|\theta\right)}{q\left(Z\right)}}}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>相对熵 <span class="math inline">\(KL\left(p||q\right)=\sum_{x\in
+X}{p\left(x\right)log{\frac{p\left(x\right)}{q\left(x\right)}}}\)</span></p>
+</blockquote>
+<p>由此得到对数似然函数的下界。并且当 <span
+class="math inline">\(KL\left(q\left(Z\right)||P\left(Z|X,\theta\right)\right)
+= 0\)</span>，上式可以取到等号，由相对熵的性质可知，相对熵为0，也就是
+<span class="math inline">\(q(Z)=P(Z|X,\theta)\)</span>。</p>
+<p>其中 <span class="math inline">\(q(Z)\)</span> 是<span
+class="math inline">\(Z\)</span>的概率分布，但是因为无法观测<span
+class="math inline">\(Z\)</span> ，所以<span
+class="math inline">\(q(Z)\)</span>未知，可以假设其等于 <span
+class="math inline">\(P(Z|X,\theta)\)</span> ，也就是<span
+class="math inline">\(Z\)</span>关于给定<span
+class="math inline">\(X\)</span>与<span
+class="math inline">\(\theta\)</span>的后验，且<span
+class="math inline">\(\theta\)</span>是由初始值<span
+class="math inline">\(\theta^{(0)}\)</span>
+一次次迭代计算而来，所以此处的 <span
+class="math inline">\(\theta\)</span> 是迭代<span
+class="math inline">\(i\)</span>次后的值。 <span class="math display">\[
+q(Z) = P(Z|X,\theta^{(i)})
+\]</span> 以上，就是EM算法中E步的由来。</p>
+<p>然后通过极大似然估计得到： <span class="math display">\[
+\begin{align}
+\hat{\theta}&amp;=\arg{\max_\theta{\sum_{Z}{q\left(Z\right)\log{\frac{P\left(X,Z|\theta\right)}{q\left(Z\right)}}}}}\\
+&amp;=\arg{\max_\theta{\sum_{Z}{P\left(Z|X,\theta^{\left(i\right)}\right)\log{\frac{P\left(X,Z|\theta\right)}{P\left(Z|X,\theta^{\left(i\right)}\right)}}}}}\\
+&amp;=\arg{\max_\theta{\sum_{Z}\
+P\left(Z|X,\theta^{\left(i\right)}\right)\left(\log{P\left(X,Z|\theta\right)}-\log{P\left(Z|X,\theta^{\left(i\right)}\right)}\right)}}\\
+&amp;=\arg{\max_\theta{\sum_{Z}{P\left(Z|X,\theta^{\left(i\right)}\right)\log{P\left(X,Z|\theta\right)}}}}\\
+&amp;=\arg{\max_\theta{\mathbb{E}_{Z|X,\theta^{\left(i\right)}}\left[\log{P\left(X,Z|\theta\right)}\right]}}
+\end{align}
+\]</span> 令<span class="math inline">\(\hat{\theta}=
+\theta^{(i+1)}\)</span>，就得到了M步的公式 <span class="math display">\[
+\theta^{(i+1)}=\arg{\max_\theta{\mathbb{E}_{Z|X,\theta^{\left(i\right)}}\left[\log{P\left(X,Z|\theta\right)}\right]}}
+\]</span>
+EM算法可以<strong>保证收敛</strong>到一个稳定点，但是却不能保证收敛到全局的极大值点，因此它是<strong>局部最优</strong>的算法。</p>
+<h2 id="eg.-em">eg. EM</h2>
+<p>假设我们有A，B两枚硬币，其中正面朝上的概率分别为<span
+class="math inline">\(\theta_{A},\theta_{B}\)</span>，这两个参数即为需要估计的参数。我们设计5组实验，每次实验投掷5次硬币，但是每次实验都不知道用哪一枚硬币进行的本次实验。投掷结束后，会得到一个数组
+<span class="math inline">\(x=(x_{1},x_{2},...,x_{5})\)</span>
+，表示每组实验有几次硬币正面朝上，因此 <span class="math inline">\(0\leq
+x_{i}\leq 5\)</span> 。</p>
+<p>虽然我们不知道每组实验用的是哪一枚硬币，但如果我们用某种方法<strong>猜测每组实验是哪个硬币投掷的</strong>，我们就可以将数据缺失的估计问题转化成一个<strong>最大似然问题和完整参数估计问题</strong>。</p>
+<p>实验结果：</p>
+<table>
+<thead>
+<tr class="header">
+<th>实验编号</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>3正2反</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2正3反</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>1正4反</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>3正2反</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>2正3反</td>
+</tr>
+</tbody>
+</table>
+<p>首先，随机选取 <span
+class="math inline">\(\theta_{A},\theta_{B}\)</span>的初始值，比如 <span
+class="math inline">\(\theta_{A}=0.2,\theta_{B}=0.7\)</span> 。</p>
+<p><strong>E步</strong></p>
+<p>计算在当前的预估参数下，隐变量（是A硬币还是B硬币）的每个值出现的概率。</p>
+<p>对于第一组实验，3正面2反面。</p>
+<ul>
+<li>如果是A硬币得到这个结果的概率为： <span
+class="math inline">\(0.2^3\times0.8^2=0.00512\)</span></li>
+<li>如果是B硬币得到这个结果的概率为： <span
+class="math inline">\(0.7^3\times0.3^2=0.03087\)</span></li>
+</ul>
+<p>因此，第一组实验结果是A硬币得到的概率为：<span
+class="math inline">\(0.00512 / (0.00512 +
+0.03087)=0.14\)</span>，第一组实验结果是B硬币得到的概率为：<span
+class="math inline">\(0.03087/ (0.00512 + 0.03087)=0.86\)</span>。</p>
+<p>整个5组实验的A,B投掷概率如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>实验编号</th>
+<th>是A硬币的概率</th>
+<th>是B硬币的概率</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.14</td>
+<td>0.86</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0.61</td>
+<td>0.39</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0.94</td>
+<td>0.06</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0.14</td>
+<td>0.86</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0.61</td>
+<td>0.39</td>
+</tr>
+</tbody>
+</table>
+<p><strong>M步</strong></p>
+<p>计算硬币投掷正反的期望：</p>
+<table>
+<thead>
+<tr class="header">
+<th>实验编号</th>
+<th>A硬币下正/反期望</th>
+<th>B硬币下正/反期望</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.42 0.28</td>
+<td>2.58 1.72</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>1.22 1.83</td>
+<td>0.78 1.17</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0.94 3.76</td>
+<td>0.06 0.24</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0.42 0.28</td>
+<td>2.58 1.72</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>1.22 1.83</td>
+<td>0.78 1.17</td>
+</tr>
+<tr class="even">
+<td>总计</td>
+<td>4.22 7.98</td>
+<td>6.78 6.02</td>
+</tr>
+</tbody>
+</table>
+<p>通过计算期望把隐变量（是A硬币还是B硬币）消除掉了。 <span
+class="math display">\[
+\theta_{A} =4.22/(4.22+7.98)=0.35
+\]</span> <span class="math display">\[
+\theta_{B} =6.78/(6.78+6.02)=0.5296875
+\]</span>
+这一步中，我们根据E步中求出的A硬币、B硬币概率分布，依据最大似然概率法则去估计<span
+class="math inline">\(\theta_{A},\theta_{B}\)</span>。</p>
+<p>最后，一直循环迭代E步M步，直到<span
+class="math inline">\(\theta_{A},\theta_{B}\)</span>不更新为止。</p>
+<h1 id="non-parametric-density-estimation">Non-parametric Density
+Estimation</h1>
+<p>不假定关于概率密度的任何知识。比如核密度估计和最近邻规则。</p>
+<h1 id="参考资料">参考资料</h1>
+<p><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/61593112">极大似然估计和贝叶斯估计</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/159189617">机器学习准则（期望风险、经验风险、结构风险）</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/40991784">EM算法详解</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/85236423">EM算法原理及推导</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://blog.csdn.net/DD_PP_JJ/article/details/109722504">概率公式中的分号、逗号、竖线</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Article/" class="category-chain-item">Article</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>估计</div>
+      <div>https://reddish.fun/posts/Article/estimation/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月3日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Article/keep-healthy/" title="科学饮食与锻炼">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">科学饮食与锻炼</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Article/nonparametric/" title="非参数">
+                        <span class="hidden-mobile">非参数</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

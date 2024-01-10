@@ -1,0 +1,1517 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="图形学虎书第5版笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Fundamentals of Computer Graphics》第五版笔记">
+<meta property="og:url" content="https://reddish.fun/posts/Notebook/Fundamentals-of-Computer-Graphics-5th-note/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="图形学虎书第5版笔记">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-05T01:33:21.099Z">
+<meta property="article:modified_time" content="2023-12-26T16:08:46.690Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="CG">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>《Fundamentals of Computer Graphics》第五版笔记 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="《Fundamentals of Computer Graphics》第五版笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-05 09:33" pubdate>
+          2023年1月5日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          17k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《Fundamentals of Computer Graphics》第五版笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>图形学虎书第5版笔记</p>
+<span id="more"></span>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-11-17-fundamentals-of-computer-graphics-5th.jpg" srcset="/img/loading.gif" lazyload
+alt="封面" />
+<figcaption aria-hidden="true">封面</figcaption>
+</figure>
+<p>2022年出版。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cs.cornell.edu/~srm/fcg5/">本书网站</a></p>
+<p class="note note-warning">
+未完成
+</p>
+<h1 id="introduction">1 Introduction</h1>
+<p>计算机图形学一词描述了使用计算机来创建和操作图像的任何方式。</p>
+<p>这一章定义了基础术语、提供了历史背景和一些计算机图形学相关的信息来源。</p>
+<p>本书尽量避免依赖具体硬件或API。</p>
+<h2 id="graphics-areas">1.1 Graphics Areas</h2>
+<p>大多数人认同的计算机图形学<strong>主要领域</strong>：</p>
+<ul>
+<li>建模</li>
+<li>渲染</li>
+<li>动画</li>
+</ul>
+<p>其它领域：</p>
+<ul>
+<li>人机交互</li>
+<li>虚拟现实</li>
+<li>可视化</li>
+<li>图像处理</li>
+<li>三维扫描</li>
+<li>计算摄影</li>
+</ul>
+<h2 id="major-applications">1.2 Major Applications</h2>
+<ul>
+<li>视频游戏</li>
+<li>卡通</li>
+<li>视觉效果</li>
+<li>动画电影</li>
+<li>CAD/CAM（computer-aided design / computer-aided manufacturing）</li>
+<li>仿真</li>
+<li>医学图像</li>
+<li>信息可视化</li>
+</ul>
+<h2 id="graphics-apis">1.3 Graphics APIs</h2>
+<p>每种图形程序都需要两种API，用于视觉输出的<strong>图形API</strong>和获取用户输入的<strong>用户界面API</strong>。</p>
+<p>图形和用户界面API有两种主导范式，一种是Java那样图形和用户界面工具包是集成的、可移植的包，完全标准化并作为语言的一部分得到支持；一种是Direct3D和OpenGL那样绘图命令是与C++等语言相关的软件库的一部分，而用户界面软件是一个独立的实体，可能因系统而异。</p>
+<h2 id="graphics-pipeline">1.4 Graphics Pipeline</h2>
+<p>3D图形管线是一个高效绘制<strong>透视3D图元</strong>的特殊软件/硬件子系统。</p>
+<p><strong>Z缓冲</strong>用内存缓冲区暴力解决从后到前顺序绘制三角形的问题。</p>
+<p>管线中的几何操作几乎都在<strong>4D坐标空间</strong>中完成，三个传统几何坐标和一个齐次坐标。</p>
+<p>以不同距离查看模型时，可以将模型用变化的<strong>LOD</strong>（level
+of detail）表示以提高绘制效率。</p>
+<h2 id="numerical-issues">1.5 Numerical Issues</h2>
+<p>许多图形程序只是3D数值代码。</p>
+<p>所有现代计算机都遵守1985年的IEEE浮点标准。</p>
+<blockquote>
+<p>以32位浮点数为例，1位符号位、8位指数位、23位尾数位。</p>
+<p>特殊数表示方法如下：</p>
+<p>无穷数的符号位为1或0，指数位全为1，尾数位全为0。</p>
+<p>NaN的符号位为1或0，指数位全为1，尾数位不为0即可。</p>
+<p>另外，符号位为1或0，指数位全为0，尾数位全为0，表示+0或-0。</p>
+</blockquote>
+<p>对于特殊数有以下计算规则（a是正数）： <span class="math display">\[
++a/(+\infty)=+0
+\]</span> <span class="math display">\[
+-a/(+\infty)=-0
+\]</span> <span class="math display">\[
++a/(-\infty)=-0
+\]</span> <span class="math display">\[
+-a/(-\infty)=+0
+\]</span> <span class="math display">\[
+\infty+\infty=+\infty
+\]</span> <span class="math display">\[
+\infty-\infty=NaN
+\]</span> <span class="math display">\[
+\infty\times\infty=\infty
+\]</span> <span class="math display">\[
+\infty/\infty = NaN
+\]</span> <span class="math display">\[
+\infty/a=\infty
+\]</span> <span class="math display">\[
+\infty/0=\infty
+\]</span> <span class="math display">\[
+0/0=NaN
+\]</span> <span class="math display">\[
++a/+0=+\infty
+\]</span> <span class="math display">\[
+-a/+0=-\infty
+\]</span> 任何包含NaN的算术表达式的结果都是NaN。</p>
+<p>任何涉及NaN的布尔表达式都为false。</p>
+<h2 id="efficiency">1.6 Efficiency</h2>
+<p>目前内存的速度没有跟上处理器的速度，比起操作计数应该更关注<strong>内存访问模式</strong>。</p>
+<p>提高代码速度的步骤：</p>
+<ol type="1">
+<li>以最直接的方式编写代码。根据需要即时计算中间结果而不是存储他们。</li>
+<li>以优化模式编译。</li>
+<li>使用现有的任何分析工具查找性能瓶颈。</li>
+<li>检查数据结构以寻找改进局部性的方法。如果可能，使数据单元大小与目标架构上的缓存/页面大小匹配</li>
+<li>如果分析揭示了数值计算中的瓶颈，请检查编译器生成的汇编代码是否存在效率下降的情况。重写源代码以解决发现的任何问题</li>
+</ol>
+<p>现代CPU执行浮点运算的速度通常与执行整数运算的速度一样快。</p>
+<h2 id="designing-and-coding-graphics-programs">1.7 Designing and Coding
+Graphics Programs</h2>
+<p>为几何实体（向量、矩阵）和图形实体（RGB颜色、图像）设计合适的类。</p>
+<p>作者认为位置和位移应该是不同的类。</p>
+<p>建议几何计算使用单精度、颜色计算使用双精度。</p>
+<p><strong>DEBUG</strong>方法：</p>
+<ol type="1">
+<li>创建一张图像观察哪里错了，提出假设并测试。直接使用图像作为DEBUG输出。</li>
+<li>固定随机种子，在单线程中运行，使用debugger。</li>
+<li>编写可视化程序显示程序内部状态。</li>
+</ol>
+<h1 id="miscellaneous-math">2 Miscellaneous Math</h1>
+<p>此章笔记略。</p>
+<p>2.1 Sets and Mappings</p>
+<p>2.2 Solving Quadratic Equations</p>
+<p>2.3 Trigonometry</p>
+<blockquote>
+<p>Spherical Trigonometry 球面三角学</p>
+<p>Solid Angles 立体角</p>
+</blockquote>
+<p>2.4 Vectors</p>
+<p>2.5 Integration</p>
+<p>2.6 Density Functions</p>
+<p>2.7 Curves and Surfaces</p>
+<p>2.8 Linear Interpolation</p>
+<p>2.9 Triangles</p>
+<p>2.10 Discrete probability</p>
+<p>2.11 Continuous probability</p>
+<p>2.12 Monte Carlo Integration</p>
+<h2 id="faq">FAQ</h2>
+<p><strong>为什么没有向量除法？</strong></p>
+<p>向量除法没有好的类比。</p>
+<p>实数域上的可除代数只出现在1、2、4维，分别对应到实数、复数、四元数，如果不要求是结合代数的话还有8维八元数。其他维数的实线性空间没法定义在非零元上可逆的乘法。</p>
+<p><a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/263743071/answer/272508737">为什么复数没有定义叉乘点乘，向量没有定义除法？</a></p>
+<p><a target="_blank" rel="noopener" href="https://pages.uoregon.edu/koch/Hurwitz.pdf">Hurwitz.pdf
+(uoregon.edu)</a></p>
+<p><strong>什么是quasi–Monte Carlo(QMC)？</strong></p>
+<p>即拟蒙特卡罗方法，使用<strong>低差异序列</strong>而不是伪随机数进行数值积分或研究其它数值问题。</p>
+<p>低差异序列高效的生成在高维空间分布均匀的随机数。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/20197323">低差异序列（一）-
+常见序列的定义及性质</a></p>
+<p>🔺<strong>什么是四元数？</strong>（自己整理） <span
+class="math display">\[
+q=w+xi+yj+zk
+\]</span> <span class="math display">\[
+i^2=j^2=k^2=-1
+\]</span> <span class="math display">\[
+jk=-kj=i
+\]</span> <span class="math display">\[
+ki=-ik=j
+\]</span> <span class="math display">\[
+ij=-ji=k
+\]</span> <span class="math display">\[
+\|q\|=\sqrt{w^2+x^2+y^2+z^2}
+\]</span> <span class="math display">\[
+q_v=xi+yj+zk
+\]</span> <span class="math display">\[
+q_w=w
+\]</span> <span class="math display">\[
+q^*=q_w-q_v
+\]</span> <span class="math display">\[
+q^{-1}=q^*/\|q\|
+\]</span> <span class="math display">\[
+q1_v\cdot q2_v=x1x2+y1y2+z1z2
+\]</span> <span class="math display">\[
+q1_v\times q2_v=(y1z2-y2z1)i+(z1x2-z2x1)j+(x1y2-x2y1)k
+\]</span> <span class="math display">\[
+q1\cdot q2=q1_wq2_w+q1_v\cdot q2_v
+\]</span> <span class="math display">\[
+q1\times q2=(q1_wq2_w-q1_v\cdot q2_v)+(q1_wq2_v+q2_wq1_v+q1_v\times
+q2_v)
+\]</span> 单位四元数存在于四维空间的单位球上，满足<span
+class="math inline">\(\|q\|=1\)</span>。</p>
+<p>将三维球投影到二维平面y=0得到一个圆，球上y=0的点投影位于圆上，y&gt;0半球和y&lt;0半球的点投影位于圆内，圆内一点对应两个三维点。将四维球投影到三维超平面w=0得到一个三维球的情况类似，三维球内一点对应两个四元数，三维球面上的点唯一对应一个<strong>纯四元数</strong>（w=0）。所以将三维旋转矩阵转换为四元数时有两个对应值，四元数的范围是2倍覆盖于3D旋转。四元数所在群为S3，四元数代表的三维旋转是SO(3)，前者是后者的两倍覆盖。</p>
+<p>对于旋转轴<span class="math inline">\((a,b,c)\)</span>和旋转角<span
+class="math inline">\(\theta\)</span>，对应四元数： <span
+class="math display">\[
+q=cos(\theta/2)+sin(\theta/2)ai+sin(\theta/2)bj+sin(\theta/2)ck
+\]</span> <span class="math display">\[
+q^{-1}=cos(\theta/2)-sin(\theta/2)ai-sin(\theta/2)bj-sin(\theta/2)ck
+\]</span> 将三维点<span class="math inline">\(d\)</span>
+（将其表示为w=0的纯四元数）做以上旋转，得到的新点： <span
+class="math display">\[
+d_r=q\times d\times q^{-1}
+\]</span>
+这个运算形式是为了限制其结果所在空间，只有纯四元数与三维空间的点一一对应，对纯四元数运算得到纯四元数，才表示三维点旋转得到三维点。每次转<span
+class="math inline">\(\theta/2\)</span>的原因如下图。</p>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-08-02-quaternion-3d-rotation.png" srcset="/img/loading.gif" lazyload /></p>
+<p>复数可以表示二维平面（横轴为实部，纵轴为虚部）上的旋转。二维向量1+i与横轴正半轴夹角为45度，任何二维向量乘1+i相当于将其旋转45度。参考<a
+target="_blank" rel="noopener" href="https://betterexplained.com/articles/a-visual-intuitive-guide-to-imaginary-numbers/">A
+Visual, Intuitive Guide to Imaginary Numbers – BetterExplained</a>。</p>
+<p><strong>什么是万向锁？</strong></p>
+<p>使用<strong>基于物体自身坐标系的欧拉角</strong>表示旋转时会产生万向锁问题。为方便理解，假设物体旋转前自身xyz轴与世界xyz轴重合，第一次绕自身的z轴旋转，第二次绕自身的x轴旋转，第三次绕自身的y轴旋转，当第二次旋转使自身的y轴与世界z轴（即旋转前自身的z轴）重合时，第三次绕自身的y轴旋转就是绕世界z轴旋转（即绕旋转前自身的z轴旋转），这样第三次旋转与第一次旋转都是在绕同一个轴旋转，丢失了一个自由度。</p>
+<p>所以同一旋转，欧拉角表示不唯一，并且欧拉不能插值，所以用四元数表示旋转。</p>
+<h1 id="raster-images">3 Raster Images</h1>
+<p>Raster images是通用的输入和输出形式，Vector
+images在输出时也要光栅化。</p>
+<h2 id="raster-devices">3.1 Raster Devices</h2>
+<p>输出</p>
+<ul>
+<li><p>显示器（Display）</p>
+<ul>
+<li><p>Transmissive：不发光，调节通过其的光通量，需要背光源。如LCD（Liquid
+crystal display）。</p></li>
+<li><p>Emissive：自发光，直接控制光通量。如LED（Light-emitting
+diode）。</p>
+<blockquote>
+<p>LED与LCD显示屏的划分源自厂商的宣传，实际上，LED显示屏指采用LED作为背光源的LCD，LCD显示屏指使用CCFL为背光源的LCD。</p>
+</blockquote></li>
+</ul></li>
+<li><p>硬拷贝器（Hardcopy）</p>
+<ul>
+<li>Binary：喷墨打印机。</li>
+<li>Continuous tone：热升华打印机。</li>
+</ul></li>
+</ul>
+<p>输入</p>
+<ul>
+<li>2D array sensor：数码相机。</li>
+<li>1D array sensor：平板扫描仪。</li>
+</ul>
+<h2 id="images-pixels-and-geometry">3.2 Images, Pixels, and
+Geometry</h2>
+<p>图片区域到像素值集合的映射： <span class="math display">\[
+I(x,y):R\to V
+\]</span> 像素值是图片上一个采样点的局部平均颜色。</p>
+<p>图片大小一般用宽*高表示，单个像素索引为<span
+class="math inline">\((column_i,row_j)\)</span>。</p>
+<p>存储浮点数的一般称为high dynamic range (HDR)
+图片，存储整数的一般称为low dynamic range (LDR) 图片。</p>
+<p>显示器强度和输入像素值<span
+class="math inline">\(a\)</span>是非线性关系，<strong>伽马编码</strong>的伽马值为<span
+class="math inline">\(\gamma\)</span>： <span class="math display">\[
+displayed\ intensity=(maximum\ intensity)a^{\gamma}
+\]</span> 测得伽马值<span
+class="math inline">\(\gamma\)</span>后，可以对a进行<strong>伽马矫正</strong>（即用另一个伽马编码抵消）：
+<span class="math display">\[
+a_c=a^{\frac{1}{\gamma}}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align}displayed\ intensity &amp;= (maximum\
+intensity){a_c}^{\gamma} \\
+&amp;= (maximum\ intensit)a
+\end{align}
+\]</span></p>
+<blockquote>
+<p>图片在存储像素值时使用<strong>sRGB</strong>格式进行伽马编码（伽马值小于1，0.45），与显示器在显示图片时的伽马编码（伽马值大于1，2.2）抵消。</p>
+<p>对图片伽马编码起源于对CRT显示器的伽马编码的抵消，但如今液晶显示器已经可以人工设定伽马值，<strong>不做线性显示器是因为需要伽马编码</strong>，人眼对暗部细节的感知灵敏度更高，伽马编码相比线性编码存储更多的暗部信息。</p>
+<p>在shader中做计算时需要在线性空间计算，因此将图片读出的像素值转换到线性空间计算，再转换回去。</p>
+</blockquote>
+<p>人眼感知的内容见19章。</p>
+<h2 id="rgb-color">3.3 RGB Color</h2>
+<p>红黄蓝三原色<strong>减色混合</strong>得到其它的颜色。显示器使用红绿蓝的<strong>加色混合</strong>。</p>
+<h2 id="alpha-compositing">3.4 Alpha Compositing</h2>
+<p>前景颜色<span class="math inline">\(c_f\)</span>和背景颜色<span
+class="math inline">\(c_b\)</span>： <span class="math display">\[
+c=\alpha c_f+(1-\alpha)c_b
+\]</span></p>
+<h1 id="ray-tracing">4 Ray Tracing</h1>
+<p><strong>对象顺序渲染</strong>依次考虑每个对象，<strong>图像顺序渲染</strong>依次考虑每个像素。光追是渲染3D场景的图像顺序算法。</p>
+<h2 id="the-basci-ray-tracing-algorithm">4.1 The Basci Ray-Tracing
+Algorithm</h2>
+<p>基础光线追踪器有三部分：</p>
+<ol type="1">
+<li>ray generation 基于摄影集合计算每个像素的视线的原点和方向</li>
+<li>ray intersection 找到与视线相交的最近物体</li>
+<li>shading
+基于视线相交结果计算像素颜色（结果包括命中点、光照、表面法线等）</li>
+</ol>
+<h2 id="perspective">4.2 Perspective</h2>
+<p>直线透视（linear
+perspective）：场景中的直线在图片中依然是直线。（鱼眼镜头就不是直线透视）</p>
+<p>平行投影（parallel
+projection）：保留平行关系和形状尺寸，用于机械和建筑设计。</p>
+<ul>
+<li>直角投影（orthographic）：投影平面与视点方向垂直。</li>
+<li>斜投影（oblique）：不垂直。</li>
+</ul>
+<blockquote>
+<p>透视投影也有斜投影，只是不常用。</p>
+</blockquote>
+<p>透视投影（perspective projection）：近大远小，即人眼成像方法。</p>
+<h2 id="computing-viewing-rays">4.3 Computing Viewing Rays</h2>
+<p>光线的参数方程： <span class="math display">\[
+p(t)=e+t(s-e)
+\]</span> 从视点e行进到一点s，t是参数。</p>
+<p>相机坐标系<span
+class="math inline">\(\{u,v,w\}\)</span>是<strong>右手坐标系</strong>，从相机视角来看，u指向右方，v指向上方，w指向后方（与相机视角方向相反）。</p>
+<p>对于平行投影，光线的方向相同原点不同；对于透视投影，光线的原点相同方向不同。</p>
+<h2 id="ray-object-intersection">4.4 Ray-Object Intersection</h2>
+<p>光线： <span class="math display">\[
+\vec{p}(t)=\vec{e}+t\vec{d}
+\]</span> 球心为<span
+class="math inline">\(\vec{c}\)</span>，光线<strong>击中球</strong>：
+<span class="math display">\[
+(\vec{p}-\vec{c})\cdot(\vec{p}-\vec{c})-R^2=0
+\]</span> 击中球处<span
+class="math inline">\(\vec{p}\)</span>的单位法线： <span
+class="math display">\[
+\vec{n}=(\vec{p}-\vec{c})/R
+\]</span> 三角形顶点为<span
+class="math inline">\(\vec{a}\)</span>、<span
+class="math inline">\(\vec{b}\)</span>、<span
+class="math inline">\(\vec{c}\)</span>，光线<strong>击中三角形</strong>：
+<span class="math display">\[
+\vec{p}=\alpha+\beta(\vec{b}-\vec{a})+\gamma(\vec{c}-\vec{a})
+\]</span> 击中点位于三角形内的条件是<span
+class="math inline">\(\beta&gt;0,\gamma&gt;0,\beta+\gamma&lt;1\)</span>。</p>
+<p>设计程序时应该设定一个Surface类作为所有可与光线相交的对象和efficiency
+structures（参见12.3）的父类。</p>
+<h2 id="shading">4.5 Shading</h2>
+<p>五种光源：</p>
+<p>point lights 从一点发光</p>
+<p>directional lights 从单一方向照亮场景</p>
+<p>ambient lights 填充阴影的恒量照明（没有阴影测试）</p>
+<p>area lights 发光的场景几何</p>
+<p>environment lights 使用图像来表示来自天空等远处光源的光</p>
+<p>计算所需的四个向量：<strong>着色点<span
+class="math inline">\(\vec{x}\)</span>、法线<span
+class="math inline">\(\vec{n}\)</span>、光照方向<span
+class="math inline">\(\vec{l}\)</span>、视点方向<span
+class="math inline">\(\vec{v}\)</span></strong>。</p>
+<p>计算阴影时，检测表面<span class="math inline">\(s\)</span>上一点<span
+class="math inline">\(p\)</span>与光源<span
+class="math inline">\(l\)</span>的连线是否被遮蔽，为了避免数值计算的不精确导致<span
+class="math inline">\(p\)</span>被<span
+class="math inline">\(s\)</span>遮蔽，将<span
+class="math inline">\(p\)</span>沿着其与<span
+class="math inline">\(l\)</span>的连线移动一小段距离。</p>
+<h2 id="historical-notes">4.6 Historical Notes</h2>
+<p>光追的渐进时间复杂度低于基础的对象顺序渲染算法。随着硬件的进步实时光追越来越普遍。</p>
+<h1 id="surface-shading">5 Surface Shading</h1>
+<p>着色模型完全独立于渲染系统的其余部分，相同的模型可以用于光线跟踪和光栅化系统。</p>
+<p>本章介绍点光源照明的不透明表面的基本着色模型。</p>
+<h2 id="point-like-light-sources">5.1 Point-like light sources</h2>
+<p>点光源由其位置和强度描述。</p>
+<p>手电筒和太阳也算点状光源，一个够小，一个够远。</p>
+<p>irradiance <strong>辐照度</strong>E 单位<span
+class="math inline">\(W/m^2\)</span></p>
+<p>radiance <strong>辐射率</strong>L 单位<span
+class="math inline">\(W/(m^2*sr)\)</span></p>
+<h2 id="basic-reflection-models">5.2 Basic reflection models</h2>
+<p>镜面反射发生在表面顶部，并在反射方向附近反射；漫反射发生在表面之下，并向各个方向出现。</p>
+<p><strong>Lambertian reflection</strong>： <span
+class="math display">\[
+L_r=kE=\frac{R}{\pi}E
+\]</span> albedo
+R表示反射的辐照度的百分比，k的取值原因参见第14章（能量守恒）。</p>
+<p>Lambertian着色是理想的漫反射着色，颜色与视点无关。适用于纸张、平面油漆、泥土、树皮、石头等粗糙材质。（颜色的精确预测参见第18章）</p>
+<p><strong>Specular reflection</strong>：</p>
+<p>Modified Blinn–Phong model。 <span class="math display">\[
+L_r=(\frac{R}{\pi}+k_smax(0,n\cdot h)^p)E
+\]</span> <span class="math inline">\(\vec{h}\)</span>是光照方向<span
+class="math inline">\(\vec{l}\)</span>和视点方向<span
+class="math inline">\(\vec{v}\)</span>的半向量，点积<span
+class="math inline">\((n\cdot h)^p\)</span>描述了反射强度，<span
+class="math inline">\(\vec{h}\)</span>与<span
+class="math inline">\(\vec{n}\)</span>越接近反射越强，<strong>Phong指数</strong><span
+class="math inline">\(p\)</span>越大反射越强。</p>
+<p>颜色与视点相关。适用于金属、塑料、光泽或半光泽油漆、大量植物叶子。</p>
+<p>p的典型取值：</p>
+<p>10——"eggshell"</p>
+<p>100——mildly shiny</p>
+<p>1000——really glossy</p>
+<p>10,000——nearly mirror-like</p>
+<p>（关于BRDF的完整讨论参见第14章）</p>
+<p><strong>Calculating shading</strong></p>
+<p>可以分为计算辐照度与计算反射光两部分，彼此无关。上面已计算反射光。</p>
+<p>计算辐照度： <span class="math display">\[
+E=\frac{max(0,n\cdot l)}{r^2}I\ \ (point)
+\]</span> <span class="math display">\[
+E=max(0,n\cdot l)H\ \ (directional)
+\]</span></p>
+<p><span class="math inline">\(I\)</span>和<span
+class="math inline">\(H\)</span>为光源强度。</p>
+<p>光线追踪和光栅化之间获取计算所需量的方式有很大不同，但实际的着色计算本身是相同的。所有向量都要归一化。</p>
+<h2 id="ambient-illumination">5.3 Ambient illumination</h2>
+<p><span class="math display">\[
+L_r=k_aI_a
+\]</span></p>
+<p>防止阴影完全变黑，并可以轻松调整整个场景对比度。</p>
+<h1 id="linear-algebra">6 Linear Algebra</h1>
+<p>此章笔记略。</p>
+<p>6.1 Determinants</p>
+<p>6.2 Matrices</p>
+<p>6.3 Computing with Matrices and Determinants</p>
+<p>6.4 Eigenvalues and Matrix Diagonalization</p>
+<h2 id="faq-1">FAQ</h2>
+<p><strong>逐元素的矩阵乘法称为什么？</strong></p>
+<p>Hadamard积。</p>
+<p><strong>奇异值和特征值的区别？</strong></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.zhihu.com/question/19666954/answer/54788626">矩阵的奇异值与特征值有什么相似之处与区别之处？-
+赵文和的回答</a></p>
+<h1 id="transformation-matrices">7 Transformation Matrices</h1>
+<p>此章笔记略。参见GAMES101-03/04笔记。</p>
+<p>7.1 2D Linear Transformations</p>
+<p>7.2 3D Linear Transformations</p>
+<p>7.3 Translation and Affine Transformations</p>
+<p>7.4 Inverses of Transformation Matrices</p>
+<p>7.5 Coordinate Transformations</p>
+<h1 id="viewing">8 Viewing</h1>
+<p>此章笔记略。参见GAMES101-03/04笔记。</p>
+<p>8.1 Viewing Transformations</p>
+<p>8.2 Projective Transformations</p>
+<p>8.3 Perspective Projection</p>
+<p>8.4 Some Properties of the Perspective Transform</p>
+<p>8.5 Field-of-View</p>
+<p>❓这章末尾的一个FAQ我没有看懂：</p>
+<ul>
+<li>The tessellated spheres I draw in perspective look like ovals. Is
+this a bug?</li>
+</ul>
+<p>No. It is correct behavior. If you place your eye in the same
+relative position to the screen as the virtual viewer has with respect
+to the viewport, then these ovals will look like circles because they
+themselves are viewed at an angle.</p>
+<h1 id="the-graphics-pipeline">9 The Graphics Pipeline</h1>
+<p>找到图像中被几何图元占据的所有像素的过程称为光栅化，因此<strong>对象顺序渲染</strong>也可以称为<strong>光栅化渲染</strong>。光栅化从对象开始到更新图像中的像素为止的操作序列称为图形管线。</p>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-11-22-graphics-pipeline.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="rasterization">9.1 Rasterization</h2>
+<p><strong>Line Drawing</strong></p>
+<p><strong>Triangle Rasterization</strong></p>
+<p><strong>Perspective Correct Interpolation</strong></p>
+<p>透视投影是非线性的，因此透视投影或需要对重心坐标进行矫正。应从屏幕空间逆变换回三维空间，再用重心坐标插值。</p>
+<p>可参考：<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/400257532">矫正透视投影插值及属性插值详解</a></p>
+<p>Clipping可以发生在变换前或齐次坐标空间。这节只讲了求点与平面交点的公式，裁剪三角形参见12.4.3。</p>
+<h2 id="operations-before-and-after-rasterization">9.2 Operations Before
+and After Rasterization</h2>
+<p><strong>Simple 2D Drawing</strong></p>
+<p>没有vertex或fragment阶段。</p>
+<p><strong>A Minimal 3D Pipeline</strong></p>
+<p>做MVP和视口变换，需要按前后顺序绘制面元。</p>
+<p><strong>Using a z-Buffer for Hidden Surfaces</strong></p>
+<p>使用z-Buffer给每个fragment存一个深度值。考虑到精度问题，谨慎选择近平面n和远平面f，使n尽量大，f尽量小。</p>
+<p><strong>Per-vertex Shading</strong></p>
+<p>即Gouraud shading。</p>
+<p><strong>Per-fragment Shading</strong></p>
+<p>即Phong shading。（和Phong illumination model是两种东西）</p>
+<p><strong>Texture Mapping</strong></p>
+<p>给每个顶点赋纹理坐标。</p>
+<p><strong>Shading Frequency</strong></p>
+<p>根据实际需要选择不同着色频率的shading 方法。</p>
+<p>（这节没提flat shading）</p>
+<h2 id="simple-antialiasing">9.3 Simple Antialiasing</h2>
+<p>MSAA通过给每个fragment存储一个color加上一个coverage mask和一组 depth
+values。</p>
+<h2 id="culling-primitives-for-efficiency">9.4 Culling Primitives for
+Efficiency</h2>
+<p>三种Culling 策略（同时使用）：</p>
+<ul>
+<li>view volume culling</li>
+<li>occlusion culling</li>
+<li>backface culling</li>
+</ul>
+<h1 id="signal-processing">10 Signal Processing</h1>
+<p>信号处理。</p>
+<p>10.1 Digital Audio: Sampling in 1D</p>
+<p>10.2 Convolution</p>
+<p>10.3 Convolution Filters</p>
+<p>10.4 Signal Processing for Images</p>
+<p>10.5 Sampling Theory</p>
+<h1 id="texture">11 Texture</h1>
+<p>本章讨论使用纹理来表示表面细节、阴影和反射。</p>
+<p>重点是纹理映射函数和克服纹理映射（重采样）造成的aliasing。</p>
+<h2 id="looking-up-texture-values">11.1 Looking Up Texture Values</h2>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c">Color <span class="hljs-title function_">texture_lookup</span><span class="hljs-params">(Texture t, <span class="hljs-type">float</span> u, <span class="hljs-type">float</span> v)</span> &#123;<br>    <span class="hljs-type">int</span> i = round(u * t.width()- <span class="hljs-number">0.5</span>)<br>    <span class="hljs-type">int</span> j = round(v * t.height()- <span class="hljs-number">0.5</span>)<br>    <span class="hljs-keyword">return</span> t.get_pixel(i,j)<br>&#125;<br><br>Color shade_surface_point(Surface s, Point p, Texture t) &#123;<br>    Vector normal = s.get_normal(p)<br>    (u,v) = s.get_texcoord(p)<br>    Color diffuse_color = texture_lookup(u,v)<br>    <span class="hljs-comment">// compute shading using diffuse_color and normal</span><br>    <span class="hljs-comment">// return shading result</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>需要知道surface S到texture T的映射关系get_texcoord： <span
+class="math display">\[
+\begin{align}
+\phi&amp;:S\to T \\
+&amp;:(x,y,z)\longmapsto (u,v)
+\end{align}
+\]</span></p>
+<h2 id="texture-coordinate-functions">11.2 Texture Coordinate
+Functions</h2>
+<p>也称作UV mapping或surface parameterization。</p>
+<p>设计<span
+class="math inline">\(\phi\)</span>需要考虑的几个竞争性目标：</p>
+<ul>
+<li>Bijectivity，即injective和surjective。</li>
+<li>Size distortion，<span
+class="math inline">\(\phi\)</span>的导数的变化不应太大，即表面上间隔大致相同的点对映射到纹理上间隔也应大致相同。</li>
+<li>Shape distortion，不同方向上<span
+class="math inline">\(\phi\)</span>的导数不应相差太大，即形状不应变化太大，表面上的圆形映射到纹理上也是圆形。</li>
+<li>Continuity，<span
+class="math inline">\(\phi\)</span>应该是连续的或者具有尽可能少的不连续性，即不应有太多接缝，表面上的相邻点应映射到纹理中的相邻点。</li>
+</ul>
+<p><strong>Geometrically Determined Coordinates</strong></p>
+<p>对于简单形状或特俗情况。</p>
+<p>Planar Projection</p>
+<p>Spherical Coordinates</p>
+<p>Cylindrical Coordinates</p>
+<p>Cubemaps</p>
+<p><strong>Interpolated Texture Coordinates</strong></p>
+<p>对于需要细粒度控制纹理坐标的三角形网格表面。</p>
+<p>顶点存纹理坐标，对整个三角形进行重心插值。</p>
+<p><strong>Tiling, Wrapping Modes, and Texture
+Transformations</strong></p>
+<p>可以对纹理进行平铺、缩放、平移。</p>
+<p><strong>Continuity and Seams</strong></p>
+<p>对于任何封闭的三维表面，没有连续的双射函数将整个表面映射成纹理图像是拓扑学的基本结论。在纹理坐标突然改变的表面上引入接缝曲线，可以在其他地方降低失真。</p>
+<p><strong>Texture coordinates in rendering systems</strong></p>
+<p>在光线追踪渲染器中，支持光线相交的每种类型的表面必须不仅能够计算相交点和表面法线，而且还能够计算相交点的纹理坐标。光线击中时，由三角形网格表示的几何体可以根据存储在顶点的纹理坐标通过重心插值来计算纹理坐标，对于其他类型的几何体必须直接计算纹理坐标。</p>
+<p>在基于光栅化的系统中，三角形通常是唯一受支持的几何类型，所有曲面都必须转换为这种形式。光栅化器对纹理坐标进行插值，以便fragment着色器的每次调用都具有适合其的纹理坐标。</p>
+<h2 id="antialiasing-texture-lookups">11.3 Antialiasing Texture
+Lookups</h2>
+<p>参考GAMES101-09笔记。</p>
+<h2 id="applications-of-texture-mapping">11.4 Applications of Texture
+Mapping</h2>
+<ol type="1">
+<li><p>Controlling Shading Parameters：base
+color，metallic，roughness等贴图。</p></li>
+<li><p>Normal Maps and Bump Maps：法线贴图 (切线参考系下)
+是凹凸贴图的导数。</p></li>
+<li><p>Displacement Maps：位移贴图实际改变曲面。（光追中没有ideal
+way应用位移贴图）</p></li>
+<li><p>Shadow
+Maps：用一个单独的渲染pass提前计算，在光源处光栅化得到的深度图即为阴影贴图。执行一个普通渲染pass时，若需要知道一个fragment对光源是否可见时，将其投影到阴影贴图中（使用最初用于渲染阴影贴图的透视图投影），并将查找值<span
+class="math inline">\(d_{map}\)</span>与实际距光源距离<span
+class="math inline">\(d\)</span>进行比较，若<span
+class="math inline">\(d&gt;d_{map}\)</span>说明有阴影，相等则没有。</p>
+<p>由于数值计算的精度问题，需要引入shadow bias判断相等关系。</p>
+<p>对阴影贴图插值没有意义，在阴影边界会导致问题。阴影贴图中的纹理查找使用最近邻重构来完成。减少aliasing，可以使用多个样本，对1或0的阴影结果（而不是深度）进行平均，这被称为percentage
+closer filtering（PCF）。</p></li>
+<li><p>Environment Maps：环境贴图。</p></li>
+</ol>
+<h2 id="procedural-3d-textures">11.5 Procedural 3D Textures</h2>
+<p>3D纹理容易定义映射函数，没有distortion。适合由固体介质雕刻而成的表面，如大理石雕像。</p>
+<p>3D纹理若存储为3D光栅图像或体积会消耗大量内存。因此3D纹理坐标最常用于程序纹理，纹理值使用数学过程计算，而不是从纹理图像中查找来计算的。</p>
+<p>3D Stripe Textures</p>
+<p>Solid Noise (Perlin noise)</p>
+<h1 id="data-structures-for-graphics">12 Data Structures for
+Graphics</h1>
+<h2 id="triangle-meshes">12.1 Triangle Meshes</h2>
+<p>带宽比存储更宝贵。</p>
+<p><strong>Mesh Topology</strong></p>
+<p>manifold来自拓扑学的数学领域。一个二维流形是这样一个表面：任何一点的小邻域可以被平滑为一小块平表面。</p>
+<p>边为manifold的条件：正好只由两个三角形share。</p>
+<p>点为manifold的条件：周围正好只有一个完整的三角形环。</p>
+<p>manifold不能有boundary，但实际应用中可以放宽条件：边由一个或两个三角形share，点连到一组边相连的三角形。</p>
+<p>默认情况下，front是三角形顶点<strong>逆时针</strong>绕序的那一面。网格若朝向一致，称为consistently
+oriented。manifold可能无法定义为朝向一致，如Mobius band。</p>
+<p><strong>Indexed Mesh Storage</strong></p>
+<p>通过存储索引减小内存消耗。</p>
+<p><strong>Triangle Strips and Fans</strong></p>
+<p>更高效的三角形组织方式。n+2个顶点描述n个三角形。</p>
+<p><strong>Data Structures for Mesh Connectivity</strong></p>
+<p>修改网格需要知道点、边、三角形之间的关系。</p>
+<p>低效的数据结构：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++">Triangle &#123;<br>    Vertex v[<span class="hljs-number">3</span>]<br>   Edge e[<span class="hljs-number">3</span>]<br> &#125;<br><br>Edge &#123;<br>    Vertex v[<span class="hljs-number">2</span>]<br>    Triangle t[<span class="hljs-number">2</span>]<br>&#125;<br><br>Vertex &#123;<br>    Triangle t[]<br>    Edge e[]<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>The Triangle-Neighbor Structure：</p>
+<p>以三角形为核心。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++">Triangle &#123;<br>    Edge nbr[<span class="hljs-number">3</span>];<br>    Vertex v[<span class="hljs-number">3</span>];<br>&#125;<br><br>Edge &#123; <span class="hljs-comment">// the i-th edge of triangle t</span><br>    Triangle t;<br>    <span class="hljs-type">int</span> i; <span class="hljs-comment">// in &#123;0,1,2&#125;</span><br>&#125;<br><br>Vertex &#123;<br>    <span class="hljs-comment">// ... per-vertex data ...</span><br>    Edge e; <span class="hljs-comment">// any edge leaving vertex</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>The Winged-EdgeStructure：</p>
+<p>以边为核心。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs c++">Edge &#123;<br>    Edge lprev, lnext, rprev, rnext;<br>    Vertex head, tail;<br>    Face left, right;<br>&#125;<br><br>Face &#123;<br>    <span class="hljs-comment">// ... per-face data ...</span><br>    Edge e; <span class="hljs-comment">// any adjacent edge</span><br>&#125;<br><br>Vertex &#123;<br>    <span class="hljs-comment">// ... per-vertex data ...</span><br>    Edge e; <span class="hljs-comment">// any incident edge</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>The Half-Edge Structure：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++">HEdge &#123;<br>    HEdge pair, next;<br>    Vertex v;<br>    Face f;<br>&#125;<br>Face &#123;<br>    <span class="hljs-comment">// ... per-face data ...</span><br>    HEdge h; <span class="hljs-comment">// any h-edge of this face </span><br>&#125;<br><br>Vertex &#123;<br>    <span class="hljs-comment">// ... per-vertex data ...</span><br>    HEdge h; <span class="hljs-comment">// any h-edge pointing toward this vertex</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="scene-graphs">12.2 Scene Graphs</h2>
+<p>用层级结构组织对象，便于得到对象的子对象的transform矩阵（如车的轮子）。</p>
+<p>对于光栅化，使用很多API支持的矩阵栈实现。</p>
+<p>对于光追，使用instancing技术，存储对象和transform矩阵，显式的变换在渲染时完成。如果有一条光线要和变换后的对象相交，将反变换光线和未变换的对象相交。</p>
+<p>优点：</p>
+<ul>
+<li>未变换的对象可能更容易做相交。</li>
+<li>大量变换后的对象可以共享一个未变换的对象。</li>
+</ul>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-11-26-scene-graph-instancing.png" srcset="/img/loading.gif" lazyload /></p>
+<h2 id="spatial-data-structures">12.3 Spatial Data Structures</h2>
+<p>空间数据结构旨在组织空间中的对象，以便有效地查找对象。可用于光追、视图剔除、碰撞检测。</p>
+<p><strong>Bounding Boxes</strong></p>
+<p>只有当光线击中边界框时，才会测试光线是否与表面相交。</p>
+<p><strong>Hierarchical Bounding Boxes</strong></p>
+<p>BVH (Bounding Volume Hierarchies) 算法。划分对象。</p>
+<p><strong>Uniform Spatial Subdivision</strong></p>
+<p>均匀划分空间。</p>
+<p><strong>Axis-Aligned Binary Space Partitioning</strong></p>
+<p>axis-aligned BSP。划分空间。</p>
+<h2 id="bsp-trees-for-visibility">12.4 BSP Trees for Visibility</h2>
+<p>预先计算BSP树，运行时根据视点位置调用树，执行遍历，产生用于视图剔除的画家算法所需的从后向前的多边形顺序。</p>
+<h2 id="tiling-multidimensional-arrays">12.5 Tiling Multidimensional
+Arrays</h2>
+<p>通过tiling更好地组织多维数组的内存布局。例如，对于二维数组的普通布局方式，同行的相邻元素在内存中紧邻对方，但同列的相邻元素在内存中间隔（列数个）元素。</p>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-11-27-memory-tile.png" srcset="/img/loading.gif" lazyload /></p>
+<p>tile尺寸应与机器上的内存单元大小接近。</p>
+<h1 id="sampling">13 Sampling</h1>
+<p>13.1 Integration</p>
+<p>13.2 Continuous Probability</p>
+<p>13.3 Monte Carlo Integration</p>
+<p>13.4 Choosing Random Points</p>
+<h1 id="physics-based-rendering">14 Physics-Based Rendering</h1>
+<p>严格遵循物理模型而不是phenomenological。</p>
+<p>推荐了pharr的PBR。</p>
+<h2 id="photons">14.1 Photons</h2>
+<p>Photon在图形学里只是遵循几何光学的能量包。 <span
+class="math display">\[
+q=hf=\frac{hc}{\lambda}
+\]</span> <span class="math inline">\(h=6.63\times
+10^{-34}Js\)</span>是Plank’s Constant。</p>
+<h2 id="smooth-metals">14.2 Smooth Metals</h2>
+<p>Schlick approximation： <span class="math display">\[
+R_0(\lambda)=(\frac{n1(\lambda)-n2(\lambda)}{n1(\lambda)+n2(\lambda)})^2
+\]</span> <span class="math display">\[
+R(\theta,\lambda)=R_0(\lambda)+(1-R_0(\lambda))(1-cos\theta)^5
+\]</span> n为折射率（refractive indices）。</p>
+<h2 id="smooth-dielectrics">14.3 Smooth Dielectrics</h2>
+<p>一个启发式：不是导体就是电介质。</p>
+<p>光滑均匀的电介质是透明的，如玻璃、水和眼睛的晶状体；混合物接近不透明，如皮肤、牛奶、头发、布料和几乎所有日常材料。</p>
+<p>对于光滑电介质只有三个重要的属性：</p>
+<ol type="1">
+<li>在每个入射角度和波长下反射的光有多少</li>
+<li>在给定的距离和波长内，光在材料中传播时被吸收的比例是多少</li>
+<li>反射光和折射光的方向是什么</li>
+</ol>
+<p><strong>Reflectivity of a Dielectric</strong></p>
+<p>电介质和金属同样适用Schlick approximation。</p>
+<p>常用折射率n：水1.33，玻璃1.4-1.7，钻石2.4。</p>
+<p><strong>Refraction and Beer's law</strong></p>
+<p>Snell’s Law： <span class="math display">\[
+\eta_isin\theta_i=\eta_tsin\theta_t
+\]</span> Beer's law： <span class="math display">\[
+I(s)=I(0)a^s
+\]</span> <span class="math inline">\(a\)</span>是degree of
+attenuation，<span class="math inline">\(s\)</span>是距界面距离，<span
+class="math inline">\(I\)</span>是光强。描述了光线被物质吸收产生的衰减。</p>
+<h2 id="dielectrics-with-subsurface-scattering">14.4 Dielectrics with
+Subsurface Scattering</h2>
+<p>仅用光滑的电介质就可以呈现出一系列令人惊讶的材质。</p>
+<p>冰块可以通过在内部放置小气泡变得不透明，也可以通过使表面粗糙变得不透明。</p>
+<p>人类皮肤可以被建模成一个粗糙的表面和折射率稍微不同的多层、色素粒子（遵循比尔定律）、血液（遵循比尔定律）。</p>
+<h2 id="a-brute-force-photon-tracer">14.5 A Brute Force Photon
+Tracer</h2>
+<p>描述了最基本的光子追踪过程。</p>
+<h2 id="radiometry">14.6 Radiometry</h2>
+<p>参见GAMES101-14笔记。</p>
+<h2 id="radiometry-of-scattering">14.7 Radiometry of Scattering</h2>
+<p>讲了BRDF的定义和Ideal Diffuse BRDF。参见GAMES101-17笔记。</p>
+<h2 id="transport-equation">14.8 Transport Equation</h2>
+<p>即反射方程： <span class="math display">\[
+L_r(x,w_r)=\int_{\Omega}L_i(x,w_i)f(x,w_i,w_r)\cos \theta_id\omega_i
+\]</span> 但书这里的写法很不一样： <span class="math display">\[
+L_s(x,k_o)=\int_{all\
+x^{&#39;}}\frac{\rho(k_i.k_o)L_s(x^{&#39;},x-x^{&#39;})v(x,x^{&#39;})}{\left
+\|x-x^{&#39;}\right \|^2}dA^{&#39;}
+\]</span> <span class="math display">\[
+v(x,x^{&#39;})=
+\begin{align}
+\left\{\begin{matrix}
+1\ &amp;if\ x\ and\ x^{&#39;}\ are\ mutually\ visible,\\
+0\ &amp;otherwise.
+\end{matrix}\right.
+\end{align}
+\]</span> <span class="math inline">\(\rho\)</span>代表BRDF。</p>
+<h2 id="materials-in-practice">14.9 Materials in Practice</h2>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-11-27-taxonomy-of-BSDF-Lobes.png" srcset="/img/loading.gif" lazyload /></p>
+<p><a
+target="_blank" rel="noopener" href="https://casual-effects.com/research/McGuire2020BSDF/index.html">A
+Taxonomy of Bidirectional Scattering Distribution Function Lobes for
+Rendering Engineers</a></p>
+<h2 id="monte-carlo-ray-tracing">14.10 Monte Carlo Ray Tracing</h2>
+<p>参见GAMES101-16笔记。路径追踪是分布式光追的简化版本，每个像素发射多条光线，但但每次弹射只产生一条光线。</p>
+<h1 id="curves">15 Curves</h1>
+<p>15.1 Curves</p>
+<p>15.2 Curve Properties</p>
+<p>15.3 Polynomial Pieces</p>
+<p>15.4 Putting Pieces Together</p>
+<p>15.5 Cubics</p>
+<p>15.6 Approximating Curves</p>
+<p>15.7 Summary</p>
+<h1 id="computer-animation">16 Computer Animation</h1>
+<p>16.1 Principles of Animation</p>
+<p>16.2 Keyframing</p>
+<p>16.3 Deformations</p>
+<p>16.4 Character Animation</p>
+<p>16.5 Physics-Based Animation</p>
+<p>16.6 Procedural Techniques</p>
+<p>16.7 Groups of Objects</p>
+<h1 id="using-graphics-hardware">17 Using Graphics Hardware</h1>
+<p>17.1 Hardware Overview</p>
+<p>17.2 What Is Graphics Hardware</p>
+<p>17.3 Heterogeneous Multiprocessing</p>
+<p>17.4 Graphics Hardware Programming: Buffers, State, and Shaders</p>
+<p>17.5 State Machine</p>
+<p>17.6 Basic OpenGL Application Layout</p>
+<p>17.7 Geometry</p>
+<p>17.8 A First Iook at Shaders</p>
+<p>17.9 Vertex Buffer Objects</p>
+<p>17.10 Vertex Array Objects</p>
+<p>17.11 Transformation Matrices</p>
+<p>17.12 Shading with Per-Vertex Attributes</p>
+<p>17.13 Shading in the Fragment Processor</p>
+<p>17.14 Meshes and Instancing</p>
+<p>17.15 Texture Objects</p>
+<p>17.16 Object-Oriented Design for Graphics Hardware Programming</p>
+<p>17.17 Continued Learning</p>
+<h1 id="color">18 Color</h1>
+<p>18.1 Colorimetry</p>
+<p>18.2 Color Spaces</p>
+<p>18.3 Chromatic Adaptation</p>
+<p>18.4 Color Appearance</p>
+<h1 id="visual-perception">19 Visual Perception</h1>
+<p>19.1 Vision Science</p>
+<p>19.2 Visual Sensitivity</p>
+<p>19.3 Spatial Vision</p>
+<p>19.4 Objects, Locations, and Events</p>
+<p>19.5 Picture Perception</p>
+<h1 id="tone-reproduction">20 Tone Reproduction</h1>
+<p>20.1 Classification</p>
+<p>20.2 Dynamic Range</p>
+<p>20.3 Color</p>
+<p>20.4 Image Formation</p>
+<p>20.5 Frequency-Based Operators</p>
+<p>20.6 Gradient-Domain Operators</p>
+<p>20.7 Spatial Operators</p>
+<p>20.8 Division</p>
+<p>20.9 Sigmoids</p>
+<p>20.10 Other Approaches</p>
+<p>20.11 Night Tonemapping</p>
+<p>20.12 Discussion</p>
+<h1 id="implicit-modeling">21 Implicit Modeling</h1>
+<p>21.1 Implicit Functions, Skeletal Primitives, and Summation
+Blending</p>
+<p>21.2 Rendering</p>
+<p>21.3 Space Partitioning</p>
+<p>21.4 More on Blending</p>
+<p>21.5 Constructive Solid Geometry</p>
+<p>21.6 Warping</p>
+<p>21.7 Precise Contact Modeling</p>
+<p>21.8 The BlobTree</p>
+<p>21.9 Interactive Implicit Modeling Systems</p>
+<h1 id="computer-graphics-in-games">22 Computer Graphics in Games</h1>
+<p>22.1 Platforms</p>
+<p>22.2 Limited Resources</p>
+<p>22.3 Optimization Techniques</p>
+<p>22.4 Game Types</p>
+<p>22.5 The Game Production Process</p>
+<h1 id="visualization">23 Visualization</h1>
+<p>23.1 Background</p>
+<p>23.2 Data Types</p>
+<p>23.3 Human-Centered Design Process</p>
+<p>23.4 Visual Encoding Principles</p>
+<p>23.5 Interaction Principles</p>
+<p>23.6 Composite and Adjacent Views</p>
+<p>23.7 Data Reduction</p>
+<p>23.8 Examples</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Notebook/" class="category-chain-item">Notebook</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CG/">#CG</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>《Fundamentals of Computer Graphics》第五版笔记</div>
+      <div>https://reddish.fun/posts/Notebook/Fundamentals-of-Computer-Graphics-5th-note/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Introduction-to-3D-Game-Programming-with-DirectX-12-note/" title="《DirectX 12 3D 游戏开发实战》笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《DirectX 12 3D 游戏开发实战》笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Notebook/GAMES-note/" title="GAMES笔记">
+                        <span class="hidden-mobile">GAMES笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

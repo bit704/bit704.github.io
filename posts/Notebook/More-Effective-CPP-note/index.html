@@ -1,0 +1,1133 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="35 New Ways to Improve Your Programs and Designs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《More Effective C++》笔记">
+<meta property="og:url" content="https://reddish.fun/posts/Notebook/More-Effective-CPP-note/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="35 New Ways to Improve Your Programs and Designs">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-06-29T15:25:30.357Z">
+<meta property="article:modified_time" content="2023-12-23T17:01:23.917Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="CPP">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>《More Effective C++》笔记 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="《More Effective C++》笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-06-29 23:25" pubdate>
+          2023年6月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          19k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《More Effective C++》笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>35 New Ways to Improve Your Programs and Designs</p>
+<span id="more"></span>
+<p>Scott Meyers 著</p>
+<p>候捷 译</p>
+<p class="note note-primary">
+摘录整理。
+</p>
+<p><a
+target="_blank" rel="noopener" href="https://www.aristeia.com/BookErrata/mec++-errata.html">本书修订及更新网站</a></p>
+<p>条款1指本书条款1，条款E1指另一本书Effective C++的条款1。</p>
+<h1 id="基础议题">1 基础议题</h1>
+<h2 id="指针与引用的区别">1 指针与引用的区别</h2>
+<p>任何情况下都不能使用<strong>指向空值的引用</strong>！如需指向空值，使用指针。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">char</span> *pc = <span class="hljs-number">0</span>; <span class="hljs-comment">// 设置指针为空值 </span><br><span class="hljs-type">char</span> &amp;rc = *pc; <span class="hljs-comment">//  让引用指向空值，结果不确定</span><br></code></pre></td></tr></table></figure>
+<p>引用必须初始化，指针可以不初始化。</p>
+<p>引用初始化后不能改变， 指针可以被重新赋值以指向另一个不同的对象。</p>
+<h2 id="尽量使用c风格的类型转换">2 尽量使用C++风格的类型转换</h2>
+<p>使用static_cast，const_cast，dynamic_cast，reinterpret_cast等四个类型转换操作符。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> firstNumber, secondNumber; <br><span class="hljs-type">double</span> result = ((<span class="hljs-type">double</span>)firstNumber)/secondNumber;<br><span class="hljs-comment">// 应该这样写</span><br><span class="hljs-type">double</span> result = <span class="hljs-built_in">static_cast</span>&lt;<span class="hljs-type">double</span>&gt;(firstNumber)/secondNumber;<br></code></pre></td></tr></table></figure>
+<h2 id="不要对数组使用多态">3 不要对数组使用多态</h2>
+<p>因为编译器无法正确判断数组中各元素内存地址与数组的起始地址的间隔。</p>
+<p>从具体类（concrete
+classes）派生的具体类容易犯对数组使用多态的错误。（参见条款33）</p>
+<h2 id="避免无用的缺省构造函数">4 避免无用的缺省构造函数</h2>
+<p>如果类没有缺省构造函数，且仅定义了有参构造函数，建立其对象数组有以下办法：</p>
+<ol type="1">
+<li><p>直接初始化。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">A a[] = &#123;<span class="hljs-built_in">A</span>(<span class="hljs-number">1</span>), <span class="hljs-built_in">A</span>(<span class="hljs-number">2</span>), <span class="hljs-built_in">A</span>(<span class="hljs-number">3</span>)&#125;;<br></code></pre></td></tr></table></figure>
+<p>只能用于非堆数组，不能用于堆数组。</p></li>
+<li><p>创建指针数组。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> A* PA;<br>PA pa[<span class="hljs-number">10</span>];<br>PA *pb = <span class="hljs-keyword">new</span> PA[<span class="hljs-number">10</span>];<br></code></pre></td></tr></table></figure>
+<p>浪费内存。</p></li>
+<li><p>用 placement new 方法。(参见条款8)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">void</span> *rawMemory = <span class="hljs-keyword">operator</span> <span class="hljs-keyword">new</span>[](<span class="hljs-number">10</span>*<span class="hljs-built_in">sizeof</span>(A)); <br>A *a = <span class="hljs-built_in">static_cast</span>&lt;A*&gt;(rawMemory); <br><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; ++i) <br>    <span class="hljs-keyword">new</span> (&amp;a[i])<span class="hljs-built_in">A</span>(i); <br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>通过仔细设计模板可以杜绝对缺省构造函数的需求，如vector。</strong></p>
+<h1 id="运算符">2 运算符</h1>
+<h2 id="谨慎定义类型转换函数">5 谨慎定义类型转换函数</h2>
+<p>允许类型转换的两种函数：</p>
+<ul>
+<li>单参构造函数（该函数可以是只定义了一个参数，也可以是虽定义了多个参数但第一个参数以后的所有参数都有缺省值）</li>
+<li>隐式类型转换运算符</li>
+</ul>
+<p>一般来说，越有经验的
+C++程序员就越喜欢<strong>避开</strong>类型转换运算符。例如，库函数中的string类型没有包括隐式地从string转换成C风格的<code>char*</code>的功能，而是定义了一个成员函数c_str用来完成这个转换。</p>
+<p>使用explicit声明避免单参构造函数造成的无意义的类型转换。</p>
+<p>编译器<strong>不会连续调用两个用户定义（user-defined）的类型转换进行隐式转换</strong>。因此可以考虑使用公有<strong>内部类</strong>的对象作为单参构造函数的入参。（这里的内部类在功能上被称为代理类，参见条款30）</p>
+<h2 id="自增increment自减decrement操作符前缀形式与后缀形式的区别">6
+自增(increment)、自减(decrement)操作符前缀形式与后缀形式的区别</h2>
+<p>C++规定<strong>后缀形式</strong>有一个int类型参数，当函数被调用时，编译器传递一个0做为int参数的值给该函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// unlimited precision int</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">UPInt</span> &#123; <br><span class="hljs-keyword">public</span>: <br>    UPInt&amp; <span class="hljs-keyword">operator</span>++(); <span class="hljs-comment">// ++前缀 </span><br>    <span class="hljs-type">const</span> UPInt <span class="hljs-keyword">operator</span>++(<span class="hljs-type">int</span>); <span class="hljs-comment">// ++后缀 </span><br>    UPInt&amp; <span class="hljs-keyword">operator</span>--(); <span class="hljs-comment">// --前缀 </span><br>    <span class="hljs-type">const</span> UPInt <span class="hljs-keyword">operator</span>--(<span class="hljs-type">int</span>); <span class="hljs-comment">// --后缀 </span><br>    UPInt&amp; <span class="hljs-keyword">operator</span>+=(<span class="hljs-type">int</span>); <span class="hljs-comment">// +=操作符，UPInts与ints相运算</span><br>&#125;; <br><br>UPInt&amp; UPInt::<span class="hljs-keyword">operator</span>++() <br>&#123; <br>    *<span class="hljs-keyword">this</span> += <span class="hljs-number">1</span>; <span class="hljs-comment">// 增加 </span><br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>; <span class="hljs-comment">// 取回值 </span><br>&#125;<br><br><span class="hljs-comment">// 返回const避免++++</span><br><span class="hljs-type">const</span> UPInt UPInt::<span class="hljs-keyword">operator</span>++(<span class="hljs-type">int</span>) <br>&#123; <br>    UPInt oldValue = *<span class="hljs-keyword">this</span>; <span class="hljs-comment">// 取回值 </span><br>    ++(*<span class="hljs-keyword">this</span>); <span class="hljs-comment">// 增加 </span><br>    <span class="hljs-keyword">return</span> oldValue; <span class="hljs-comment">// 返回被取回的值</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>后缀increment和decrement应该根据它们的前缀形式来实现，便于维护。</p>
+<h2 id="不要重载">7 不要重载<code>&amp;&amp; || ,</code></h2>
+<p>对于<code>&amp;&amp; ||</code>，重载会打破大家熟悉的<strong>短路求值</strong>原则。因为重载引发函数调用，而C++规范<strong>没有定义</strong>函数参数的计算顺序。</p>
+<p>对于<code>,</code>，一个包含逗号的表达式首先计算逗号左边的表达式，然后计算逗号右边的表达式；整个表达式的结果是逗号右边表达式的值。重载会打破上述规则。</p>
+<p>以上是建议不要重载，不是不能重载。</p>
+<p>不能重载的操作符：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">.   .*   ::   ?:   <br><span class="hljs-keyword">new</span>   <span class="hljs-keyword">delete</span>   <span class="hljs-keyword">sizeof</span>   <span class="hljs-keyword">typeid</span><br><span class="hljs-keyword">static_cast</span>   <span class="hljs-keyword">dynamic_cast</span>   <span class="hljs-keyword">const_cast</span>   <span class="hljs-keyword">reinterpret_cast</span><br></code></pre></td></tr></table></figure>
+<p>能重载的：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">operator</span> <span class="hljs-keyword">new</span>   <span class="hljs-keyword">operator</span> <span class="hljs-keyword">delete</span>   <br><span class="hljs-keyword">operator</span> <span class="hljs-keyword">new</span>[]   <span class="hljs-keyword">operator</span> <span class="hljs-keyword">delete</span>[] <br>+   -   *   /  %   ^   &amp;   |   ~ <br>!   =   &lt;   &gt;   +=   -=   *=   /=   %=<br>^=   &amp;=   |=   &lt;&lt;   &gt;&gt;   &gt;&gt;=   &lt;&lt;=   ==   != <br>&lt;=   &gt;=   &amp;&amp;   ||   ++   --   ,   -&gt;*   -&gt; <br>() [] <br></code></pre></td></tr></table></figure>
+<h2 id="理解各种不同含义的new和delete">8
+理解各种不同含义的new和delete</h2>
+<p>new操作符为分配内存调用operator new函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(<span class="hljs-type">size_t</span> size)</span></span>;<br><span class="hljs-comment">// 你能增加额外的参数重载函数operator new，但是第一个参数类型必须是size_t，决定分配多少内存。</span><br></code></pre></td></tr></table></figure>
+<p>特殊的operator new函数被称为placement new。（条款4有例子）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 它看上去像这样,仅仅返回指向内存的指针</span><br><span class="hljs-function"><span class="hljs-type">void</span>* <span class="hljs-keyword">operator</span> <span class="hljs-title">new</span><span class="hljs-params">(<span class="hljs-type">size_t</span>, <span class="hljs-type">void</span>* location)</span> </span><br><span class="hljs-function"></span>&#123; <br>    <span class="hljs-keyword">return</span> location; <br>&#125;<br></code></pre></td></tr></table></figure>
+<ol type="1">
+<li><p>在堆上建立一个对象，分配内存且调用构造函数：使用new操作符。</p></li>
+<li><p>仅分配内存：使用operator new函数。</p></li>
+<li><p>定制在堆对象被建立时的内存分配过程：重载operator
+new函数，然后使用new操作符。（new操作符会调用你定制的operator
+new）</p></li>
+<li><p>在一块已经获得指针的内存里建立一个对象：使用placement
+new。</p></li>
+</ol>
+<p>如果用placement
+new在内存中建立对象，应该避免在该内存中用delete操作符。指针来源无法确定。</p>
+<h1 id="异常">3 异常</h1>
+<p>C程序员能够仅通过setjmp和longjmp来完成与异常处理相似的功能。但是longjmp在C++中使用时，当它调整堆栈不能对局部对象调用析构函数。大多数C++程序员依赖于这些析构函数的调用，所以setjmp和longjmp不能够替换异常处理。</p>
+<h2 id="使用析构函数防止资源泄漏">9 使用析构函数防止资源泄漏</h2>
+<p>即RAII，用智能指针代替普通指针。</p>
+<h2 id="在构造函数中防止资源泄漏">10 在构造函数中防止资源泄漏</h2>
+<p>C++仅仅能删除被<strong>完全构造</strong>的对象（fully contructed
+objects）。</p>
+<blockquote>
+<p>如果为没有完成构造操作的对象调用析构函数，析构函数如何去做呢？仅有的办法是在每个对象里加入一些字节来指示构造函数执行了多少步？然后让析构函数检测这些字节并判断该执行哪些操作。这样的记录会减慢析构函数的运行速度，并使得对象的尺寸变大。C++避免了这种开销，代价是不能自动地删除被部分构造的对象。</p>
+</blockquote>
+<p>若构造函数中抛出异常，捕获所有的异常，然后执行一些清除代码，最后再重新抛出异常让它继续传递。</p>
+<h2 id="禁止异常信息exceptions传递到析构函数外">11
+禁止异常信息（exceptions）传递到析构函数外</h2>
+<p>两种情况下会调用析构函数:</p>
+<ol type="1">
+<li>正常情况下删除一个对象，例如对象超出了作用域或被显式地delete。</li>
+<li>异常传递的堆栈辗转开解（stack-unwinding）过程中，由异常处理系统删除一个对象。</li>
+</ol>
+<p>如果在一个异常被激活的同时，析构函数也抛出异常，并导致程序控制权转移到析构函数外，C++将调用terminate函数。这个函数<strong>立即终止</strong>程序的运行，连局部对象都没有被释放。</p>
+<h2 id="理解抛出一个异常与传递一个参数或调用一个虚函数间的差异">12
+理解“抛出一个异常”与“传递一个参数”或“调用一个虚函数”间的差异</h2>
+<p>差异：</p>
+<ol type="1">
+<li><p>调用函数时，程序的控制权最终还会返回到函数的调用处；但是当抛出一个异常时，控制权永远不会回到抛出异常的地方。</p></li>
+<li><p>C++规范要求被做为异常抛出的对象<strong>必须被拷贝</strong>（不论通过传值捕获异常还是通过引用捕获），然后再传入catch语句。拷贝使用对象的<strong>静态类型</strong>所对应的拷贝构造函数。</p>
+<p>因此当抛出一个异常时，系统构造的（以后会析构掉）被抛出对象的拷贝数<strong>比以相同对象做为参数传递给函数时</strong>构造的拷贝数要多一个。例如通过传值方式捕获异常时，异常会被拷贝两次。</p>
+<blockquote>
+<p>应该用throw来重新抛出当前的异常，因为这样不会改变被传递出去的异常类型（变为catch语句参数的静态类型），而且不用生成一个新拷贝。</p>
+</blockquote></li>
+<li><p>函数调用中不允许转递一个临时对象到一个非const引用类型的参数里（参见条款19），但是在异常中却允许。</p></li>
+<li><p>catch语句匹配异常类型时不会进行基本类型的隐式类型转换（int到double），但可以进行派生类到基类、类型化指针（typed
+pointer）到无类型指针（untyped pointer）的转换。</p></li>
+<li><p>catch语句匹配顺序总是取决于它们在程序中出现的顺序。</p>
+<blockquote>
+<p>虚拟函数采用最优适合法， 而异常处理采用的是最先适合法。</p>
+</blockquote></li>
+</ol>
+<p>书中总结仅提了2、4、5。</p>
+<h2 id="通过引用reference捕获异常">13 通过引用（reference）捕获异常</h2>
+<p>通过指针捕获异常的缺点：</p>
+<ol type="1">
+<li><p>需要指针是全局与静态对象，否则抛出异常后指针指向的异常对象将被释放。</p></li>
+<li><p>也可以建立一个堆对象抛出，但catch语句无法判断指针指向的是不是堆对象、是否要删除。</p></li>
+</ol>
+<p>通过值捕获异常的缺点：</p>
+<ol type="1">
+<li>异常将被拷贝两次。</li>
+<li>派生类的异常对象被做为基类异常对象捕获时，派生类行为会被<strong>切掉</strong>（sliced
+off）。</li>
+</ol>
+<h2 id="审慎使用异常规格exception-specifications">14
+审慎使用异常规格(exception specifications)</h2>
+<p>如果一个函数抛出一个<strong>不在异常规格范围</strong>里的异常，系统在运行时能够检测出这个错误，然后一个特殊函数unexpected将被自动地调用。函数unexpected缺省的行为是调用函数terminate，而terminate缺省的行为是调用函数abort，所以一个违反异常规格的程序其缺省的行为就是halt（停止运行）。</p>
+<blockquote>
+<p>动态异常规范（<code>throw(optional_type_list)</code> 规范）在 C++11
+中<strong>已弃用</strong>，并已在 C++17 中<strong>删除</strong>，但
+<code>throw()</code> 除外，它是 <code>noexcept(true)</code> 的别名。</p>
+</blockquote>
+<h2 id="了解异常处理的系统开销">15 了解异常处理的系统开销</h2>
+<p>只要可能就尽量采用不支持异常的方法编译程序，把使用try块和异常规格限制在你确实需要它们的地方，并且只有在确为异常的情况下（exceptional）才抛出异常。</p>
+<h1 id="效率">4 效率</h1>
+<p>从两个角度阐述效率问题：语言独立和语言本身。</p>
+<h2 id="牢记80-20准测">16 牢记80-20准测</h2>
+<p>大约20％的代码使用了80％的程序资源；大约20%的代码耗用了大约80％的运行时间；大约20％的代码使用了80％的内存；大约20％的代码执行80％的磁盘访问；80％的维护投入于大约20％的代码上。</p>
+<h2 id="考虑使用lazy-evaluation懒惰计算法">17 考虑使用lazy
+evaluation（懒惰计算法）</h2>
+<p>与之相对的是eager evaluation。</p>
+<ol type="1">
+<li><p>引用计数</p>
+<p>只要可能就共享使用其它值而不是拷贝。如String。</p></li>
+<li><p>区别对待读取和写入</p>
+<p>推迟做出是读操作还是写操作的决定，直到能判断出正确的答案。
+如opertaor[]操作符。</p></li>
+<li><p>Lazy Fetching（懒惰提取）</p>
+<p>对于大型对象，仅提取需要的字段。</p></li>
+</ol>
+<p>mutalbe关键字声明的字段在const成员函数里也能被修改。如果编译器不支持mutalbe，建立一个non-const指针，其指向的对象与
+this指针一样。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">LargeObject* <span class="hljs-type">const</span> fakeThis = <span class="hljs-built_in">const_cast</span>&lt;LargeObject* <span class="hljs-type">const</span>&gt;(<span class="hljs-keyword">this</span>);<br></code></pre></td></tr></table></figure>
+<ol start="4" type="1">
+<li><p>Lazy Expression Evaluation（懒惰表达式计算）</p>
+<p>对于大型矩阵运算，仅计算需要的值。</p></li>
+</ol>
+<h2 id="分期摊还期望的计算">18 分期摊还期望的计算</h2>
+<p>这个条款的核心就是over-eager
+evaluation（过度热情计算法）：在要求你做某些事情<strong>以前</strong>就完成它们。</p>
+<p>集合每次更新时同步更新其最大最小值，用户可以随时使用最大最小值。</p>
+<p>缓存那些已经被计算出来而以后还有可能需要的值。</p>
+<blockquote>
+<p>iterator是一个对象，不是指针，所以不能保证”-&gt;”被正确应用到它上面。不过STL要求”.”和”*”
+在iterator上是合法的，所以(*it).second在语法上虽然比较繁琐，但是保证能运行。</p>
+</blockquote>
+<h2 id="理解临时对象的来源">19 理解临时对象的来源</h2>
+<p>在任何时候只要见到常量引用（reference-to-const）
+参数，就存在建立<strong>临时对象</strong>而绑定在参数上的可能性。在任何时候只要见到函数返回对象，
+就会有一个<strong>临时对象</strong>被建立（以后被释放）。</p>
+<p>禁止为<strong>非常量引用</strong>（reference-to-non-const）参数产生临时对象。</p>
+<h2 id="协助完成返回值优化">20 协助完成返回值优化</h2>
+<p>返回对象是必要的，应该优化开销而不是避免它。</p>
+<blockquote>
+<p>摘录本章末尾一段的原文：</p>
+<p>Programmers looking for a C++ compiler can ask vendors whether the
+<strong>return value optimization</strong> is implemented. If one vendor
+says yes and another says "The what?," the first vendor has a notable
+competitive advantage. Ah, capitalism. Sometimes you just gotta love
+it.</p>
+<p>上文提到的return value
+optimization详细解释可见《深度探索C++对象模型》的2.3节，其被称为Named
+Return Value（NRV）优化。</p>
+<p>笔记：<a
+href="https://reddish.fun/posts/Notebook/%E6%B7%B1%E5%BA%A6%E6%8E%A2%E7%B4%A2CPP%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B-%E7%AC%94%E8%AE%B0/#%E7%A8%8B%E5%BA%8F%E8%BD%AC%E5%8C%96%E8%AF%AD%E6%84%8F%E5%AD%A6">《深度探索C++对象模型》笔记
+- Homeland</a></p>
+</blockquote>
+<h2 id="通过重载避免隐式类型转换">21 通过重载避免隐式类型转换</h2>
+<p>大多数C++程序员希望进行没有临时对象开销的隐式类型转换。可以使用重载避免。</p>
+<p>为避免程序混乱，每一个重载的operator必须带有一个<strong>用户定义类型</strong>
+（user-defined type）的参数。</p>
+<h2 id="考虑用运算符的赋值形式op取代其单独形式op">22
+考虑用运算符的赋值形式（op=）取代其单独形式（op）</h2>
+<p>从零开始实现operator+=和-=，而operator+和
+operator-则是通过<strong>调用前述的函数来提供自己的功能</strong>。使用这种设计方法，只用维护operator的赋值形式就行了。而且如果假设operator赋值形式在类的public接口里，这就不用让operator的单独形式成为类的友元。（参见条款E19）</p>
+<p>总的来说operator的赋值形式比其单独形式效率更高，因为单独形式要返回一个新对象，从而在临时对象的构造和释放上有一
+些开销。</p>
+<h2 id="考虑变更程序库">23 考虑变更程序库</h2>
+<p>程序库的设计就是一个<strong>折衷</strong>的过程。理想的程序库应该是短小的、快速的、强大的、灵活的、可扩展的、直观的、普遍适用的、具有良好的支持、没有使用约束、没有错误的。这也是不存在的。为尺寸和速度而进行优化的程序库一般不能被移植。具有大量功能的的程序
+库不会具有直观性。没有错误的程序库在使用范围上会有限制。</p>
+<p>因为不同的程序库在效率、可扩展性、移植性、类型安全和其他一些领域上蕴含着不同的设计理念，通过变换使用给予性能更多考虑的程序库，你有时可以大幅度地提高软件的效率。</p>
+<h2 id="理解虚拟函数多继承虚基类和rtti所需的代价">24
+理解虚拟函数、多继承、虚基类和RTTI所需的代价</h2>
+<p>virtual table和virtual table pointers通常被分别地称为vtbl和vptr。</p>
+<p>一个 vtbl通常是一个函数指针数组。vtbl
+的大小与类中声明的虚函数的数量成正比（包括从基类继承的虚函数）。</p>
+<p>vtbl应该放在哪里？</p>
+<ol type="1">
+<li>每一个可能需要vtbl的object文件生成一个vtbl拷贝。连接程序然后去除重复的拷贝，在最后的可执行文件或程序库里就为每个
+vtbl保留一个实例。</li>
+<li>要在一个object文件中生成一个类的vtbl，要求该object文件包含该类的第一个非内联、非纯虚拟函数（non-inline
+non-pure virual function）定义
+（也就是类的实现体）。（这种启发式算法在类中的所有虚函数都内声明为内联函数时会失败）</li>
+</ol>
+<p>在每个包含虚函数的类的对象里，你必须为额外的指针（vptr）付出代价。</p>
+<p><strong>RTTI被设计为在类的vtbl基础上实现。</strong>
+（typeid得到的type_info会放在vtbl的slot里）</p>
+<blockquote>
+<p>使用嵌套的switch语句或层叠的if-then-else语句模拟虚函数的调用，其产生的代码比虚函数的调用还要多，而且代码运行速度也更慢。你自己编写代码不可能做得比编译器生成
+的代码更好</p>
+</blockquote>
+<h1 id="技巧">5 技巧</h1>
+<h2 id="将构造函数和非成员函数虚拟化">25
+将构造函数和非成员函数虚拟化</h2>
+<p><strong>虚拟构造函数</strong>是指能够根据输入给它的数据的不同而建立不同类型的对象。虚拟构造函数在很多场合下都有用处，从磁盘（或者通过
+网络连接，或者从磁带机上）读取对象信息只是其中的一个应用。</p>
+<p>被派生类重定义的虚拟函数不用必须与基类的虚拟函数具有一样的<strong>返回类型</strong>。如果函数的返回类型是一个指向基类的指针（或一个引用），那么派生类的函数可以返回一个指向基类的派生类的指针（或引用）。这不是C++的类型检查上的漏洞，它使得有可能声明像虚拟构造函数这样的函数。</p>
+<p><strong>具有虚拟行为的非成员函数</strong>很简单。编写一个虚拟函数来完成工作，然后再写一个非虚拟函数，它什么也不做只是调用这个虚拟函数。可以内联这个非虚拟函数来避免这个句法花招引起函数调用开销。</p>
+<h2 id="限制某个类所能产生的对象数量">26
+限制某个类所能产生的对象数量</h2>
+<p>在类中的静态对象实际上总是被构造（和释放），即使不使用该对象。与此相反，只有第一次执行函数时，才会建立<strong>函数中的静态对象</strong>，所以如果没有调用函数，就不会建立对象。</p>
+<p>类中的静态成员初始化时间不确定。C++为一个translation
+unit（也就是生成一个 object
+文件的源代码的集合）内的静态成员的初始化顺序提供某种保证，但是对于在不同translation
+unit中的静态成员的初始化顺序则没有这种保证（参见条款E47）。</p>
+<p>不要建立<strong>包含局部静态数据的非成员函数</strong>，可能会使程序的静态对象的拷贝超过一个。</p>
+<p><strong>对象所处的三种不同的环境</strong>：</p>
+<ol type="1">
+<li>只有它们本身</li>
+<li>作为其它派生类的基类</li>
+<li>被嵌入在更大的对象里</li>
+</ol>
+<p>这些不同环境极大地混淆了<strong>跟踪存在对象的数目</strong>的含义，因为人心目中的对象的存在的含义与编译器不一致。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 具有实例计数功能的基类</span><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">BeingCounted</span>&gt; <br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Counted</span> &#123; <br><span class="hljs-keyword">public</span>: <br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">TooManyObjects</span>&#123;&#125;; <span class="hljs-comment">// 用来抛出异常 </span><br>    <span class="hljs-function"><span class="hljs-type">static</span> <span class="hljs-type">int</span> <span class="hljs-title">objectCount</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-keyword">return</span> numObjects; &#125; <br><span class="hljs-keyword">protected</span>: <br>    <span class="hljs-built_in">Counted</span>(); <br>    <span class="hljs-built_in">Counted</span>(<span class="hljs-type">const</span> Counted&amp; rhs); <br>    ~<span class="hljs-built_in">Counted</span>() &#123; --numObjects; &#125; <br><span class="hljs-keyword">private</span>: <br>    <span class="hljs-type">static</span> <span class="hljs-type">int</span> numObjects; <br>    <span class="hljs-type">static</span> <span class="hljs-type">const</span> <span class="hljs-type">size_t</span> maxObjects; <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span></span>; <span class="hljs-comment">// 避免构造函数的代码重复</span><br>&#125;;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">BeingCounted</span>&gt; <br>Counted&lt;BeingCounted&gt;::<span class="hljs-built_in">Counted</span>() &#123; <span class="hljs-built_in">init</span>(); &#125; <br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">BeingCounted</span>&gt; <br>Counted&lt;BeingCounted&gt;::<span class="hljs-built_in">Counted</span>(<span class="hljs-type">const</span> Counted&lt;BeingCounted&gt;&amp;) &#123; <span class="hljs-built_in">init</span>(); &#125;<br><br><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">BeingCounted</span>&gt; <br><span class="hljs-type">void</span> Counted&lt;BeingCounted&gt;::<span class="hljs-built_in">init</span>() <br>&#123; <br>    <span class="hljs-keyword">if</span> (numObjects &gt;= maxObjects) <span class="hljs-keyword">throw</span> <span class="hljs-built_in">TooManyObjects</span>(); <br>    ++numObjects; <br>&#125; <br></code></pre></td></tr></table></figure>
+<p>若private继承Counted类，可以使用<code>using Counted::objectCount;</code>恢复访问权至public。</p>
+<p><strong>必须定义Counted内的静态成员。</strong>对于numObjects来说，我们只需要在Counted
+的实现文件里定义它：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">BeingCounted</span>&gt; <br><span class="hljs-type">int</span> Counted&lt;BeingCounted&gt;::numObjects; <span class="hljs-comment">// 自动把它初始化为0</span><br></code></pre></td></tr></table></figure>
+<p>对于maxObjects，留给此类的客户端类X初始化，例如：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">const</span> <span class="hljs-type">size_t</span> Counted&lt;X&gt;::maxObjects = <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+<p>若客户端类X不初始化，连接时会发生错误，因为maxObjects
+没有被定义。</p>
+<h2 id="要求或禁止在堆中产生对象">27 要求或禁止在堆中产生对象</h2>
+<p>要求类的对象<strong>仅分配在堆中</strong>：</p>
+<p>将此类的析构函数声明为private，使析构函数不能被隐式调用，因此也就不能在栈中创建对象。客户端只能用伪析构函数释放他们建立的对象。（异常处理体系要求所有在栈中的对象的析构函数必须申明为公有）</p>
+<p>如果要继承此类，应将析构函数声明为protected；若要包含此类的对象作为成员，应包含指向其的指针而不是本身。</p>
+<p>没有一种可移植的方法来判断对象<strong>是否在堆上</strong>：</p>
+<p>设置静态标志位的方法不行。即使重载operator new和operator
+new[]，在new对象数组时也只能设置一次标志位。在<code>UPNumber *pn = new UPNumber(*new UPNumber);</code>情况下，C++不保证两次operator
+new和两次UPNumber构造函数的调用顺序，标志位可能被提前清除。</p>
+<p>利用栈在结构上趋向低地址、堆在在结构上趋向高地址的内存布局，堆中的变量或对象肯定比任何栈中的变量或对象<strong>地址小</strong>。首先，并不是所有系统都是这样；其次，这种方法无法辨别堆对象与<strong>静态对象</strong>。（在很多栈和堆<strong>相向扩展</strong>的系统里，静态对象位于堆的底端）</p>
+<p>判断<strong>是否能够删除一个指针</strong>是可行的：</p>
+<p>构建一个operator
+new返回的地址集合。通过继承抽象基类的方式实现，避免污染全局命名空间。</p>
+<p>带有多继承或虚基类的对象会有几个地址（参见条款24和31），需要把this指针dynamic_cast成<code>const void*</code>，变成一个指向当前对象起始地址的指针。</p>
+<p><strong>禁止堆对象</strong>是可行的：</p>
+<p>把operator new、operator
+delete声明为private。但作为派生类的对象和被嵌入在更大的对象里时，无法禁止。</p>
+<blockquote>
+<p>参见条款26中对象所处的三种不同的环境。</p>
+</blockquote>
+<h2 id="灵巧smart指针">28 灵巧（smart）指针</h2>
+<blockquote>
+<p>auto_ptr已经废除了。C++11新标准增添了unique_ptr、shared_ptr以及weak_ptr这3
+个智能指针。</p>
+</blockquote>
+<p>使用<strong>成员模板</strong>重载类型转换运算符实现基类和派生类之间的智能指针的隐式转换。</p>
+<p><code>const T*</code>对应<code>shared_ptr&lt;const T&gt;</code>，<code>T* const</code>对应<code>const shared_ptr&lt;T&gt;</code>。</p>
+<h2 id="引用计数">29 引用计数</h2>
+<p>写时拷贝：与其它对象共享一个值<strong>直到写操作时</strong>才拥有自己的拷贝。</p>
+<blockquote>
+<p>除非使用proxy，否则无法区别当前是读操作还是写操作。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 利用引用计数使相同值的string指向同一个对象</span><br><span class="hljs-comment">// 此时，需要对string进行写时拷贝，避免对单个string的修改影响其它string</span><br><span class="hljs-type">char</span>&amp; String::<span class="hljs-keyword">operator</span>[](<span class="hljs-type">int</span> index) <br>&#123; <br>    <span class="hljs-keyword">if</span> (value-&gt;refCount &gt; <span class="hljs-number">1</span>) <br>    &#123; <br>        --value-&gt;refCount; <br>        value = <span class="hljs-keyword">new</span> <span class="hljs-built_in">StringValue</span>(value-&gt;data); <br>    &#125; <br>    <span class="hljs-keyword">return</span> value-&gt;data[index]; <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>上述方法无法解决以下指针（或引用）造成的问题：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++">String s1 = <span class="hljs-string">&quot;Hello&quot;</span>; <br><span class="hljs-type">char</span> *p = &amp;s1[<span class="hljs-number">1</span>];<br>String s2 = s1;<br>*p = <span class="hljs-string">&#x27;x&#x27;</span>; <span class="hljs-comment">//s1,s2都改了</span><br></code></pre></td></tr></table></figure>
+<p>解决方法是增加一个标志位指出它是否为可共享的。在最初（对象可共享时）将标志打开，在非const的operator[]被调用时将它关闭。一旦标志位被设为false，就将<strong>永远</strong>保持在这个状态。</p>
+<h2 id="代理类">30 代理类</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">String</span> &#123; <br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-keyword">class</span> <span class="hljs-title class_">CharProxy</span> &#123; <br>    <span class="hljs-keyword">public</span>: <br>        <span class="hljs-built_in">CharProxy</span>(String&amp; str, <span class="hljs-type">int</span> index); <br>        CharProxy&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> CharProxy&amp; rhs); <br>        CharProxy&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">char</span> c); <br>        <span class="hljs-function"><span class="hljs-keyword">operator</span> <span class="hljs-title">char</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>; <br>    <span class="hljs-keyword">private</span>: <br>        String&amp; theString; <br>        <span class="hljs-type">int</span> charIndex; <br>    &#125;;<br>    <span class="hljs-type">const</span> CharProxy <span class="hljs-keyword">operator</span>[](<span class="hljs-type">int</span> index) <span class="hljs-type">const</span>; <span class="hljs-comment">// for const Strings </span><br>    CharProxy <span class="hljs-keyword">operator</span>[](<span class="hljs-type">int</span> index); <span class="hljs-comment">// for non-const Strings </span><br>    <span class="hljs-keyword">friend</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CharProxy</span>; <br><span class="hljs-keyword">private</span>: <br>    RCPtr&lt;StringValue&gt; value; <br>&#125;;<br><span class="hljs-comment">// 创建和返回一个proxy对象来代替字符</span><br><span class="hljs-type">const</span> String::CharProxy String::<span class="hljs-keyword">operator</span>[](<span class="hljs-type">int</span> index) <span class="hljs-type">const</span> <br>&#123; <br>    <span class="hljs-comment">// 虽然有const转型，不用担心String内部的字符可能通过proxy类被修改，因为返回的CharProxy对象自己是const的.</span><br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">CharProxy</span>(<span class="hljs-built_in">const_cast</span>&lt;String&amp;&gt;(*<span class="hljs-keyword">this</span>), index); <br>&#125; <br>String::CharProxy String::<span class="hljs-keyword">operator</span>[](<span class="hljs-type">int</span> index) <br>&#123; <br>	<span class="hljs-keyword">return</span> <span class="hljs-built_in">CharProxy</span>(*<span class="hljs-keyword">this</span>, index); <br>&#125; <br><br>String::CharProxy::<span class="hljs-built_in">CharProxy</span>(String&amp; str, <span class="hljs-type">int</span> index):<span class="hljs-built_in">theString</span>(str),<span class="hljs-built_in">charIndex</span>(index) &#123;&#125; <br><br><span class="hljs-comment">// 将proxy对象作右值使用时,只需返回它所扮演的字符</span><br>String::<span class="hljs-function">CharProxy::<span class="hljs-keyword">operator</span> <span class="hljs-title">char</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span><br><span class="hljs-function"></span>&#123; <br>    <span class="hljs-keyword">return</span> theString.value-&gt;data[charIndex]; <br>&#125; <br><br><span class="hljs-comment">// 将proxy对象作左值使用并赋给其另一个proxy对象时</span><br>String::CharProxy&amp; String::CharProxy::<span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> CharProxy&amp; rhs) <br>&#123; <br>    <span class="hljs-comment">// 如果该string和其它string对象共享一个值，中断共享</span><br>    <span class="hljs-keyword">if</span> (theString.value-&gt;<span class="hljs-built_in">isShared</span>()) <br>    &#123; <br>        theString.value = <span class="hljs-keyword">new</span> <span class="hljs-built_in">StringValue</span>(theString.value-&gt;data); <br>    &#125; <br>    <span class="hljs-comment">// 赋值</span><br>    theString.value-&gt;data[charIndex] = rhs.theString.value-&gt;data[rhs.charIndex]; <br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>; <br>&#125;<br><br><span class="hljs-comment">// 将proxy对象作左值使用并赋给其一个char时</span><br>String::CharProxy&amp; String::CharProxy::<span class="hljs-keyword">operator</span>=(<span class="hljs-type">char</span> c) <br>&#123; <br>    <span class="hljs-keyword">if</span> (theString.value-&gt;<span class="hljs-built_in">isShared</span>()) <br>    &#123; <br>        theString.value = <span class="hljs-keyword">new</span> <span class="hljs-built_in">StringValue</span>(theString.value-&gt;data); <br>    &#125; <br>    theString.value-&gt;data[charIndex] = c; <br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125; <br><br><span class="hljs-comment">// 使用proxy将读或写的判断推迟到operator[]返回之后</span><br>String s1, s2; <span class="hljs-comment">// reference-counted strings </span><br>cout &lt;&lt; s1[<span class="hljs-number">5</span>];<br>s2[<span class="hljs-number">5</span>] = <span class="hljs-string">&#x27;x&#x27;</span>;<br>s1[<span class="hljs-number">3</span>] = s2[<span class="hljs-number">8</span>]; <br></code></pre></td></tr></table></figure>
+<p>除了以上提到的，要使proxy对象的行为和它们所扮演的对象一致，
+你必须重载可作用于实际对象的每一个函数。 例如取地址运算符。</p>
+<p>编译器在调用函数而将参数转换为此函数所要的类型时，只调用一个用户自定义的转换函数（参见条款5），因此很可能在函数调用时，传实际对象是成功的而传proxy对象是失败的。</p>
+<h2 id="让函数根据一个以上的对象来决定怎么虚拟">31
+让函数根据一个以上的对象来决定怎么虚拟</h2>
+<p>虚函数体系只能作用在一个对象身上，C++没有提供<strong>作用在多个对象上</strong>的虚函数。</p>
+<blockquote>
+<p>这个问题被称为二重调度 （double dispatch），名字来自于
+object-oriented programming community， 在那里虚函数调用的术语是message
+dispatch，而基两个参数的虚调用是通过double
+dispatch实现的，推而广之，在多个参数上的虚函数叫multiple dispatch。</p>
+</blockquote>
+<p>以游戏中的碰撞处理为例，当两个GameObject的派生类的对象碰撞时，碰撞处理函数如何处理？</p>
+<p>方法1：虚函数+手动RTTI（typeid）</p>
+<p>增加新类型时需要更新if-else，难以维护。</p>
+<p>方法2：虚函数+虚函数</p>
+<p>增加新类型时需要，每个类都需要增加一个新的虚函数，都需要重新编译。（方法1不需要重新编译）</p>
+<p>方法3：虚函数+手动虚函数表（构造一个类似vtbl的映射表以实现二重调度的第二部分）</p>
+<p>也需要重新编译。代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">GameObject</span> <br>&#123; <br><span class="hljs-keyword">public</span>: <br>	<span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">collide</span><span class="hljs-params">(GameObject&amp; otherObject)</span> </span>= <span class="hljs-number">0</span>;<br>&#125;; <br><br><span class="hljs-comment">// SpaceStation、Asteroid亦继承自GameObject</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">SpaceShip</span>: <span class="hljs-keyword">public</span> GameObject <br>&#123; <br><span class="hljs-keyword">private</span>:<br>    <span class="hljs-comment">// 成员函数指针</span><br>    <span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">void</span> <span class="hljs-params">(SpaceShip::*HitFunctionPtr)</span><span class="hljs-params">(GameObject&amp;)</span></span>; <br>    <span class="hljs-function"><span class="hljs-type">static</span> HitFunctionPtr <span class="hljs-title">lookup</span><span class="hljs-params">(<span class="hljs-type">const</span> GameObject&amp; whatWeHit)</span></span>; <br>    <span class="hljs-keyword">typedef</span> map&lt;string, HitFunctionPtr&gt; HitMap;<br>     <span class="hljs-function"><span class="hljs-type">static</span> HitMap* <span class="hljs-title">initializeCollisionMap</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">public</span>: <br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">collide</span><span class="hljs-params">(GameObject&amp; otherObject)</span></span>; <br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">hitSpaceShip</span><span class="hljs-params">(SpaceShip&amp; otherObject)</span></span>; <br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">hitSpaceStation</span><span class="hljs-params">(SpaceStation&amp; otherObject)</span></span>; <br>    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-type">void</span> <span class="hljs-title">hitAsteroid</span><span class="hljs-params">(Asteroid&amp; otherobject)</span></span>; <br>&#125;; <br><br><span class="hljs-function">SpaceShip::HitFunctionPtr <span class="hljs-title">SpaceShip::lookup</span><span class="hljs-params">(<span class="hljs-type">const</span> GameObject&amp; whatWeHit)</span> </span><br><span class="hljs-function"></span>&#123; <br>    <span class="hljs-comment">// 使用智能指针</span><br>    <span class="hljs-function"><span class="hljs-type">static</span> auto_ptr&lt;HitMap&gt; <span class="hljs-title">collisionMap</span><span class="hljs-params">(initializeCollisionMap())</span></span>; <br>    HitMap::iterator mapEntry= collisionMap.<span class="hljs-built_in">find</span>(<span class="hljs-built_in">typeid</span>(whatWeHit).<span class="hljs-built_in">name</span>()); <br>    <span class="hljs-keyword">if</span> (mapEntry == collisionMap.<span class="hljs-built_in">end</span>()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <br>    <span class="hljs-keyword">return</span> (*mapEntry).second;<br>    <span class="hljs-comment">// 不用习惯上的mapEntry-&gt;second的原因参见条款18</span><br>&#125; <br><br><span class="hljs-function">SpaceShip::HitMap* <span class="hljs-title">SpaceShip::initializeCollisionMap</span><span class="hljs-params">()</span> </span><br><span class="hljs-function"></span>&#123; <br>    HitMap *phm = <span class="hljs-keyword">new</span> HitMap; <br>    (*phm)[<span class="hljs-string">&quot;SpaceShip&quot;</span>] = &amp;hitSpaceShip; <br>    (*phm)[<span class="hljs-string">&quot;SpaceStation&quot;</span>] = &amp;hitSpaceStation; <br>    (*phm)[<span class="hljs-string">&quot;Asteroid&quot;</span>] = &amp;hitAsteroid; <br>    <span class="hljs-keyword">return</span> phm; <br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SpaceShip::collide</span><span class="hljs-params">(GameObject&amp; otherObject)</span> </span><br><span class="hljs-function"></span>&#123; <br>    HitFunctionPtr hfp = <span class="hljs-built_in">lookup</span>(otherObject);<br>    <span class="hljs-keyword">if</span> (hfp)<br>    &#123;  <br>        (<span class="hljs-keyword">this</span>-&gt;*hfp)(otherObject); <br>    &#125; <br>    <span class="hljs-keyword">else</span> <br>    &#123; <br>        <span class="hljs-keyword">throw</span> <span class="hljs-built_in">CollisionWithUnknownObject</span>(otherObject); <br>    &#125; <br>&#125; <br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SpaceShip::hitSpaceShip</span><span class="hljs-params">(GameObject&amp; spaceShip)</span> </span><br><span class="hljs-function"></span>&#123; <br>    SpaceShip&amp; theSpaceShip = <span class="hljs-built_in">dynamic_cast</span>&lt;SpaceShip&amp;&gt;(spaceShip); <br>	<span class="hljs-comment">// process a SpaceShip-SpaceShip collision; </span><br>&#125; <br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SpaceShip::hitSpaceStation</span><span class="hljs-params">(GameObject&amp; spaceStation)</span> </span><br><span class="hljs-function"></span>&#123; <br>     spaceStation&amp; thespaceStation = <span class="hljs-built_in">dynamic_cast</span>&lt;SpaceStation&amp;&gt;(spaceStation); <br>	<span class="hljs-comment">// process a SpaceShip-SpaceStation collision; </span><br>&#125; <br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">SpaceShip::hitAsteroid</span><span class="hljs-params">(GameObject&amp; asteroid)</span> </span><br><span class="hljs-function"></span>&#123; <br>    Asteroid&amp; theAsteroid = <span class="hljs-keyword">dynamic_cast</span>&lt;Asteroid&amp;&gt;*(asteroid);<br>	<span class="hljs-comment">// process a SpaceShip-Asteroid collision; </span><br>&#125; <br></code></pre></td></tr></table></figure>
+<p>方法4：使用非成员的碰撞处理函数</p>
+<p>不需要重新编译。代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;SpaceShip.h&quot;</span> </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;SpaceStation.h&quot;</span> </span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Asteroid.h&quot;</span> </span><br><span class="hljs-comment">// 无名命名空间中的东西是当前编译单元（其实就是当前文件）私有的，和被申明为文件范围内static的函数一样。</span><br><span class="hljs-comment">// 有了命名空间后，文件范围内的static已经不赞成使用了，你应该尽快让自己习惯使用无名的命名空间（只要编译器支持）。</span><br><span class="hljs-keyword">namespace</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">shipAsteroid</span><span class="hljs-params">(GameObject&amp; spaceShip, GameObject&amp; asteroid)</span></span>; <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">shipStation</span><span class="hljs-params">(GameObject&amp; spaceShip, GameObject&amp; spaceStation)</span></span>; <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">asteroidStation</span><span class="hljs-params">(GameObject&amp; asteroid, GameObject&amp; spaceStation)</span></span>; <br>    <span class="hljs-comment">// 镜像函数</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">asteroidShip</span><span class="hljs-params">(GameObject&amp; asteroid, GameObject&amp; spaceShip)</span> </span>&#123; <span class="hljs-built_in">shipAsteroid</span>(spaceShip, asteroid); &#125; <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">stationShip</span><span class="hljs-params">(GameObject&amp; spaceStation, GameObject&amp; spaceShip)</span> </span>&#123; <span class="hljs-built_in">shipStation</span>(spaceShip, spaceStation); &#125; <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">stationAsteroid</span><span class="hljs-params">(GameObject&amp; spaceStation, GameObject&amp; asteroid)</span> </span>&#123; <span class="hljs-built_in">asteroidStation</span>(asteroid, spaceStation);&#125; <br>    <span class="hljs-comment">// 与方法三类似</span><br>    <span class="hljs-function"><span class="hljs-keyword">typedef</span> <span class="hljs-title">void</span> <span class="hljs-params">(*HitFunctionPtr)</span><span class="hljs-params">(GameObject&amp;, GameObject&amp;)</span></span>; <br>    <span class="hljs-keyword">typedef</span> map&lt; pair&lt;string,string&gt;, HitFunctionPtr &gt; HitMap; <br>    <span class="hljs-function">pair&lt;string,string&gt; <span class="hljs-title">makeStringPair</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *s1, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *s2)</span></span>;<br>    <span class="hljs-function">HitMap* <span class="hljs-title">initializeCollisionMap</span><span class="hljs-params">()</span></span>; <br>    <span class="hljs-function">HitFunctionPtr <span class="hljs-title">lookup</span><span class="hljs-params">(<span class="hljs-type">const</span> string&amp; class1, <span class="hljs-type">const</span> string&amp; class2)</span></span>; <br>&#125; <br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">processCollision</span><span class="hljs-params">(GameObject&amp; object1, GameObject&amp; object2)</span> </span><br><span class="hljs-function"></span>&#123; <br>    HitFunctionPtr phf = <span class="hljs-built_in">lookup</span>(<span class="hljs-built_in">typeid</span>(object1).<span class="hljs-built_in">name</span>(), <span class="hljs-built_in">typeid</span>(object2).<span class="hljs-built_in">name</span>()); <br>    <span class="hljs-keyword">if</span> (phf) <span class="hljs-built_in">phf</span>(object1, object2); <br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">throw</span> <span class="hljs-built_in">UnknownCollision</span>(object1, object2); <br>&#125;<br><br><span class="hljs-keyword">namespace</span><br>&#123;<br>     <span class="hljs-function">pair&lt;string,string&gt; <span class="hljs-title">makeStringPair</span><span class="hljs-params">(<span class="hljs-type">const</span> <span class="hljs-type">char</span> *s1, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *s2)</span> </span><br><span class="hljs-function">     </span>&#123; <br>         <span class="hljs-keyword">return</span> <span class="hljs-built_in">pair</span>&lt;string,string&gt;(s1, s2); <br>     &#125; <br>&#125; <br><br><span class="hljs-keyword">namespace</span><br>&#123; <br>     <span class="hljs-function">HitMap* <span class="hljs-title">initializeCollisionMap</span><span class="hljs-params">()</span> </span><br><span class="hljs-function">     </span>&#123; <br>         HitMap *phm = <span class="hljs-keyword">new</span> HitMap; <br>         (*phm)[<span class="hljs-built_in">makeStringPair</span>(<span class="hljs-string">&quot;SpaceShip&quot;</span>,<span class="hljs-string">&quot;Asteroid&quot;</span>)] = &amp;shipAsteroid; <br>         (*phm)[<span class="hljs-built_in">makeStringPair</span>(<span class="hljs-string">&quot;SpaceShip&quot;</span>, <span class="hljs-string">&quot;SpaceStation&quot;</span>)] = &amp;shipStation; <br>         <span class="hljs-keyword">return</span> phm; <br>     &#125; <br>&#125;<br><br><span class="hljs-keyword">namespace</span><br>&#123;<br>    <span class="hljs-function">HitFunctionPtr <span class="hljs-title">lookup</span><span class="hljs-params">(<span class="hljs-type">const</span> string&amp; class1, <span class="hljs-type">const</span> string&amp; class2)</span> </span><br><span class="hljs-function">    </span>&#123; <br>        <span class="hljs-function"><span class="hljs-type">static</span> auto_ptr&lt;HitMap&gt; <span class="hljs-title">collisionMap</span><span class="hljs-params">(initializeCollisionMap())</span></span>; <br>        HitMap::iterator mapEntry= collisionMap-&gt;<span class="hljs-built_in">find</span>(<span class="hljs-built_in">make_pair</span>(class1, class2)); <br>        <span class="hljs-keyword">if</span> (mapEntry == collisionMap-&gt;<span class="hljs-built_in">end</span>()) <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>; <br>        <span class="hljs-keyword">return</span> (*mapEntry).second; <br>    &#125; <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们可以将映射表HitMap放入一个类，并由它提供动态修改映射关系的成员函数。</p>
+<h1 id="杂项">6 杂项</h1>
+<h2 id="在未来时态下开发程序">32 在未来时态下开发程序</h2>
+<p>用C++语言自己来表达设计上的约束条件，而不是用注释或文档。
+例如，如果一个类被设计得不会被继承，不要只是在其头文件中加个注释，用C++的方法来阻止继承。</p>
+<p>提供完备的类，即使某些部分现在还没有被使用。如果有了新的需
+求，不用回过头去改它们。</p>
+<p>如果没有限制你不能通用化你的代码，那么通用化它。例如，如果在写树的遍历
+算法，考虑将它通用得可以处理任何有向不循环图。</p>
+<h2 id="将非尾端类设计为抽象类">33 将非尾端类设计为抽象类</h2>
+<p>对于以下的OO体系：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Animal</span> &#123; <br><span class="hljs-keyword">public</span>: <br>    Animal&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Animal&amp; rhs); <br>&#125;; <br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Lizard</span>: <span class="hljs-keyword">public</span> Animal &#123; <br><span class="hljs-keyword">public</span>: <br>    Lizard&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Lizard&amp; rhs); <br>&#125;; <br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Chicken</span>: <span class="hljs-keyword">public</span> Animal &#123; <br><span class="hljs-keyword">public</span>: <br>    Chicken&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> Chicken&amp; rhs); <br>&#125;; <br></code></pre></td></tr></table></figure>
+<p>应该允许通过指针进行同类型赋值，而禁止通过同样的指针进行混合类型赋值。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 允许</span><br>Animal *pAnimal1 = &amp;liz1;<br>Animal *pAnimal2 = &amp;liz2;<br>*pAnimal1 = *pAnimal2; <br><span class="hljs-comment">// 禁止</span><br>Animal *pAnimal1 = &amp;liz; <br>Animal *pAnimal2 = &amp;chick; <br>*pAnimal1 = *pAnimal2; <br></code></pre></td></tr></table></figure>
+<p>在赋值函数内加入dynamic_cast成本高，且可能抛出异常。</p>
+<p>在Animal中将operator=置为private，会同时禁止时Animal对象间的赋值。</p>
+<p>最容易的实现方法是抽象出AbstractAnimal抽象类作为基类。</p>
+<blockquote>
+<p>实现纯虚函数一般不常见，但对纯虚析构函数，它不只是常见，它是必须。</p>
+</blockquote>
+<h2 id="如何在同一程序中混合使用c和c">34
+如何在同一程序中混合使用C++和C</h2>
+<p>确保C++编译器和C编译器兼容，然后考虑4个问题：</p>
+<ol type="1">
+<li><p>名变换</p>
+<p>名变换，即C++编译器给程序的每个函数换一个独一无二的名字。因为C++有函数重载，C没有。</p>
+<p>因此需要使用
+C++的<code>extern "C"</code>指示<strong>禁止名变换</strong>。</p>
+<p>不要将<code>extern "C"</code>看作是申明这个函数是用C语言写的，应该看作是申明在个函数应该被当作好象C写的一样而进行调用。可以对FORTRAN、Pascal、汇编等其它语言使用<code>extern "C"</code>，也可以对C++本身使用<code>extern "C"</code>（当要用C++写一个库给使用其它语言的客
+户使用时，需要禁止名变换）。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __cplusplus </span><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span><br>&#123; <br><span class="hljs-meta">#<span class="hljs-keyword">endif</span> </span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">drawLine</span><span class="hljs-params">(<span class="hljs-type">int</span> x1, <span class="hljs-type">int</span> y1, <span class="hljs-type">int</span> x2, <span class="hljs-type">int</span> y2)</span></span>; <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">twiddleBits</span><span class="hljs-params">(<span class="hljs-type">unsigned</span> <span class="hljs-type">char</span> bits)</span></span>; <br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">simulate</span><span class="hljs-params">(<span class="hljs-type">int</span> iterations)</span></span>; <br><span class="hljs-meta">#<span class="hljs-keyword">ifdef</span> __cplusplus </span><br>&#125; <br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br></code></pre></td></tr></table></figure>
+<p>不同编译器名变换方式不同，如果混合链接来自于不同编译器的obj文件，极可能得到<strong>链接错误</strong>，因为变换后的名字不匹配。</p></li>
+<li><p>静态初始化</p>
+<p>静态初始化：<strong>静态的</strong>类对象和<strong>定义在全局的、命名空间中的或文件体中的</strong>类对象的构造函数通常在main被执行前就被调用。</p>
+<p>静态析构：在main结束后析构。</p>
+<p>编译器main的最开始插入静态初始化函数，在main结束时插入静态析构函数。</p>
+<p><strong>混编时应该用C++写main</strong>。将C写的main改名为realMain，然后用C++版本的main调用realMain。</p>
+<p>如果不能用C++写main，处理起来就麻烦了。编译器生产商们几乎全都提供了一个额外的体系来启动静态初始化和静态析构的过程，请查阅编译器文档或联系生产商来知道如何实现。</p></li>
+<li><p>动态内存分配</p>
+<p>C++部分使用new和delete，
+C部分使用malloc和free。只要<strong>new分配的内存使用delete释放，malloc分配的内存用free释放</strong>，那么就没问题。</p></li>
+<li><p>数据结构的兼容性</p>
+<p>C++中的struct的规则兼容了C中的规则，可以安全传递。如果在
+C++版本中增加了<strong>非虚函数</strong>，其内存结构也没有改变。增加虚函数的结构和有基类的结构无法安全传递，内存结构不同。</p></li>
+</ol>
+<h2 id="让自己习惯使用标准c语言">35 让自己习惯使用标准C++语言</h2>
+<p>此节描述了1996年C++的变化。</p>
+<blockquote>
+<p>STL是标准运行库的一部分。</p>
+</blockquote>
+<h1 id="附录">附录</h1>
+<h2 id="objects-counting-in-c">Objects Counting in C++</h2>
+<p>"Do It For Me" pattern（curiously recurring template pattern）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Widget</span>: <span class="hljs-keyword">public</span> Counter&lt;Widget&gt; <br>&#123; <br>    <span class="hljs-comment">// ...</span><br>&#125;; <br></code></pre></td></tr></table></figure>
+<p>private继承更紧密，不会扩张对象大小，比复合更好。</p>
+<p>使用operator new及对应的operator delete，避免内存泄漏。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Notebook/" class="category-chain-item">Notebook</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CPP/">#CPP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>《More Effective C++》笔记</div>
+      <div>https://reddish.fun/posts/Notebook/More-Effective-CPP-note/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年6月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Effective-Modern-CPP-note/" title="《Effective Modern C++》笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《Effective Modern C++》笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Effective-CPP-3th-note/" title="《Effective C++》第三版笔记">
+                        <span class="hidden-mobile">《Effective C++》第三版笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

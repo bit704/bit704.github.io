@@ -1,0 +1,1528 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="Introduction to Probability">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《概率导论（第2版）》笔记">
+<meta property="og:url" content="https://reddish.fun/posts/Notebook/Introduction-to-Probability-note/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="Introduction to Probability">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-04T07:10:36.557Z">
+<meta property="article:modified_time" content="2023-12-26T16:28:26.862Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="Math">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>《概率导论（第2版）》笔记 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="《概率导论（第2版）》笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-04 15:10" pubdate>
+          2023年1月4日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          14k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">《概率导论（第2版）》笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Introduction to Probability</p>
+<span id="more"></span>
+<p>Dimitri P. Bertsekas，John N. Tsitsiklis 著</p>
+<p>郑忠国，童行伟 译</p>
+<p class="note note-primary">
+精炼整理。
+</p>
+<h1 id="第1章-样本空间与概率">第1章 样本空间与概率</h1>
+<h2 id="集合">1.1集合</h2>
+<p>概率论大量应用集合运算，引入集合相关的记号和术语。</p>
+<p>集合 <span class="math inline">\(\{ x\in \Omega\mid x\notin S
+\}\)</span> 称为集合<span class="math inline">\(S\)</span>相对于<span
+class="math inline">\(\Omega\)</span>的补集，记作<span
+class="math inline">\(S^C\)</span>。 <span
+class="math inline">\(\Omega^C=\emptyset\)</span> 。</p>
+<p><strong>德摩根定律</strong>：<span class="math inline">\((\bigcup_{n}
+S_{n} )^c=\bigcap_{n}S_{n}^c\)</span> <span
+class="math inline">\((\bigcap_{n} S_{n}
+)^c=\bigcup_{n}S_{n}^c\)</span></p>
+<h2 id="概率模型">1.2 概率模型</h2>
+<p>概率模型是对不确定现象的数学描述，每个概率模型都关联一个试验。</p>
+<p><strong>概率模型</strong>基本构成：</p>
+<ul>
+<li>样本空间<span
+class="math inline">\(\Omega\)</span>，这是一个试验的所有可能结果的集合。</li>
+<li>概率律，概率律为试验结果的集合<span
+class="math inline">\(A\)</span>（称之为<strong>事件</strong>，即样本空间的子集）确定一个非负数<span
+class="math inline">\(P(A)\)</span>（称之为事件A的<strong>概率</strong>）。而这个非负数刻画了我们对事件<span
+class="math inline">\(A\)</span>的认识或所产生的信念的程度。</li>
+</ul>
+<p>许多实验本身具有序贯的特征，常用<strong>序贯树形图</strong>刻画样本空间中的试验结果。</p>
+<p><strong>概率公理</strong>：</p>
+<ol type="1">
+<li><p>非负性。对一切事件<span
+class="math inline">\(A\)</span>，满足<span
+class="math inline">\(P(A)\ge0\)</span>。</p></li>
+<li><p>可加性。设<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>为两个互补相交的集合（概率论中称为互不相容的事件），则它们的并满足：<span
+class="math inline">\(P(A\bigcup
+B)=P(A)+P(B)\)</span>。可以向一般情形推广。</p></li>
+<li><p>归一性。整个样本空间<span
+class="math inline">\(\Omega\)</span>（称为必然事件）的概率为1，即<span
+class="math inline">\(P(\Omega)=1\)</span>。</p></li>
+</ol>
+<p><strong>离散概率律</strong>：</p>
+<p>设样本空间由有限个可能的结果组成，则事件的概率可由组成这个事件的试验结果的概率所决定。
+<span class="math display">\[
+P(\{s_1,s_2,...,s_n\})=P(s_1)+P(s_2)+...+P(s_n)
+\]</span></p>
+<h2 id="条件概率">1.3 条件概率</h2>
+<p>给定<span class="math inline">\(B\)</span>发生之下事件<span
+class="math inline">\(A\)</span>的条件概率，记作<span
+class="math inline">\(P(A\mid B)\)</span>。</p>
+<p>$P(AB)= $。</p>
+<p><strong>乘法规则</strong>： <span class="math display">\[
+P( { \bigcap_{i=1}^{n}}A_i)=P(A_1)P(A_2\mid A_1)P(A_3\mid A_1\bigcap
+A_2)...P(A_n\mid {\bigcap^{n-1}_{i=1}}A_i)
+\]</span></p>
+<h2 id="全概率定理和贝叶斯准则">1.4 全概率定理和贝叶斯准则</h2>
+<p>设<span
+class="math inline">\(A_1,A_2,...,A_n\)</span>是一组互不相容的事件，它形成样本空间的一个分割（每一个试验结果必使其中一个事件发生）。又假定对每一个<span
+class="math inline">\(i\)</span>，<span
+class="math inline">\(P(A_i)&gt;0\)</span>。</p>
+<p><strong>全概率定理</strong>：</p>
+<p>则对于任意事件<span
+class="math inline">\(B\)</span>，下列公式成立：<span
+class="math inline">\(P(B)=P(A_1\bigcap B)+...+P(A_i\bigcap
+B)\)</span></p>
+<p><strong>贝叶斯准则</strong>：</p>
+<p>则对于任意满足<span
+class="math inline">\(P(B)&gt;0\)</span>的事件<span
+class="math inline">\(B\)</span>，下列公式成立：<span
+class="math inline">\(P(A_i\mid B)=\frac{P(A_i)P(B\mid
+A_i)}{P(B)}\)</span></p>
+<p>若<span class="math inline">\(P(A_i\mid
+B)\)</span>代表新得到信息<span class="math inline">\(B\)</span>之后<span
+class="math inline">\(A_i\)</span>出现的概率，称之为<strong>后验概率</strong>，原来的<span
+class="math inline">\(P(A_i)\)</span>称为<strong>先验概率</strong>。</p>
+<h2 id="独立性">1.5 独立性</h2>
+<p>若<span class="math inline">\(P(A\mid B)=P(A)\)</span>，称事件<span
+class="math inline">\(A\)</span>是独立于事件<span
+class="math inline">\(B\)</span>的。上式等价于<span
+class="math inline">\(P(A\bigcap B)=P(A)P(B)\)</span>。</p>
+<p>若<span class="math inline">\(P(A\bigcap B\mid C)=P(A\mid C)P(B\mid
+C)\)</span>，则称<span class="math inline">\(A\)</span>和<span
+class="math inline">\(B\)</span>在给定<span
+class="math inline">\(C\)</span>之下条件独立。</p>
+<h2 id="计数法">1.6 计数法</h2>
+<p><span class="math inline">\(n\)</span>个对象的排列数：<span
+class="math inline">\(n!\)</span></p>
+<p><span class="math inline">\(n\)</span>个对象中取<span
+class="math inline">\(k\)</span>个对象的排列数：<span
+class="math inline">\(\frac{n!}{(n-k)!}\)</span></p>
+<p><span class="math inline">\(n\)</span>个对象中取<span
+class="math inline">\(k\)</span>个对象的组合数：<span
+class="math inline">\(\begin{pmatrix} n\\k
+\end{pmatrix}=\frac{n!}{k!(n-k)!}\)</span></p>
+<p>将<span class="math inline">\(n\)</span>个对象分成<span
+class="math inline">\(r\)</span>个组的分割数，其中第<span
+class="math inline">\(i\)</span>个组具有<span
+class="math inline">\(n_i\)</span>个对象：<span
+class="math inline">\(\begin{pmatrix} n\\n_1,n_2,...,n_r
+\end{pmatrix}=\frac{n!}{n_1!n_2!...n_r!}\)</span></p>
+<h1 id="第2章-离散随机变量">第2章 离散随机变量</h1>
+<h2 id="基本概念">2.1 基本概念</h2>
+<p>在一个试验的概率模型之下：</p>
+<ul>
+<li><strong>随机变量</strong>是试验结果的实值函数</li>
+<li>随机变量的函数定义了另一个随机变量</li>
+<li>对于一个随机变量，我们可以定义一些平均量，例如均值和方差</li>
+<li>可以在某事件或某随机变量的条件之下定义一个随机变量</li>
+<li>存在一个随机变量与某事件或某随机变量项目独立的概念</li>
+</ul>
+<p>离散随机变量的取值范围智能是有限多个值或可数无限多个值。</p>
+<p>一个离散随机变量有一个<strong>分布列</strong>，它对于随机变量的每一个取值给出一个概率。</p>
+<p>离散随机变量的函数也是一个离散随机变量。</p>
+<h2 id="分布列">2.2 分布列</h2>
+<p><span
+class="math inline">\(p_X(x)=P(\{X=x\})\)</span>，<strong>大写字母表示随机变量，小写字母表示实数</strong>。</p>
+<p><span class="math inline">\(\sum_{x}p_X(x)=1\)</span></p>
+<p><strong>伯努利随机变量</strong>：</p>
+<p>抛掷一枚硬币，正面出现概率为<span
+class="math inline">\(p\)</span>。<span
+class="math inline">\(X\)</span>取值为<span
+class="math inline">\(k\)</span>，<span
+class="math inline">\(k\)</span>正面为1，反面为0。</p>
+<p><span class="math display">\[
+p_X(k)=\left\{ \begin{aligned}  p,k=1\\1-p,k=0  \end{aligned} \right.
+\]</span> <strong>二项随机变量</strong>：</p>
+<p>将硬币抛掷<span class="math inline">\(n\)</span>次。<span
+class="math inline">\(X\)</span>取值为<span
+class="math inline">\(k\)</span>，<span
+class="math inline">\(k\)</span>为得到正面的次数。 <span
+class="math display">\[
+p_X(k)=\begin{pmatrix} n\\k \end{pmatrix}p^k(1-p)^{n-k},k=0,1,...,n.
+\]</span> <strong>几何随机变量</strong>：</p>
+<p><span class="math inline">\(X\)</span>取值为<span
+class="math inline">\(k\)</span>，<span
+class="math inline">\(k\)</span>为连续抛掷硬币直到第一次出现正面所需的抛掷次数。
+<span class="math display">\[
+p_X(k)=(1-p)^{k-1}p,k=1,2,...
+\]</span> <strong>泊松随机变量</strong>：</p>
+<p><span class="math inline">\(X\)</span>的分布列如下： <span
+class="math display">\[
+p_X(k)=e^{-\lambda}\frac{\lambda^k}{k!},k=0,1,2,...
+\]</span> 当二项随机变量<span
+class="math inline">\(n\)</span>很大、<span
+class="math inline">\(p\)</span>很小时，<span
+class="math inline">\(\lambda=np\)</span>，泊松随机变量的分布列是二项随机变量分布列很好的逼近：
+<span class="math display">\[
+e^{-\lambda}\frac{\lambda^k}{k!} \approx
+\frac{n!}{k!(n-k)!}p^k(1-p)^{n-k},k=0,1,...,n.
+\]</span></p>
+<h2 id="随机变量的函数">2.3 随机变量的函数</h2>
+<p>随机变量的函数也是随机变量。</p>
+<h2 id="期望均值和方差">2.4 期望、均值和方差</h2>
+<p><strong>期望</strong>：</p>
+<p>设随机变量<span class="math inline">\(X\)</span>的分布列为<span
+class="math inline">\(p_X\)</span>。<span
+class="math inline">\(X\)</span>的期望值由下式给出： <span
+class="math display">\[
+E[X]=\sum_{x} xp_X(x)
+\]</span> 对于<span class="math inline">\(X\)</span>的函数<span
+class="math inline">\(g(X)\)</span>: <span class="math display">\[
+E[g(X)]=\sum_x g(x)p_X(x)
+\]</span> <strong>方差</strong>：</p>
+<p>随机变量<span class="math inline">\(X\)</span>的方差为： <span
+class="math display">\[
+var(X)=E[(X-E[X])^2]
+\]</span> 其平方根记为标准差<span
+class="math inline">\(\sigma_X\)</span></p>
+<p><strong>随机变量的线性函数的均值和方差</strong>：</p>
+<p>若<span class="math inline">\(Y=aX+b\)</span>,则： <span
+class="math display">\[
+E[Y]=aE[X]+b,  var(Y)=a^2var(X)
+\]</span> <strong>用矩表达的方差公式</strong>： <span
+class="math display">\[
+var(X)=E[X^2]-(E[X])^2
+\]</span></p>
+<h2 id="多个随机变量的联合分布列">2.5 多个随机变量的联合分布列</h2>
+<p><span class="math display">\[
+p_{X,Y}(x,y)=P(X=x,Y=y)
+\]</span></p>
+<p>可以通过联合分布列求单个随机变量的分布列： <span
+class="math display">\[
+p_X(x)= P(X=x) =\sum_y P(X=x,Y=y) = \sum_y P_{X,Y}(x,y)
+\]</span> 以上也称为边缘分布列。</p>
+<h2 id="条件">2.6 条件</h2>
+<p>在某个事件<span
+class="math inline">\(A(P(A)&gt;0)\)</span>发生的条件下，随机变量<span
+class="math inline">\(X\)</span>的<strong>条件分布列</strong>由下式定义：
+<span class="math display">\[
+p_{X\mid A}(x)=P(X=x\mid A)=\frac{P(\{X=x\}\bigcap A)}{P(A)}
+\]</span></p>
+<h2 id="独立性-1">2.7 独立性</h2>
+<p>设在某一试验中，<span
+class="math inline">\(A\)</span>是一个事件，满足条件<span
+class="math inline">\(P(A)&gt;0\)</span>，又设<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>是在同一个试验中的两个随机变量。</p>
+<p>若对一切<span class="math inline">\(x\)</span>，<span
+class="math inline">\(p_{X\mid A}(x)=p_X(x)\)</span>，则称<span
+class="math inline">\(X\)</span>相对于事件<span
+class="math inline">\(A\)</span>独立。</p>
+<p>若对一切<span class="math inline">\(x\)</span>、<span
+class="math inline">\(y\)</span>，<span
+class="math inline">\(p_{X,Y}(x,y)=p_X(x)p_Y(y)\)</span>，则称<span
+class="math inline">\(\{X=x\}\)</span> 和<span
+class="math inline">\(\{Y=y\}\)</span>相互独立。此时有<span
+class="math inline">\(E[XY]=E[X]E[Y]\)</span>、<span
+class="math inline">\(var(X+Y)=var(X)+var(Y)\)</span>。</p>
+<h1 id="第3章-一般随机变量">第3章 一般随机变量</h1>
+<h2 id="连续随机变量和概率密度函数">3.1 连续随机变量和概率密度函数</h2>
+<p>对于随机变量<span
+class="math inline">\(X\)</span>，若存在一个非负函数<span
+class="math inline">\(f_X\)</span>，使得 <span class="math display">\[
+P(X\in B)=\int_B f_X(x)dx
+\]</span> 对每一个实数轴上的集合<span
+class="math inline">\(B\)</span>都成立，则称<span
+class="math inline">\(X\)</span>为连续的随机变量，函数<span
+class="math inline">\(f_X\)</span>就称为<span
+class="math inline">\(X\)</span>的概率密度函数(PDF)。 <span
+class="math display">\[
+E[X]=\int_{-\infty}^{\infty}xf_X(x)dx
+\]</span></p>
+<h2 id="分布函数">3.2 分布函数</h2>
+<p>之前分别用分布列（离散情况）和概率密度函数（连续情况）来刻画随机变量<span
+class="math inline">\(X\)</span>的取值规律。累计分布函数（CDF）可以同时刻画以上两者：
+<span class="math display">\[
+X\text{离散，}F_X(x)=P(X\le x)=\sum_{k\le x}p_X(k) \\
+X\text{连续，}F_X(x)=\int_{-\infty}^x f_X(t)dt
+\]</span></p>
+<h2 id="正态随机变量">3.3 正态随机变量</h2>
+<p>正态/高斯连续随机变量<span
+class="math inline">\(X\)</span>的密度函数如下： <span
+class="math display">\[
+f_X(x)=\frac{1}{\sqrt{2\pi}\sigma}e^{-(x-\mu)^2/(2\sigma^2)},E[X]=\mu,var(X)=\sigma^2
+\]</span> 线性变化之下随机变量的正态性保持不变。</p>
+<p>期望为1方差为1的正态随机变量称为标准正态随机变量。</p>
+<h2 id="多个随机变量的联合概率密度">3.4 多个随机变量的联合概率密度</h2>
+<p><span class="math display">\[
+P((X,Y)\in B)=\int\int_{(x,y)\in B} f_{X,Y}(x,y)dxdy
+\]</span></p>
+<h2 id="条件-1">3.5 条件</h2>
+<p>对于给定的事件<span
+class="math inline">\(A(P(A)&gt;0)\)</span>，<span
+class="math inline">\(B\)</span>是实数轴上的任意集合，连续随机变量<span
+class="math inline">\(X\)</span>的条件概率密度<span
+class="math inline">\(f_{X\mid A}\)</span>是满足下列条件的函数： <span
+class="math display">\[
+P(X\in B\mid A)=\int_B f_{X\mid A}(x)dx
+\]</span> 设<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>为联合连续的随机变量，其联合、边缘、条件概率密度函数是相互关联的：
+<span class="math display">\[
+f_{X,Y}(x,y)=f_Y(y)f_{X\mid Y}(x\mid y)
+\]</span></p>
+<h2 id="连续贝叶斯准则">3.6 连续贝叶斯准则</h2>
+<p><span class="math display">\[
+f_{X\mid Y}(x\mid y)=\frac{f_X(x)f_{Y\mid X}(y\mid
+x)}{f_Y(y)}=\frac{f_X(x)f_{Y\mid X}(y\mid
+x)}{\int_{-\infty}^{\infty}f_X(t)f_(Y\mid X)(y\mid t)dt}
+\]</span></p>
+<h1 id="第4章-随机变量的深入内容">第4章 随机变量的深入内容</h1>
+<h2 id="随机变量函数的分布密度函数">4.1 随机变量函数的分布密度函数</h2>
+<p>连续随机变量<span class="math inline">\(X\)</span>的函数<span
+class="math inline">\(Y=g(X)\)</span>的分布密度函数（CDF）： <span
+class="math display">\[
+F_Y(y)=P(g(x)\le y)=\int_{ \{x\mid g(x)\le y\} }f_X(x)dx
+\]</span></p>
+<p>PDF可由求导得到： <span class="math display">\[
+f_Y(y)=\frac{dF_Y}{dy}(y)
+\]</span></p>
+<h2 id="协方差和相关">4.2 协方差和相关</h2>
+<p><span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>的协方差记为<span
+class="math inline">\(cov(X,Y)\)</span>，当其为0时<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>不相关： <span class="math display">\[
+cov(X,Y)=E[(X-E[X])(Y-E[Y])]
+\]</span></p>
+<p><span class="math display">\[
+cov(X,Y)=E[XY]-E[X]E[Y]
+\]</span></p>
+<p>如果<span class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>相互独立，则它们是不相关的，但逆命题不成立。</p>
+<p><strong>相关系数</strong>定义为： <span class="math display">\[
+\rho(X,Y)=\frac{cov(X,Y)}{\sqrt{var(X)var(Y)}},\rho(X,Y)\in[-1,1]
+\]</span> 随机变量和的方差： <span class="math display">\[
+var(X_1+X_2)=var(X_1)+var(X_2)+2cov(X_1,X_2)
+\]</span></p>
+<p><span class="math display">\[
+var(\sum_{i=1}^{n}X_i)=\sum_{i=1}^{n}var(X_i)+\sum_{ \{(i,j)\mid i\ne
+j\} }cov(X_i,Y_j)
+\]</span></p>
+<h2 id="再论条件期望和条件方差">4.3 再论条件期望和条件方差</h2>
+<p><strong>重期望法则</strong>： <span class="math display">\[
+E[E[X\mid Y]]=E[X]
+\]</span> <strong>全方差法则</strong>： <span class="math display">\[
+var(X)=E[var(X\mid Y)]+var(E[X\mid Y])
+\]</span></p>
+<h2 id="矩母函数">4.4 矩母函数</h2>
+<p>一个与随机变量<span
+class="math inline">\(X\)</span>相关的矩母函数是一个参数<span
+class="math inline">\(s\)</span>的函数<span
+class="math inline">\(M_X(s)\)</span>，定义如下： <span
+class="math display">\[
+M_X(s)=E[e^{sX}]
+\]</span>
+数学期望和方差可以纳入到一个更一般的概念范畴中，那就是随机变量的矩。</p>
+<p>设<span class="math inline">\(X\)</span>为随机变量，<span
+class="math inline">\(k\)</span>为正整数，如果<span
+class="math inline">\(E(X^k)\)</span>存在，则称<span
+class="math inline">\(E(X^k)\)</span>为<span
+class="math inline">\(X\)</span>的<span
+class="math inline">\(k\)</span>阶原点矩。如果<span
+class="math inline">\(E((X-E(X))^k)\)</span>存在，则称<span
+class="math inline">\(E((X-E(X))^k)\)</span>为<span
+class="math inline">\(X\)</span>的<span
+class="math inline">\(k\)</span>阶中心矩。</p>
+<p>显然，一阶原点矩就是数学期望，二阶中心矩就是方差。</p>
+<p>使用矩母函数可以方便地计算矩。</p>
+<h2 id="随机数个相互独立的随机变量之和">4.5
+随机数个相互独立的随机变量之和</h2>
+<p>记<span class="math inline">\(X_1,X_2,...\)</span>为均值<span
+class="math inline">\(\mu\)</span>、方差<span
+class="math inline">\(\sigma^2\)</span>的同分布随机变量。记<span
+class="math inline">\(N\)</span>为取值于正整数的随机变量。我们假定上述所有变量相互独立，下面考虑变量和
+<span class="math display">\[
+Y=X_1+...+X_N
+\]</span> 那么：</p>
+<ul>
+<li><span class="math inline">\(E[Y]=E[X]E[N]\)</span></li>
+<li><span
+class="math inline">\(var(Y)=var(X)E[N]+(E[X])^2var(N)\)</span></li>
+<li>矩母函数<span
+class="math inline">\(M_Y(s)\)</span>可由计算矩母函数<span
+class="math inline">\(M_N(s)\)</span>的公式得到，将其中的<span
+class="math inline">\(e^S\)</span>全部替换成<span
+class="math inline">\(M_X(s)\)</span>即可</li>
+</ul>
+<h1 id="第5章-极限理论">第5章 极限理论</h1>
+<h2 id="马尔可夫和切比雪夫不等式">5.1 马尔可夫和切比雪夫不等式</h2>
+<p><strong>马尔克夫不等式</strong>：</p>
+<p>设随机变量<span
+class="math inline">\(X\)</span>只取非负值，则对任意<span
+class="math inline">\(a&gt;0\)</span>， <span class="math display">\[
+P(X\ge a)\le\frac{E[X]}{a}
+\]</span> 如果一个非负随机变量均值很小，它取大值的概率也很小。</p>
+<p><strong>切比雪夫不等式</strong>：</p>
+<p>设随机变量<span class="math inline">\(X\)</span>的均值为<span
+class="math inline">\(\mu\)</span>，方差为<span
+class="math inline">\(\sigma^2\)</span>，则对任意<span
+class="math inline">\(c&gt;0\)</span>， <span class="math display">\[
+P(\mid X-\mu \mid\ge c)\le \frac{\sigma^2}{c^2}
+\]</span> 如果一个随机变量的方差很小，它取远离均值<span
+class="math inline">\(\mu\)</span>的概率也很小。</p>
+<h2 id="弱大数定律">5.2 弱大数定律</h2>
+<p>设<span
+class="math inline">\(X_1,...,X_n,...\)</span>独立同分布，其公共分布的均值为<span
+class="math inline">\(\mu\)</span>，则对任意的<span
+class="math inline">\(\epsilon&gt;0\)</span>，当$n$时， <span
+class="math display">\[
+P(\mid M_n-\mu \ge \epsilon \mid)=P(\mid \frac{X_1+...+X_n}{n} - \mu
+\mid\ge\epsilon)\longrightarrow 0
+\]</span> 利用切比雪夫不等式可得： <span class="math display">\[
+P(\mid M_n-\mu\mid\ge\epsilon)\le\frac{\sigma^2}{n\epsilon^2},\forall
+\epsilon&gt;0
+\]</span> n越大，<span
+class="math inline">\(M_n\)</span>均值越接近公共分布均值，收敛于<span
+class="math inline">\(\mu\)</span>。</p>
+<h2 id="依概率收敛">5.3 依概率收敛</h2>
+<p>依概率收敛和数列收敛不同。</p>
+<p>设<span
+class="math inline">\(Y_1,Y_2,...\)</span>是随机变量序列（不必相互独立），对任意的<span
+class="math inline">\(\epsilon&gt;0\)</span>和<span
+class="math inline">\(\delta&gt;0\)</span>，存在<span
+class="math inline">\(n_0\)</span>和实数a，使得对所有的<span
+class="math inline">\(n\ge n_0\)</span>，都有 <span
+class="math display">\[
+P(\mid Y_n-a\mid \ge \epsilon)\le\delta
+\]</span> <span class="math inline">\(\epsilon\)</span>为精度，<span
+class="math inline">\(\delta\)</span>为置信水平。</p>
+<h2 id="中心极限定理">5.4 中心极限定理</h2>
+<p>设<span
+class="math inline">\(X_1,X_2,...\)</span>是独立同分布的随机变量序列，序列的每一项的均值为<span
+class="math inline">\(\mu\)</span>，方差为<span
+class="math inline">\(\sigma^2\)</span>。记 <span
+class="math display">\[
+Z_n=\frac{X_1+...+X_n-n\mu}{\sqrt{n}\sigma}
+\]</span> 则<span
+class="math inline">\(Z_n\)</span>的分布函数的极限分布为标准正态分布
+<span class="math display">\[
+\Phi(x)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^xe^{-z^2/2}dz
+\]</span> 即 <span class="math display">\[
+\lim_{n\to\infty} P(Z_n\le x)=\Phi(x),\forall x
+\]</span> 二项分布的棣莫弗-拉普拉斯近似</p>
+<p>设<span
+class="math inline">\(S_n\)</span>是服从参数为n和p的二项分布，n充分大，k和l是非负整数，则
+<span class="math display">\[
+P(k\le S_n \le l)\approx
+\Phi(\frac{l+\frac{1}{2}-np}{\sqrt{np(1-p)}})-\Phi(\frac{k-\frac{1}{2}-np}{\sqrt{(np(1-p))}})
+\]</span></p>
+<h2 id="强大数定律">5.5 强大数定律</h2>
+<p>设<span class="math inline">\(X_1,X_2,...,X_n\)</span>是均值为<span
+class="math inline">\(\mu\)</span>的独立同分布随机变量序列，则样本均值<span
+class="math inline">\(M_n=(X_1+X_2+...+X_n)/n\)</span>以概率1收敛于<span
+class="math inline">\(\mu\)</span>，即 <span class="math display">\[
+P(\lim_{n\to\infty}\frac{(X_1+X_2+...+X_n)}{n}=\mu)=1
+\]</span>
+强大数定律的收敛是“以概率1收敛”，与若大数定律的收敛不同。弱大数定律是指<span
+class="math inline">\(M_n\)</span>显著性偏离<span
+class="math inline">\(\mu\)</span>的事件的概率<span
+class="math inline">\(P(\mid M_n-\mu\mid\ge\epsilon)\)</span>，在<span
+class="math inline">\(n\to\infty\)</span>时，趋于0。但是对任意有限的n，这个概率可以是正的。弱大数定律不能提供到底有多少会显著性偏离<span
+class="math inline">\(\mu\)</span>，但是强大数定律可以。<span
+class="math inline">\(M_n\)</span>以概率1收敛于<span
+class="math inline">\(\mu\)</span>，这意味着对<span
+class="math inline">\(\forall\epsilon&gt;0\)</span>，偏离<span
+class="math inline">\(\mid M_n-\mu\mid\)</span>超过<span
+class="math inline">\(\epsilon\)</span>的，只能发生有限次。</p>
+<h1 id="第6章-伯努利和泊松过程">第6章 伯努利和泊松过程</h1>
+<p>随机过程就是一串随机变量序列，但是更倾向于强调过程中产生的数据序列之间的相关关系。</p>
+<h2 id="伯努利过程">6.1 伯努利过程</h2>
+<p><strong>与伯努利过程相关的随机变量</strong></p>
+<p>服从参数n和p的二项分布。n次相继独立的试验成功的总次数<span
+class="math inline">\(S\)</span>的分布。 <span class="math display">\[
+p_S(k)==\begin{pmatrix} n\\k \end{pmatrix}p^k(1-p)^{n-k},k=0,1,...,n.
+\]</span></p>
+<p><span class="math display">\[
+E[S]=np,var(S)=np(1-p)
+\]</span></p>
+<p>服从参数为p的几何分布。相互独立重复的伯努利试验首次成功的总次数<span
+class="math inline">\(T\)</span>的分布。 <span class="math display">\[
+p_T(t)=p(1-p)^{t-1},t=1,2 ...,
+\]</span></p>
+<p><span class="math display">\[
+E[T]=\frac{1}{p},var(T)=\frac{1-p}{p^2}
+\]</span></p>
+<p>伯努利过程具有独立性和无记忆性。</p>
+<h2 id="泊松过程">6.2 泊松过程</h2>
+<p>泊松过程是伯努利过程的<strong>连续</strong>版本。两者都是到达过程。</p>
+<p><strong>泊松过程相关的随机变量</strong></p>
+<p>服从参数为<span
+class="math inline">\(\lambda\tau\)</span>的泊松分布。泊松过程的强度为<span
+class="math inline">\(\lambda\)</span>，在时间强度为<span
+class="math inline">\(\tau\)</span>的区间内到达的总次数<span
+class="math inline">\(N_\tau\)</span>的分布。 <span
+class="math display">\[
+p_{N_\tau}(k)=P(k,\tau)=e^{-\lambda\tau}\frac{(\lambda\tau)^k}{k!},k=0,1,...,
+\]</span></p>
+<p><span class="math display">\[
+E[N_\tau]=var(N_\tau)=\lambda\tau
+\]</span></p>
+<p>服从参数为<span
+class="math inline">\(\lambda\)</span>的指数分布。首次到达的时间<span
+class="math inline">\(T\)</span>的分布。 <span class="math display">\[
+f_T(t)=\lambda e^{-\lambda t},t\ge
+0,E[T]=\frac{1}{\lambda},var(T)=\frac{1}{\lambda^2}
+\]</span></p>
+<h1 id="第7章-马尔可夫链">第7章 马尔可夫链</h1>
+<h2 id="离散时间的马尔可夫链">7.1 离散时间的马尔可夫链</h2>
+<p>用变量n表示时刻，在任意时刻n用<span
+class="math inline">\(X_n\)</span>表示链的状态，所有可能状态组成有限集合<span
+class="math inline">\(S\)</span>，称该集合为状态空间。</p>
+<p>马尔可夫链由转移概率<span
+class="math inline">\(p_{ij}\)</span>所描述：即当状态是i时，下一个状态等于j的概率是<span
+class="math inline">\(p_{ij}\)</span>。 <span class="math display">\[
+p_{ij}=P(X_{n+1}=j\mid X_n=i),i,j\in S
+\]</span> 马尔可夫性质：下一个状态<span
+class="math inline">\(X_{n+1}\)</span>的概率分布只依赖于前一个状态<span
+class="math inline">\(X_n\)</span>。</p>
+<p>转移概率一定是非负的，且其和为1。</p>
+<p>马尔可夫链可以用转移概率矩阵或转移概率图刻画。</p>
+<h2 id="状态的分类">7.2 状态的分类</h2>
+<p>如果对于每个从<span
+class="math inline">\(i\)</span>出发可达的状态<span
+class="math inline">\(j\)</span>，相应地从<span
+class="math inline">\(j\)</span>出发也可达<span
+class="math inline">\(i\)</span>，则<span
+class="math inline">\(i\)</span>是<strong>常返</strong>的。</p>
+<p>如果<span class="math inline">\(i\)</span>是常返态，那么从<span
+class="math inline">\(i\)</span>可达的状态集合<span
+class="math inline">\(A(i)\)</span>组成一个<strong>常返类</strong>。同一个常返类中所有状态都是相互可达的，但与常返类之外的状态不相互可达。</p>
+<p>一个马尔可夫链的状态集合可以分解为一个或多个常返类，加上可能的一些非常返状态。</p>
+<p>考虑一个常返类<span class="math inline">\(R\)</span></p>
+<ul>
+<li><p>如果一类中的状态能被分成<span
+class="math inline">\(d&gt;1\)</span>个互不相交的子集<span
+class="math inline">\(S_1,...,S_d\)</span>，满足所有的转移都是从子集<span
+class="math inline">\(S_k\)</span>到<span
+class="math inline">\(S_{k+1}\)</span>的（或到<span
+class="math inline">\(S_1\)</span>，当<span
+class="math inline">\(k=d\)</span>时）,则称该类为周期类。</p></li>
+<li><p>一类<span
+class="math inline">\(R\)</span>称为非周期的，当且仅当存在时刻n，使得对于任何<span
+class="math inline">\(i,j\in R\)</span>，满足<span
+class="math inline">\(r_{ij}(n)&gt;0\)</span>。</p></li>
+</ul>
+<h2 id="稳态性质">7.3 稳态性质</h2>
+<p>考虑一个非周期的，单个常返类的马尔可夫链。那么，状态<span
+class="math inline">\(j\)</span>和它对应的稳态概率<span
+class="math inline">\(\pi_j\)</span>有如下性质。</p>
+<ol type="1">
+<li>对于每个<span class="math inline">\(j\)</span>，我们有：</li>
+</ol>
+<p><span class="math display">\[
+\lim_{n\to\infty}r_{ij}(n)=\pi_j,\text{对于所有的}i
+\]</span> 2. <span
+class="math inline">\(\pi_j\)</span>是下面方程组的唯一解：</p>
+<p><span class="math display">\[
+\pi_j=\sum_{k=1}^{m}\pi_k p_{kj},j=1,...,m,
+\]</span></p>
+<p><span class="math display">\[
+l=\sum_{k=1}^m\pi_k
+\]</span></p>
+<ol start="3" type="1">
+<li>另外有：</li>
+</ol>
+<p><span class="math display">\[
+\pi_j=0,\text{对于所有的非常返状态}j,
+\]</span></p>
+<p><span class="math display">\[
+\pi_j&gt;0,\text{对于所有的常返态}j.
+\]</span></p>
+<h2 id="吸收概率和吸收的期望时间">7.4 吸收概率和吸收的期望时间</h2>
+<p>一个常返态k是<strong>吸收</strong>的：<span
+class="math inline">\(p_{kk}=1,p_{kj}=0\)</span>对于所有的<span
+class="math inline">\(j\ne k\)</span>。</p>
+<p>固定一个吸收态，设为s，令<span
+class="math inline">\(a_i\)</span>表示链从状态i开始，最终达到s的概率即为吸收概率：
+<span class="math display">\[
+a_i=P(X_n\text{最终等于吸收状态}s\mid X_0=i)
+\]</span> <strong>平均吸收时间方程组</strong>：</p>
+<p>平均吸收时间<span
+class="math inline">\(\mu_1,...,\mu_m\)</span>是下列方程组的唯一解 <span
+class="math display">\[
+\mu_i=0,\text{对于所有的非常返状态}i,
+\]</span></p>
+<p><span class="math display">\[
+\mu_i=1+\sum_{j=1}^m p_{ij}\mu_{j},\text{对于所有的非常返状态}i.
+\]</span></p>
+<p><strong>平均首访时间和回访时间方程组</strong>：</p>
+<p>考虑只有单个常返类的马尔可夫链，令s为特殊的常返状态。</p>
+<ul>
+<li><p>从状态i到状态s的平均首访时间<span
+class="math inline">\(t_i\)</span>，是下列方程组的唯一解 <span
+class="math display">\[
+t_s=0,t_i=1+\sum_{j=1}^m p_{ij}t_j,\text{对于所有的}i\ne s
+\]</span></p></li>
+<li><p>状态s的平均回访时间<span
+class="math inline">\(t^*_s\)</span>为</p></li>
+</ul>
+<p><span class="math display">\[
+t^*_s=1+\sum_{j=1}^m p_{sj}t_j
+\]</span></p>
+<h2 id="连续时间的马尔可夫链">7.5 连续时间的马尔可夫链</h2>
+<p>连续性时间马尔可夫链的假设</p>
+<ul>
+<li>如果当前状态是i，到下一个转移的时间服从已知参数<span
+class="math inline">\(v_i\)</span>的指数分布，且独立于之前的历史过程和下一个状态</li>
+<li>如果当前状态是i，按照给定的概率<span
+class="math inline">\(p_{ij}\)</span>到达下一个状态j,而且独立于之前的历史过程和转移到下一个状态的时间间隔</li>
+</ul>
+<p>考虑一个具有单个常返类的连续时间马尔可夫链。那么，状态<span
+class="math inline">\(j\)</span>和它对应的稳态概率<span
+class="math inline">\(\pi_j\)</span>有如下性质。q是转移速率。</p>
+<ol type="a">
+<li>对于每个<span class="math inline">\(j\)</span>，我们有： <span
+class="math display">\[
+\lim_{t\to\infty}P(X(t)=j\mid X(0)=i)=\pi_j,\text{对于所有的}i
+\]</span></li>
+<li><span class="math inline">\(\pi_j\)</span>是下面方程组的唯一解：
+<span class="math display">\[
+\pi_j\sum_{k\ne j}q_{jk}=\sum_{k\ne j}^{m}\pi_k q_{kj},j=1,...,m,
+\]</span></li>
+</ol>
+<p><span class="math display">\[
+l=\sum_{k=1}^m\pi_k
+\]</span></p>
+<p>(c)另外有： <span class="math display">\[
+\pi_j=0,\text{对于所有的非常返状态}j,
+\]</span></p>
+<p><span class="math display">\[
+\pi_j&gt;0,\text{对于所有的常返态}j.
+\]</span></p>
+<h1 id="第8章-贝叶斯统计推断">第8章 贝叶斯统计推断</h1>
+<p><strong>统计推断</strong>是从观测数据推断未知变量或未知模型的有关信息的过程，和概率理论不是一码事。</p>
+<p>统计有两种学派：贝叶斯学派和经典（频率）学派。它们的重要区别在于如何看待未知模型或者变量。</p>
+<ul>
+<li>贝叶斯学派将其看成已知分布的随机变量。</li>
+<li>经典学派将其看成未知的待估计的量。</li>
+</ul>
+<p>统计推断的应用主要分为两种类型：模型推断和变量推断。</p>
+<p>统计推断问题可以简单分为估计问题和假设检验问题。在参数估计中对参数进行估计，使得在某种概率意义下估计接近真实值。在假设检验中，未知参数根据对应的假设可能取有限个值。人们去选择其中一个假设，目标是使犯错误的概率很小。</p>
+<p>考虑具有形式<span
+class="math inline">\(Y=g(X)+W\)</span>的模型，该模型涉及两个随机变量<span
+class="math inline">\(X\)</span>和<span
+class="math inline">\(Y\)</span>，其中<span
+class="math inline">\(W\)</span>是零均值噪声，<span
+class="math inline">\(g\)</span>是需要估计的未知函数。这类问题，未知目标（比如这里的函数g）是不能表述为固定数目的参数，称为<strong>非参数</strong>统计推断问题。不在此书考虑范围之内。</p>
+<p><strong>共轭先验分布</strong>：</p>
+<p>在贝叶斯统计中，如果后验分布与先验分布属于同类，则先验分布与后验分布被称为共轭分布，而<strong>先验分布被称为似然函数的共轭先验分布</strong>。</p>
+<p>具体地说，就是给定贝叶斯公式<span class="math inline">\(p_{\Theta\mid
+X}(\theta\mid x)=\frac{p_\Theta(\theta)p_{X\mid\Theta}(x\mid
+\theta)}{\sum_{\theta&#39;}p_{\Theta}(\theta&#39;)p_{X\mid\Theta}(x\mid\theta&#39;)}\)</span>（假设<span
+class="math inline">\(\Theta\)</span>离散，<span
+class="math inline">\(X\)</span>离散），假定似然函数<span
+class="math inline">\(p_{X\mid\Theta}(x\mid
+\theta)\)</span>是已知的，问题就是选取什么样的先验分布会让后验分布与先验分布具有相同的数学形式。</p>
+<p>共轭先验分布是针对某一参数而言，如正态分布关于方差的共轭先验分布为倒Gamma分布、关于均值的共轭先验分布为正态分布。</p>
+<p>所有指数家族的分布都有共轭先验。</p>
+<h2 id="贝叶斯推断与后验分布">8.1 贝叶斯推断与后验分布</h2>
+<p>推断过程：</p>
+<ul>
+<li>起点是未知随机变量<span
+class="math inline">\(\Theta\)</span>的先验分布<span
+class="math inline">\(p_{\Theta}\)</span>或者<span
+class="math inline">\(f_\Theta\)</span>。</li>
+<li>得到观测向量<span class="math inline">\(X\)</span>的<span
+class="math inline">\(p_{X\mid\Theta}\)</span>或者<span
+class="math inline">\(f_{X\mid\Theta}\)</span>。</li>
+<li>一旦<span
+class="math inline">\(X\)</span>的一个特定值x观测到后，运用贝叶斯法则计算<span
+class="math inline">\(\Theta\)</span>的后验分布。</li>
+</ul>
+<p>贝叶斯法则的4种形式：</p>
+<ul>
+<li><p><span class="math inline">\(\Theta\)</span>离散，<span
+class="math inline">\(X\)</span>离散： <span class="math display">\[
+p_{\Theta\mid X}(\theta\mid
+x)=\frac{p_\Theta(\theta)p_{X\mid\Theta}(x\mid
+\theta)}{\sum_{\theta&#39;}p_{\Theta}(\theta&#39;)p_{X\mid\Theta}(x\mid\theta&#39;)}
+\]</span></p></li>
+<li><p><span class="math inline">\(\Theta\)</span>离散，<span
+class="math inline">\(X\)</span>连续： <span class="math display">\[
+p_{\Theta\mid X}(\theta\mid
+x)=\frac{p_\Theta(\theta)f_{X\mid\Theta}(x\mid
+\theta)}{\sum_{\theta&#39;}p_{\Theta}(\theta&#39;)f_{X\mid\Theta}(x\mid\theta&#39;)}
+\]</span></p></li>
+<li><p><span class="math inline">\(\Theta\)</span>连续，<span
+class="math inline">\(X\)</span>离散： <span class="math display">\[
+f_{\Theta\mid X}(\theta\mid
+x)=\frac{f_\Theta(\theta)p_{X\mid\Theta}(x\mid
+\theta)}{\sum_{\theta&#39;}f_{\Theta}(\theta&#39;)p_{X\mid\Theta}(x\mid\theta&#39;)}
+\]</span></p></li>
+<li><p><span class="math inline">\(\Theta\)</span>连续，<span
+class="math inline">\(X\)</span>连续： <span class="math display">\[
+f_{\Theta\mid X}(\theta\mid
+x)=\frac{f_\Theta(\theta)f_{X\mid\Theta}(x\mid
+\theta)}{\sum_{\theta&#39;}f_{\Theta}(\theta&#39;)f_{X\mid\Theta}(x\mid\theta&#39;)}
+\]</span></p></li>
+</ul>
+<h2 id="点估计假设检验最大后验概率准则">8.2
+点估计，假设检验，最大后验概率准则</h2>
+<p>最大后验准则是指在所有的<span
+class="math inline">\(\theta\)</span>中寻找<span
+class="math inline">\(\hat{\theta}\)</span>，使得后验分布（见贝叶斯准则）达到最大值。</p>
+<p><strong>点估计</strong>指的是在得到实际观察值x的基础上我们选择的<span
+class="math inline">\(\hat{\theta}\)</span>的数值。<span
+class="math inline">\(\hat{\theta}\)</span>是由观测值x的某些函数g决定的，即<span
+class="math inline">\(\hat{\theta}=g(x)\)</span>。随机变量<span
+class="math inline">\(\hat{\Theta}=g(X)\)</span>也称为估计，之所以说<span
+class="math inline">\(\hat{\Theta}\)</span>是随机变量是因为估计的结果由随机的观测值所决定。利用不同的函数g可以构造不同的估计量。</p>
+<ul>
+<li><p><strong>最大后验概率（MAP）估计量</strong>。观测到x，在所有<span
+class="math inline">\(\theta\)</span>中选<span
+class="math inline">\(\hat{\theta}\)</span>使得后验分布达到最大。当取值很多时任取其中一个。</p></li>
+<li><p><strong>条件期望估计量</strong>。<span
+class="math inline">\(\hat{\theta}=E[\Theta\mid X=x]\)</span></p></li>
+</ul>
+<p><strong>假设检验</strong>一般使用最大后验概率准则。</p>
+<h2 id="贝叶斯最小均方估计">8.3 贝叶斯最小均方估计</h2>
+<p>条件期望估计量具有使可能的均方误差达到最小的性质。（最小均方简称为LMS）</p>
+<h2 id="贝叶斯线性最小均方估计">8.4 贝叶斯线性最小均方估计</h2>
+<p>在一个较小的统计量的集合类中寻找统计量使得均方误差最小：那些观测值的线性函数的集合类。虽然这种统计量会导致较高的均方误差，但是在实际中有明显的优势：对计算要求简单，只包括均值、方差以及观测与参数之间的协方差。在最大后验估计量和最小均方估计量难以计算的情况下，这是个很有用的替代估计量。</p>
+<h1 id="第9章-经典统计推断">第9章 经典统计推断</h1>
+<h2 id="经典参数估计">9.1 经典参数估计</h2>
+<p>经典的方法将参数<span
+class="math inline">\(\theta\)</span>看作未知常数，而不是随机变量。</p>
+<p><span class="math inline">\(\hat{\Theta}_n\)</span>是未知参数<span
+class="math inline">\(\theta\)</span>的一个<strong>估计量</strong>，也即关于n个的观测<span
+class="math inline">\(X_1,...,X_n\)</span> (服从依赖参数<span
+class="math inline">\(\theta\)</span>的分布)的一个函数。</p>
+<ul>
+<li><p>估计误差，记为<span
+class="math inline">\(\tilde{\Theta}_n\)</span>，定义为<span
+class="math inline">\(\tilde{\Theta}_n=\hat{\Theta}_n-\theta\)</span></p></li>
+<li><p>估计量的偏差，记为<span
+class="math inline">\(b_\theta(\hat{\Theta}_n)\)</span>，是估计误差的期望值：
+<span class="math display">\[
+b_\theta(\hat{\Theta}_n)=E_\theta[\hat{\Theta}_n]-\theta
+\]</span></p></li>
+<li><p><span
+class="math inline">\(\hat{\Theta}_n\)</span>的期望值、方差和偏差都依赖于<span
+class="math inline">\(\theta\)</span>，而估计误差同时还依赖于观测<span
+class="math inline">\(X_1,...,X_n\)</span></p></li>
+<li><p>称<span
+class="math inline">\(\hat{\Theta}_n\)</span><strong>无偏</strong>，若<span
+class="math inline">\(E_\theta[\hat{\Theta}_n]=\theta\)</span>对于<span
+class="math inline">\(\theta\)</span>所有可能的取值都成立</p></li>
+<li><p>称<span
+class="math inline">\(\hat{\Theta}_n\)</span><strong>渐进无偏</strong>，若<span
+class="math inline">\(\lim_{n\to\infty}E_\theta[\hat{\Theta}_n]=\theta\)</span>对于<span
+class="math inline">\(\theta\)</span>所有可能的取值都成立</p></li>
+<li><p>称<span class="math inline">\(\hat{\Theta}_n\)</span>为<span
+class="math inline">\(\theta\)</span>的相合估计序列，如果对于参数所有可能的真值<span
+class="math inline">\(\theta\)</span>，序列<span
+class="math inline">\(\hat{\Theta}_n\)</span>依概率收敛到<span
+class="math inline">\(\theta\)</span></p></li>
+</ul>
+<p><strong>最大似然估计</strong>：</p>
+<p>设观测向量<span
+class="math inline">\(X=(X_1,...,X_n)\)</span>的联合分布列为<span
+class="math inline">\(p_X(x;\theta)=p_X(x_1,....,x_n;\theta)\)</span>（<span
+class="math inline">\(\theta\)</span>可为向量或数量），其中<span
+class="math inline">\(x=(x_1,...x_n)\)</span>为<span
+class="math inline">\(X\)</span>的观察值。<strong>最大似然估计</strong>是使（<span
+class="math inline">\(\theta\)</span>的）数值函数<span
+class="math inline">\(p_X(x_1,...,x_n;\theta)\)</span>达到最大的参数值：
+<span class="math display">\[
+\hat{\theta}_n=\underset{\theta}{argmax} p_X(x_1,...,x_n;\theta)
+\]</span> 对于连续型随机变量： <span class="math display">\[
+\hat{\theta}_n=\underset{\theta}{argmax} f_X(x_1,...,x_n;\theta)
+\]</span> <span class="math inline">\(p_X(x;\theta)\)</span>和<span
+class="math inline">\(f_X(x;\theta)\)</span>称为似然函数。</p>
+<p><strong>随机变量的均值和方差估计</strong>：</p>
+<p>观察值<span
+class="math inline">\(X_1,...,X_n\)</span>是独立同分布的，均值<span
+class="math inline">\(\theta\)</span>和方差<span
+class="math inline">\(v\)</span>均未知。</p>
+<ul>
+<li><p>样本均值 <span class="math display">\[
+M_n=\frac{X_1,...,X_n}{n}
+\]</span> 是<span
+class="math inline">\(\theta\)</span>的一个无偏估计量，它的均方误差是<span
+class="math inline">\(v/n\)</span>。</p></li>
+<li><p>方差的估计量有两个 <span class="math display">\[
+\bar{S}^2_n=\frac{1}{n}\sum^n_{i=1}(X_i-M_n)^2,\hat{S}^2_n=\frac{1}{n-1}\sum^n_{i=1}(X_i-M_n)^2
+\]</span></p></li>
+<li><p>当<span
+class="math inline">\(X_i\)</span>服从正态分布，估计量<span
+class="math inline">\(\bar{S}^2_n\)</span>和最大似然估计量相等。它有偏但是渐进无偏。估计量<span
+class="math inline">\(\hat{S}^2_n\)</span>是无偏的。当n很大时，方差的两个估计量本质上一致。</p></li>
+</ul>
+<p><strong>置信区间</strong>：</p>
+<ul>
+<li><p>对于一维的未知参数<span
+class="math inline">\(\theta\)</span>，其置信区间是一个以很高概率包含<span
+class="math inline">\(\theta\)</span>的区间，端点为<span
+class="math inline">\(\hat{\Theta}_n^-\)</span>和<span
+class="math inline">\(\hat{\Theta}_n^+\)</span>。</p></li>
+<li><p><span class="math inline">\(\hat{\Theta}_n^-\)</span>和<span
+class="math inline">\(\hat{\Theta}_n^+\)</span>是依赖于观测值<span
+class="math inline">\(X_1,...,X_n\)</span>的随机变量</p></li>
+<li><p><span class="math inline">\((1-\alpha)\)</span>置信区间对于<span
+class="math inline">\(\theta\)</span>所有可能的取值满足 <span
+class="math display">\[
+P(\hat{\Theta}_n^-\le\theta\le\hat{\Theta}_n^+)\ge1-\alpha
+\]</span></p></li>
+</ul>
+<h2 id="线性回归">9.2 线性回归</h2>
+<p>线性回归可以由最小二乘法完成操作，而不需要任何概率上的解释。它也可以在各种概率框架下解释。</p>
+<h2 id="简单假设检验">9.3 简单假设检验</h2>
+<p>略。</p>
+<h2 id="显著性检验">9.4 显著性检验</h2>
+<p>略。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Notebook/" class="category-chain-item">Notebook</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Math/">#Math</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>《概率导论（第2版）》笔记</div>
+      <div>https://reddish.fun/posts/Notebook/Introduction-to-Probability-note/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Notebook/STORY-note/" title="《故事的解剖》笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">《故事的解剖》笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Win32-note/" title="Win32笔记">
+                        <span class="hidden-mobile">Win32笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

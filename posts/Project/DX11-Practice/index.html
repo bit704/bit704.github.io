@@ -1,0 +1,1222 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="DX11练习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DX11-Practice">
+<meta property="og:url" content="https://reddish.fun/posts/Project/DX11-Practice/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="DX11练习">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-01-05T01:40:23.131Z">
+<meta property="article:modified_time" content="2024-01-06T12:19:29.042Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="CG">
+<meta property="article:tag" content="DirectX">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>DX11-Practice - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DX11-Practice"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-05 09:40" pubdate>
+          2023年1月5日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          25k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">DX11-Practice</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>DX11练习</p>
+<span id="more"></span>
+<p><a target="_blank" rel="noopener" href="https://github.com/bit704/DX11-Practice">代码仓库</a></p>
+<h1 id="前言">前言</h1>
+<p>参考教程：<a target="_blank" rel="noopener" href="https://directx11.tech/#/">DirectX11 With Windows
+SDK</a></p>
+<ul>
+<li><p>代码仓库：<a
+target="_blank" rel="noopener" href="https://github.com/MKXJun/DirectX11-With-Windows-SDK">MKXJun/DirectX11-With-Windows-SDK:
+现代DX11系列教程：使用Windows SDK(C++)开发Direct3D 11.x</a></p></li>
+<li><p>代码版本：Commits on Jun 29, 2022</p></li>
+<li><p>commit SHA：fd2745d2b9ca89347b1255276728e0e51ef848f3</p></li>
+</ul>
+<p>该教程作者的部分源码摘自d3d教材源码，经过修改，目的是完全脱离旧的DirectX
+SDK，使用Windows SDK来实现DX11。<a
+target="_blank" rel="noopener" href="http://www.d3dcoder.net/">d3d教材网站</a>。</p>
+<p>本工程使用IDE：VS2019</p>
+<h2 id="注意事项">注意事项</h2>
+<p>务必在项目属性页-C/C++
+-命令行中添加<code>/utf-8</code>来强制指定代码页。否则会无端报C2065等错。原因是项目中存在不同代码页所致。</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E9%A1%B9%E7%9B%AE%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE.jpg" srcset="/img/loading.gif" lazyload
+alt="项目属性设置" />
+<figcaption aria-hidden="true">项目属性设置</figcaption>
+</figure>
+<blockquote>
+<p>关于代码页是什么可参见：<a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/27136737">刨根究底字符编码之七——ANSI编码与代码页</a></p>
+</blockquote>
+<p>务必在<code>d3dApp.h</code>添加：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;d3d11.lib&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;dxgi.lib&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;dxguid.lib&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;D3DCompiler.lib&quot;</span>)</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> comment(lib, <span class="hljs-string">&quot;winmm.lib&quot;</span>)</span><br></code></pre></td></tr></table></figure>
+<p>或者在项目-&gt;属性-&gt;链接器-&gt;输入-&gt;附加依赖项中加入。</p>
+<h1 id="directx11初始化">01 DirectX11初始化</h1>
+<p>Windows窗口创建的教程可以查看<a
+href="https://reddish.fun/2022/09/17/Notebook/Win32%E7%AC%94%E8%AE%B0/">Win32笔记
+- bit704</a>。</p>
+<p>注意，Direct3D 11.1的API命名要在尾部比Direct3D 11多个1。</p>
+<table>
+<thead>
+<tr class="header">
+<th>头文件</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>d3dApp.h</td>
+<td>Direct3D应用程序框架类</td>
+</tr>
+<tr class="even">
+<td>d3dUtil.h</td>
+<td>包含一些常用头文件及自己编写的函数</td>
+</tr>
+<tr class="odd">
+<td>DXTrace.h</td>
+<td>包含了HR宏与<code>DXTraceW</code>函数</td>
+</tr>
+<tr class="even">
+<td>GameApp.h</td>
+<td>游戏应用程序扩展类，游戏逻辑在这里实现，继承自D3DApp类</td>
+</tr>
+<tr class="odd">
+<td>CpuTimer.h</td>
+<td>游戏计时器类</td>
+</tr>
+<tr class="even">
+<td>WinMin.h</td>
+<td>定义宏，去掉Windows中那些没用的组件</td>
+</tr>
+</tbody>
+</table>
+<p>d3dApp.cpp持有一个全局变量<code>D3DApp*  g_pd3dApp</code>，在构造函数中初始化指向this。它的意义是将成员函数MsgProc的返回值给到函数MainWndProc，后者才能绑定到WNDCLASS::lpfnWndProc上。</p>
+<h2 id="direct3d初始化">Direct3D初始化</h2>
+<p><code>bool D3DApp::InitDirect3D()</code></p>
+<ol type="1">
+<li>D3D设备与D3D设备上下文的创建。</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">HRESULT WINAPI <span class="hljs-title">D3D11CreateDevice</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">    IDXGIAdapter* pAdapter,             <span class="hljs-comment">// [In_Opt]适配器</span></span></span><br><span class="hljs-params"><span class="hljs-function">    D3D_DRIVER_TYPE DriverType,         <span class="hljs-comment">// [In]驱动类型</span></span></span><br><span class="hljs-params"><span class="hljs-function">    HMODULE Software,                   <span class="hljs-comment">// [In_Opt]若上面为D3D_DRIVER_TYPE_SOFTWARE则这里需要提供程序模块</span></span></span><br><span class="hljs-params"><span class="hljs-function">    UINT Flags,                         <span class="hljs-comment">// [In]使用D3D11_CREATE_DEVICE_FLAG枚举类型</span></span></span><br><span class="hljs-params"><span class="hljs-function">    D3D_FEATURE_LEVEL* pFeatureLevels,  <span class="hljs-comment">// [In_Opt]若为nullptr则为默认特性等级，否则需要提供特性等级数组</span></span></span><br><span class="hljs-params"><span class="hljs-function">    UINT FeatureLevels,                 <span class="hljs-comment">// [In]特性等级数组的元素数目</span></span></span><br><span class="hljs-params"><span class="hljs-function">    UINT SDKVersion,                    <span class="hljs-comment">// [In]SDK版本，默认D3D11_SDK_VERSION</span></span></span><br><span class="hljs-params"><span class="hljs-function">    ID3D11Device** ppDevice,            <span class="hljs-comment">// [Out_Opt]输出D3D设备</span></span></span><br><span class="hljs-params"><span class="hljs-function">    D3D_FEATURE_LEVEL* pFeatureLevel,   <span class="hljs-comment">// [Out_Opt]输出当前应用D3D特性等级</span></span></span><br><span class="hljs-params"><span class="hljs-function">    ID3D11DeviceContext** ppImmediateContext )</span></span>; <span class="hljs-comment">//[Out_Opt]输出D3D设备上下文</span><br></code></pre></td></tr></table></figure>
+<p>将<code>IDXGIAdapter*</code>设为nullptr，使用默认显卡。</p>
+<p>注意，<strong>特性等级</strong>和<strong>D3D设备的版本</strong>并不是互相对应的。可以打特定的系统补丁来支持高版本的DX，比如让Win7支持DX12的部分。</p>
+<ol start="2" type="1">
+<li><p>检测MSAA支持的质量等级。</p></li>
+<li><p>创建DXGI交换链。</p></li>
+</ol>
+<h2 id="onresize">OnResize()</h2>
+<p>在初始化Direct3D时和窗口大小发生改变后调用该函数，大致流程如下：</p>
+<ol type="1">
+<li>获取交换链后备缓冲区的<code>ID3D11Texture2D</code>接口对象</li>
+<li>为后备缓冲区创建渲染目标视图<code>ID3D11RenderTargetView</code></li>
+<li>通过D3D设备创建一个<code>ID3D11Texture2D</code>用作深度/模板缓冲区，要求与后备缓冲区等宽高</li>
+<li>创建深度/模板视图<code>ID3D11DepthStrenilView</code>，绑定刚才创建的2D纹理</li>
+<li>通过D3D设备上下文，在渲染管线的输出合并阶段设置渲染目标</li>
+<li>在渲染管线的光栅化阶段设置好渲染的视口区域</li>
+</ol>
+<h2 id="drawscene">DrawScene()</h2>
+<p>目前是GameApp类唯一的函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GameApp::DrawScene</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">assert</span>(m_pd3dImmediateContext);<br>    <span class="hljs-built_in">assert</span>(m_pSwapChain);<br>    <span class="hljs-type">static</span> <span class="hljs-type">float</span> blue[<span class="hljs-number">4</span>] = &#123; <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>, <span class="hljs-number">1.0f</span> &#125;;    <span class="hljs-comment">// RGBA = (0,0,255,255)</span><br>    <span class="hljs-comment">//对后备缓冲区(R8G8B8A8)使用蓝色进行清空</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">ClearRenderTargetView</span>(m_pRenderTargetView.<span class="hljs-built_in">Get</span>(), blue);<br>    <span class="hljs-comment">//每一次清空我们需要将深度值设为1.0f，模板值设为0.0f。其中深度值1.0f表示距离最远处</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">ClearDepthStencilView</span>(m_pDepthStencilView.<span class="hljs-built_in">Get</span>(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, <span class="hljs-number">1.0f</span>, <span class="hljs-number">0</span>);<br><br>    <span class="hljs-built_in">HR</span>(m_pSwapChain-&gt;<span class="hljs-built_in">Present</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="顶点像素着色器的创建索引缓冲区">02
+顶点/像素着色器的创建、索引缓冲区</h1>
+<h2 id="渲染管线">渲染管线</h2>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E6%B8%B2%E6%9F%93%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%9A%84%E5%90%84%E4%B8%AA%E9%98%B6%E6%AE%B5.jpg" srcset="/img/loading.gif" lazyload
+alt="渲染流水线的各个阶段" />
+<figcaption aria-hidden="true">渲染流水线的各个阶段</figcaption>
+</figure>
+<p>D3D设备可以创建出以上6种着色器</p>
+<table>
+
+<thead>
+<tr class="header">
+<th>方法</th>
+<th>着色器类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ID3D11Device::CreateVertexShader</td>
+<td>ID3D11VertexShader</td>
+<td>顶点着色器</td>
+</tr>
+<tr class="even">
+<td>ID3D11Device::CreateHullShader</td>
+<td>ID3D11HullShader</td>
+<td>外壳着色器</td>
+</tr>
+<tr class="odd">
+<td>ID3D11Device::CreateDomainShader</td>
+<td>ID3D11DomainShader</td>
+<td>域着色器</td>
+</tr>
+<tr class="even">
+<td>ID3D11Device::CreateComputeShader</td>
+<td>ID3D11ComputeShader</td>
+<td>计算着色器</td>
+</tr>
+<tr class="odd">
+<td>ID3D11Device::CreateGeometryShader</td>
+<td>ID3D11GeometryShader</td>
+<td>几何着色器</td>
+</tr>
+<tr class="even">
+<td>ID3D11Device::CreatePixelShader</td>
+<td>ID3D11PixelShader</td>
+<td>像素着色器</td>
+</tr>
+</tbody>
+</table>
+<p>本章仅考虑如下情况：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%88%9D%E5%AD%A6%E8%80%85%E7%AE%A1%E7%BA%BF.png" srcset="/img/loading.gif" lazyload
+alt="初学者管线" />
+<figcaption aria-hidden="true">初学者管线</figcaption>
+</figure>
+<h2 id="着色器">着色器</h2>
+<p>导入着色器文件后，按以下配置。</p>
+<p><a
+target="_blank" rel="noopener" href="https://directx11.tech/#/misc/Compile">HLSL编译着色器的三种方法</a></p>
+<p>一共3份着色器文件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Triangle.hlsli</span><br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">VertexIn</span></span><br><span class="hljs-class">&#123;</span><br>    float3 pos : POSITION;<br>    float4 color : COLOR;<br>&#125;;<br><br><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">VertexOut</span></span><br><span class="hljs-class">&#123;</span><br>    float4 posH : SV_POSITION;<br>    float4 color : COLOR;<br>&#125;;<br><br><span class="hljs-comment">//Triangle_VS.hlsl</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Triangle.hlsli&quot;</span></span><br><br><span class="hljs-comment">// 顶点着色器</span><br>VertexOut <span class="hljs-title function_">VS</span><span class="hljs-params">(VertexIn vIn)</span><br>&#123;<br>    VertexOut vOut;<br>    vOut.posH = float4(vIn.pos, <span class="hljs-number">1.0f</span>);<br>    vOut.color = vIn.color; <span class="hljs-comment">// 这里alpha通道的值默认为1.0</span><br>    <span class="hljs-keyword">return</span> vOut;<br>&#125;<br><br><span class="hljs-comment">//Triangle_PS.hlsl</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Triangle.hlsli&quot;</span></span><br><br><span class="hljs-comment">// 像素着色器</span><br>float4 <span class="hljs-title function_">PS</span><span class="hljs-params">(VertexOut pIn)</span> : SV_Target<br>&#123;<br>    <span class="hljs-keyword">return</span> pIn.color;   <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>用到的语义如下：</p>
+<table>
+
+<thead>
+<tr class="header">
+<th>语义名</th>
+<th>具体含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>POSITION</td>
+<td>描述该变量是一个坐标点</td>
+</tr>
+<tr class="even">
+<td>SV_POSITION</td>
+<td>说明该顶点的位置在从顶点着色器输出后，后续的着色器都不能改变它的值，作为光栅化时最终确定的像素位置</td>
+</tr>
+<tr class="odd">
+<td>COLOR</td>
+<td>描述该变量是一个颜色</td>
+</tr>
+<tr class="even">
+<td>SV_Target</td>
+<td>说明输出的颜色值将会直接保存到渲染目标视图的后备缓冲区对应位置</td>
+</tr>
+</tbody>
+</table>
+<p>创建与HLSL中VertexIn结构体对应的C++结构体：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//GameApp.h</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">VertexPosColor</span><br>&#123;<br>    DirectX::XMFLOAT3 pos;<br>    DirectX::XMFLOAT4 color;<br>    <span class="hljs-type">static</span> <span class="hljs-type">const</span> D3D11_INPUT_ELEMENT_DESC inputLayout[<span class="hljs-number">2</span>];<br>&#125;;<br><span class="hljs-comment">//GameApp.cpp</span><br><span class="hljs-type">const</span> D3D11_INPUT_ELEMENT_DESC GameApp::VertexPosColor::inputLayout[<span class="hljs-number">2</span>] = &#123;<br>    &#123; <span class="hljs-string">&quot;POSITION&quot;</span>, <span class="hljs-number">0</span>, DXGI_FORMAT_R32G32B32_FLOAT, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, D3D11_INPUT_PER_VERTEX_DATA, <span class="hljs-number">0</span> &#125;,<br>    &#123; <span class="hljs-string">&quot;COLOR&quot;</span>, <span class="hljs-number">0</span>, DXGI_FORMAT_R32G32B32A32_FLOAT, <span class="hljs-number">0</span>, <span class="hljs-number">12</span>, D3D11_INPUT_PER_VERTEX_DATA, <span class="hljs-number">0</span> &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">D3D11_INPUT_ELEMENT_DESC</span><br>&#123;<br>    LPCSTR SemanticName;        <span class="hljs-comment">// 语义名</span><br>    UINT SemanticIndex;         <span class="hljs-comment">// 语义索引,若有多个相同的语义名，按语义索引区分，按从上到下所以分别为0,1,2...</span><br>    DXGI_FORMAT Format;         <span class="hljs-comment">// 数据格式</span><br>    UINT InputSlot;             <span class="hljs-comment">// 输入槽索引(0-15)</span><br>    UINT AlignedByteOffset;     <span class="hljs-comment">// 初始位置(字节偏移量)      </span><br>    D3D11_INPUT_CLASSIFICATION InputSlotClass; <span class="hljs-comment">// 输入类型</span><br>    UINT InstanceDataStepRate;  <span class="hljs-comment">// 忽略</span><br>&#125;     D3D11_INPUT_ELEMENT_DESC;<br></code></pre></td></tr></table></figure>
+<h2 id="initeffect">InitEffect()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">GameApp::InitEffect</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    ComPtr&lt;ID3DBlob&gt; blob;<br><br>    <span class="hljs-comment">// 创建顶点着色器</span><br>    <span class="hljs-built_in">HR</span>(<span class="hljs-built_in">CreateShaderFromFile</span>(<span class="hljs-string">L&quot;HLSL\\Triangle_VS.cso&quot;</span>, <span class="hljs-string">L&quot;HLSL\\Triangle_VS.hlsl&quot;</span>, <span class="hljs-string">&quot;VS&quot;</span>, <span class="hljs-string">&quot;vs_5_0&quot;</span>, blob.<span class="hljs-built_in">ReleaseAndGetAddressOf</span>()));<br>    <span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateVertexShader</span>(blob-&gt;<span class="hljs-built_in">GetBufferPointer</span>(), blob-&gt;<span class="hljs-built_in">GetBufferSize</span>(), <span class="hljs-literal">nullptr</span>, m_pVertexShader.<span class="hljs-built_in">GetAddressOf</span>()));<br>    <span class="hljs-comment">// 创建并绑定顶点布局</span><br>    <span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateInputLayout</span>(VertexPosColor::inputLayout, <span class="hljs-built_in">ARRAYSIZE</span>(VertexPosColor::inputLayout),<br>        blob-&gt;<span class="hljs-built_in">GetBufferPointer</span>(), blob-&gt;<span class="hljs-built_in">GetBufferSize</span>(), m_pVertexLayout.<span class="hljs-built_in">GetAddressOf</span>()));<br><br>    <span class="hljs-comment">// 创建像素着色器</span><br>    <span class="hljs-built_in">HR</span>(<span class="hljs-built_in">CreateShaderFromFile</span>(<span class="hljs-string">L&quot;HLSL\\Triangle_PS.cso&quot;</span>, <span class="hljs-string">L&quot;HLSL\\Triangle_PS.hlsl&quot;</span>, <span class="hljs-string">&quot;PS&quot;</span>, <span class="hljs-string">&quot;ps_5_0&quot;</span>, blob.<span class="hljs-built_in">ReleaseAndGetAddressOf</span>()));<br>    <span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreatePixelShader</span>(blob-&gt;<span class="hljs-built_in">GetBufferPointer</span>(), blob-&gt;<span class="hljs-built_in">GetBufferSize</span>(), <span class="hljs-literal">nullptr</span>, m_pPixelShader.<span class="hljs-built_in">GetAddressOf</span>()));<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="initresource">InitResource()</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">GameApp::InitResource</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// 设置三角形顶点</span><br>    VertexPosColor vertices[] =<br>    &#123;<br>        &#123; <span class="hljs-built_in">XMFLOAT3</span>(<span class="hljs-number">0.0f</span>, <span class="hljs-number">0.5f</span>, <span class="hljs-number">0.5f</span>), <span class="hljs-built_in">XMFLOAT4</span>(<span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>) &#125;,<br>        &#123; <span class="hljs-built_in">XMFLOAT3</span>(<span class="hljs-number">0.5f</span>, <span class="hljs-number">-0.5f</span>, <span class="hljs-number">0.5f</span>), <span class="hljs-built_in">XMFLOAT4</span>(<span class="hljs-number">0.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>, <span class="hljs-number">1.0f</span>) &#125;,<br>        &#123; <span class="hljs-built_in">XMFLOAT3</span>(<span class="hljs-number">-0.5f</span>, <span class="hljs-number">-0.5f</span>, <span class="hljs-number">0.5f</span>), <span class="hljs-built_in">XMFLOAT4</span>(<span class="hljs-number">1.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span>) &#125;<br>    &#125;;<br>    <span class="hljs-comment">// 设置顶点缓冲区描述</span><br>    D3D11_BUFFER_DESC vbd;<br>    <span class="hljs-built_in">ZeroMemory</span>(&amp;vbd, <span class="hljs-built_in">sizeof</span>(vbd));<br>    vbd.Usage = D3D11_USAGE_IMMUTABLE;<br>    vbd.ByteWidth = <span class="hljs-keyword">sizeof</span> vertices;<br>    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;<br>    vbd.CPUAccessFlags = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// 新建顶点缓冲区</span><br>    D3D11_SUBRESOURCE_DATA InitData;<br>    <span class="hljs-built_in">ZeroMemory</span>(&amp;InitData, <span class="hljs-built_in">sizeof</span>(InitData));<br>    InitData.pSysMem = vertices;<br>    <span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateBuffer</span>(&amp;vbd, &amp;InitData, m_pVertexBuffer.<span class="hljs-built_in">GetAddressOf</span>()));<br><br><br>    <span class="hljs-comment">// ******************</span><br>    <span class="hljs-comment">// 给渲染管线各个阶段绑定好所需资源</span><br>    <span class="hljs-comment">//</span><br><br>    <span class="hljs-comment">// 输入装配阶段的顶点缓冲区设置</span><br>    UINT stride = <span class="hljs-built_in">sizeof</span>(VertexPosColor);	<span class="hljs-comment">// 跨越字节数</span><br>    UINT offset = <span class="hljs-number">0</span>;						<span class="hljs-comment">// 起始偏移量</span><br><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">IASetVertexBuffers</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pVertexBuffer.<span class="hljs-built_in">GetAddressOf</span>(), &amp;stride, &amp;offset);<br>    <span class="hljs-comment">// 设置图元类型，设定输入布局</span><br>    <span class="hljs-comment">// 按一系列三角形进行装配，每三个顶点(或索引数组每三个索引对应的顶点)构成一个三角形</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">IASetPrimitiveTopology</span>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);<br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">IASetInputLayout</span>(m_pVertexLayout.<span class="hljs-built_in">Get</span>());<br>    <span class="hljs-comment">// 将着色器绑定到渲染管线</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">VSSetShader</span>(m_pVertexShader.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>);<br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">PSSetShader</span>(m_pPixelShader.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>);<br><br>    <span class="hljs-comment">// ******************</span><br>    <span class="hljs-comment">// 设置调试对象名</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pVertexLayout.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;VertexPosColorLayout&quot;</span>);<br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pVertexBuffer.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;VertexBuffer&quot;</span>);<br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pVertexShader.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;Trangle_VS&quot;</span>);<br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pPixelShader.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;Trangle_PS&quot;</span>);<br><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="drawscene-1">DrawScene()</h2>
+<p>使用以下方法进行绘制：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ID3D11DeviceContext::Draw</span><span class="hljs-params">( </span></span><br><span class="hljs-params"><span class="hljs-function">    UINT VertexCount,           <span class="hljs-comment">// [In]需要绘制的顶点数目</span></span></span><br><span class="hljs-params"><span class="hljs-function">    UINT StartVertexLocation)</span></span>;  <span class="hljs-comment">// [In]起始顶点索引</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GameApp::DrawScene</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-built_in">assert</span>(m_pd3dImmediateContext);<br>    <span class="hljs-built_in">assert</span>(m_pSwapChain);<br>   <br>    <span class="hljs-type">static</span> <span class="hljs-type">float</span> black[<span class="hljs-number">4</span>] = &#123; <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">0.0f</span>, <span class="hljs-number">1.0f</span> &#125;;    <span class="hljs-comment">// RGBA = (0,0,0,255)</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">ClearRenderTargetView</span>(m_pRenderTargetView.<span class="hljs-built_in">Get</span>(), black);<br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">ClearDepthStencilView</span>(m_pDepthStencilView.<span class="hljs-built_in">Get</span>(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, <span class="hljs-number">1.0f</span>, <span class="hljs-number">0</span>);<br><br>    <span class="hljs-comment">// 绘制三角形</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">Draw</span>(<span class="hljs-number">3</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-built_in">HR</span>(m_pSwapChain-&gt;<span class="hljs-built_in">Present</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="索引缓冲区常量缓冲区">03 索引缓冲区、常量缓冲区</h1>
+<h2 id="initresource-1">InitResource()</h2>
+<p>顶点缓冲区的创建和使用和之前一样。</p>
+<p>使用索引缓冲区可以有效减少顶点缓冲区的占用空间，避免大量重复顶点数据。因此在创建顶点缓冲区后不直接进行输入装配，先针对顶点数组创建索引数组，然后创建索引缓冲区。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">// 设置索引缓冲区描述</span><br>D3D11_BUFFER_DESC ibd;<br><span class="hljs-built_in">ZeroMemory</span>(&amp;ibd, <span class="hljs-built_in">sizeof</span>(ibd));<br>ibd.Usage = D3D11_USAGE_IMMUTABLE;<br>ibd.ByteWidth = <span class="hljs-keyword">sizeof</span> indices;<br>ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;<br>ibd.CPUAccessFlags = <span class="hljs-number">0</span>;<br><span class="hljs-comment">// 新建索引缓冲区</span><br>InitData.pSysMem = indices;<br><span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateBuffer</span>(&amp;ibd, &amp;InitData, m_pIndexBuffer.<span class="hljs-built_in">GetAddressOf</span>()));<br></code></pre></td></tr></table></figure>
+<p>在HLSL中，常量缓冲区的变量类似于C++的全局常量，供着色器代码使用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c">cbuffer ConstantBuffer : <span class="hljs-keyword">register</span>(b0)<br>&#123;<br>    matrix g_World; <span class="hljs-comment">// matrix可以用float4x4替代。不加row_major的情况下，矩阵默认为列主矩阵，</span><br>    matrix g_View;  <span class="hljs-comment">// 可以在前面添加row_major表示行主矩阵</span><br>    matrix g_Proj;  <span class="hljs-comment">// 该教程往后将使用默认的列主矩阵，但需要在C++代码端预先将矩阵进行转置。</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>对应的C++结构体：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">ConstantBuffer</span><br>&#123;<br>    XMMATRIX world;<br>    XMMATRIX view;<br>    XMMATRIX proj;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h2 id="updatescenefloat-dt">UpdateScene(float dt)</h2>
+<p>逐帧修改世界矩阵，旋转立方体。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GameApp::UpdateScene</span><span class="hljs-params">(<span class="hljs-type">float</span> dt)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">static</span> <span class="hljs-type">float</span> phi = <span class="hljs-number">0.0f</span>, theta = <span class="hljs-number">0.0f</span>;<br>    phi += <span class="hljs-number">0.0001f</span>, theta += <span class="hljs-number">0.00015f</span>;<br>    m_CBuffer.world = <span class="hljs-built_in">XMMatrixTranspose</span>(<span class="hljs-built_in">XMMatrixRotationX</span>(phi) * <span class="hljs-built_in">XMMatrixRotationY</span>(theta));<br>    <span class="hljs-comment">// 更新常量缓冲区，让立方体转起来</span><br>    D3D11_MAPPED_SUBRESOURCE mappedData;<br>    <span class="hljs-built_in">HR</span>(m_pd3dImmediateContext-&gt;<span class="hljs-built_in">Map</span>(m_pConstantBuffer.<span class="hljs-built_in">Get</span>(), <span class="hljs-number">0</span>, D3D11_MAP_WRITE_DISCARD, <span class="hljs-number">0</span>, &amp;mappedData));<br>    <span class="hljs-built_in">memcpy_s</span>(mappedData.pData, <span class="hljs-built_in">sizeof</span>(m_CBuffer), &amp;m_CBuffer, <span class="hljs-built_in">sizeof</span>(m_CBuffer));<br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">Unmap</span>(m_pConstantBuffer.<span class="hljs-built_in">Get</span>(), <span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="作业-1-2">作业 1 2</h1>
+<p>作业1 Rendering a 2D Hanzi</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-01-Rendering-a-2D-Hanzi.png" srcset="/img/loading.gif" lazyload
+alt="01 Rendering a 2D Hanzi" />
+<figcaption aria-hidden="true">01 Rendering a 2D Hanzi</figcaption>
+</figure>
+<p>作业2 Rendering a 3D Hanzi</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-02-Rendering-a-3D-Hanzi.png" srcset="/img/loading.gif" lazyload
+alt="02 Rendering a 3D Hanzi" />
+<figcaption aria-hidden="true">02 Rendering a 3D Hanzi</figcaption>
+</figure>
+<h1 id="变换">04 变换</h1>
+<p>Direct3D使用<strong>左手坐标系</strong>，而OpenGL与我们平日接触到的数学使用<strong>右手坐标系</strong>。</p>
+<p>纹理坐标系：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E7%BA%B9%E7%90%86%E5%9D%90%E6%A0%87%E7%B3%BB.png" srcset="/img/loading.gif" lazyload
+alt="纹理坐标系" />
+<figcaption aria-hidden="true">纹理坐标系</figcaption>
+</figure>
+<p>屏幕坐标系：</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%B1%8F%E5%B9%95%E5%9D%90%E6%A0%87%E7%B3%BB.png" srcset="/img/loading.gif" lazyload
+alt="屏幕坐标系" />
+<figcaption aria-hidden="true">屏幕坐标系</figcaption>
+</figure>
+<p>的DirectXMath数学库中生成的矩阵都是行矩阵。这也意味着矩阵乘法通常被表示为行向量乘以行矩阵的形式。这不仅在编写C++的代码中有所体现，在HLSL中我们也将习惯写成上述形式。</p>
+<p><strong>齐次坐标（homogeneous coordinate）</strong>：</p>
+<ol type="1">
+<li>(x,y,z,0)<strong>表示向量</strong></li>
+<li>(x,y,z,1)<strong>表示点</strong></li>
+</ol>
+<p>线性映射（ linear
+mapping）是从一个向量空间V到另一个向量空间W的映射且保持加法运算和数量乘法运算，而线性变换（linear
+transformation）是线性空间V到其自身的线性映射。</p>
+<p>仿射变换=线性变换+平移</p>
+<p>投影部分可以看<a
+target="_blank" rel="noopener" href="https://sites.cs.ucsb.edu/~lingqi/teaching/games101.html">GAMES101:
+现代计算机图形学入门</a></p>
+<h1 id="directxmath数学库">05 DirectXMath数学库</h1>
+<p>即DirectXMath.h。</p>
+<h2 id="simd与sse2">SIMD与SSE2</h2>
+<p><strong>SIMD</strong>(Single Instruction Multiple
+Data)即单指令流多数据流，是一种采用一个控制器来控制多个处理器，同时对一组数据（又称“数据向量”）中的每一个分别执行相同的操作从而实现空间上的并行性的技术。简单来说就是一个指令能够同时处理多个数据。</p>
+<p><strong>SSE2</strong>(Streaming SIMD Extensions
+2）指令集是Intel公司在SSE指令集的基础上发展起来的。</p>
+<h2 id="向量">向量</h2>
+<p>运算向量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">typedef</span> __m128 XMVECTOR;<br><br><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">union</span> <span class="hljs-title class_">__declspec</span>(intrin_type) __declspec(<span class="hljs-built_in">align</span>(<span class="hljs-number">16</span>)) __m128 &#123;<br>    <span class="hljs-type">float</span>               m128_f32[<span class="hljs-number">4</span>];<br>    <span class="hljs-type">unsigned</span> __int64    m128_u64[<span class="hljs-number">2</span>];<br>    __int8              m128_i8[<span class="hljs-number">16</span>];<br>    __int16             m128_i16[<span class="hljs-number">8</span>];<br>    __int32             m128_i32[<span class="hljs-number">4</span>];<br>    __int64             m128_i64[<span class="hljs-number">2</span>];<br>    <span class="hljs-type">unsigned</span> __int8     m128_u8[<span class="hljs-number">16</span>];<br>    <span class="hljs-type">unsigned</span> __int16    m128_u16[<span class="hljs-number">8</span>];<br>    <span class="hljs-type">unsigned</span> __int32    m128_u32[<span class="hljs-number">4</span>];<br>&#125; __m128;<br></code></pre></td></tr></table></figure>
+<p>存储向量</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-number">2</span>D向量: <span class="hljs-built_in">XMFLOAT2</span>(常用), XMINT2, XMUINT2<br><span class="hljs-number">3</span>D向量: <span class="hljs-built_in">XMFLOAT3</span>(常用), XMINT3, XMUINT3<br><span class="hljs-number">4</span>D向量: <span class="hljs-built_in">XMFLOAT4</span>(常用), XMINT4, XMUINT4<br></code></pre></td></tr></table></figure>
+<p>在需要时进行相互转换。</p>
+<p>对于自定义函数，如果需要传入<code>XMVECTOR</code>的话，前3个向量需要使用<code>FXMVECTOR</code>，第4个向量需要使用<code>GXMVECTOR</code>，第5-6个需要使用<code>HXMVECTOR</code>，从第7个开始则使用<code>CXMVECTOR</code>。这是为了使代码更具通用性，不受具体平台、编译器的影响，基于特定的平台和编译器，它们会被自动地定义为适当的类型。一定要把调用约定注解XM_CALLCONV加在函数名之前，它会根据编译器的版本确定出对应的调用约定属性。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">if</span> _XM_VECTORCALL_</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> XM_CALLCONV __vectorcall</span><br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> XM_CALLCONV __fastcall</span><br></code></pre></td></tr></table></figure>
+<h2 id="矩阵">矩阵</h2>
+<p><code>XMMATRIX</code>实际上里面是由4个<code>XMVECTOR</code>的数组构成的结构体。</p>
+<h1 id="使用imgui">06 使用ImGui</h1>
+<p>使用ImGui库编写UI。</p>
+<h1 id="作业-3-4">作业 3 4</h1>
+<p>作业3 Rendering Much 3D Hanzi</p>
+<p>每个汉字有两个汉字围绕其旋转</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-03-Rendering-Much-3D-Hanzi.png" srcset="/img/loading.gif" lazyload
+alt="03 Rendering Much 3D Hanzi" />
+<figcaption aria-hidden="true">03 Rendering Much 3D Hanzi</figcaption>
+</figure>
+<p>作业4 Roaming</p>
+<p>实现漫游</p>
+<p>WASD 水平前后左右移动 QE 滚筒旋转 视角跟随鼠标移动</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-04-Roaming.png" srcset="/img/loading.gif" lazyload
+alt="04 Roaming" />
+<figcaption aria-hidden="true">04 Roaming</figcaption>
+</figure>
+<h1 id="光照常用几何模型光栅化状态">07
+光照、常用几何模型、光栅化状态</h1>
+<p>一定要注意<a
+target="_blank" rel="noopener" href="https://directx11.tech/#/misc/Packing?id=hlsl常量缓冲区打包规则">HLSL常量缓冲区打包规则</a>。</p>
+<p><strong>颜色向量</strong>：<span class="math inline">\((red, green,
+blue,
+alpha)\)</span>。对于RGB，0代表没有颜色，1代表纯色。对于alpha，0代表透明，1代表不透明。</p>
+<p>若是立方体，则一个顶点同时在三个面上，则拥有三个<strong>法向量</strong>。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//C++</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">VertexPosNormalColor</span><br>&#123;<br>    DirectX::XMFLOAT3 pos;<br>    DirectX::XMFLOAT3 normal;<br>    DirectX::XMFLOAT4 color;<br>    <span class="hljs-type">static</span> <span class="hljs-type">const</span> D3D11_INPUT_ELEMENT_DESC inputLayout[<span class="hljs-number">3</span>];<br>&#125;;<br><span class="hljs-type">const</span> D3D11_INPUT_ELEMENT_DESC VertexPosNormalColor::inputLayout[<span class="hljs-number">3</span>] = &#123;<br>    &#123; <span class="hljs-string">&quot;POSITION&quot;</span>, <span class="hljs-number">0</span>, DXGI_FORMAT_R32G32B32_FLOAT, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, D3D11_INPUT_PER_VERTEX_DATA, <span class="hljs-number">0</span> &#125;,<br>    &#123; <span class="hljs-string">&quot;NORMAL&quot;</span>, <span class="hljs-number">0</span>, DXGI_FORMAT_R32G32B32_FLOAT, <span class="hljs-number">0</span>, <span class="hljs-number">12</span>, D3D11_INPUT_PER_VERTEX_DATA, <span class="hljs-number">0</span>&#125;,<br>    &#123; <span class="hljs-string">&quot;COLOR&quot;</span>, <span class="hljs-number">0</span>, DXGI_FORMAT_R32G32B32A32_FLOAT, <span class="hljs-number">0</span>, <span class="hljs-number">24</span>, D3D11_INPUT_PER_VERTEX_DATA, <span class="hljs-number">0</span>&#125;<br>&#125;;<br><span class="hljs-comment">//HLSL</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">VertexIn</span><br>&#123;<br>    float3 posL : POSITION;<br>    float3 normalL : NORMAL;<br>    float4 color : COLOR;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p><strong>材质</strong>属性决定了各种颜色分量的反射系数是多少，其中红绿蓝每个分量的取值范围为<code>[0.0f, 1.0f]</code>。其中分别代表环境光、漫反射光、高光的反射率。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//C++</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Material</span><br>&#123;<br>    DirectX::XMFLOAT4 ambient;<br>    DirectX::XMFLOAT4 diffuse;<br>    DirectX::XMFLOAT4 specular;<br>    DirectX::XMFLOAT4 reflect;<br>&#125;;<br><span class="hljs-comment">//HLSL</span><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Material</span><br>&#123;<br>    float4 Ambient;<br>    float4 Diffuse;<br>    float4 Specular;<br>    float4 Reflect;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>三种光源：</p>
+<p>方向光：</p>
+<ul>
+<li>所有位置方向一样</li>
+<li>环境光直接用材质反射率乘光源颜色，漫反射光用兰伯特模型，高光用blinn-phong模型</li>
+</ul>
+<p>点光：</p>
+<ul>
+<li>每个位置的方向需要单独求</li>
+<li>方向光基础上漫反射光和高光随距离d衰弱：<span
+class="math inline">\(I(d)=\frac{I_0}{a_0+a_1d+d^2}\)</span>，并通过灯光范围测试减少计算量</li>
+</ul>
+<p>聚光灯：</p>
+<ul>
+<li>点光基础上整个光照乘一个强度因子：<span
+class="math inline">\(k_{spot}=max(-L\cdot
+d,0)^{spot}\)</span>，L是光向量，d是照射强度，spot是聚光程度</li>
+</ul>
+<p><strong>光栅化阶段</strong>在像素着色器之前，是不可编程的，但是可以设置光栅化状态。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">typedef</span> <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">D3D11_RASTERIZER_DESC</span></span><br><span class="hljs-class">&#123;</span><br>    D3D11_FILL_MODE FillMode;          <span class="hljs-comment">// 填充模式</span><br>    D3D11_CULL_MODE CullMode;          <span class="hljs-comment">// 裁剪模式</span><br>    BOOL FrontCounterClockwise;        <span class="hljs-comment">// 是否三角形顶点按逆时针排布时为正面</span><br>    INT DepthBias;                     <span class="hljs-comment">// 深度偏移相关，目前忽略</span><br>    FLOAT DepthBiasClamp;              <span class="hljs-comment">// 深度偏移相关，目前忽略</span><br>    FLOAT SlopeScaledDepthBias;        <span class="hljs-comment">// 深度偏移相关，目前忽略</span><br>    BOOL DepthClipEnable;              <span class="hljs-comment">// 是否允许深度测试将范围外的像素进行裁剪，默认TRUE</span><br>    BOOL ScissorEnable;                <span class="hljs-comment">// 是否允许指定矩形范围的裁剪，若TRUE，则需要在RSSetScissor设置像素保留的矩形区域</span><br>    BOOL MultisampleEnable;            <span class="hljs-comment">// 是否允许多重采样</span><br>    BOOL AntialiasedLineEnable;        <span class="hljs-comment">// 是否允许反走样线，仅当多重采样为FALSE时才有效</span><br>&#125;D3D11_RASTERIZER_DESC;<br></code></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr class="header">
+<th>枚举值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>D3D11_FILL_WIREFRAME = 2</td>
+<td>线框填充方式</td>
+</tr>
+<tr class="even">
+<td>D3D11_FILL_SOLID = 3</td>
+<td>面填充方式</td>
+</tr>
+</tbody>
+</table>
+<table>
+
+<thead>
+<tr class="header">
+<th>枚举值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>D3D11_CULL_NONE = 1</td>
+<td>无背面裁剪，即三角形无论处在视野的正面还是背面都能看到</td>
+</tr>
+<tr class="even">
+<td>D3D11_CULL_FRONT = 2</td>
+<td>对处在视野正面的三角形进行裁剪</td>
+</tr>
+<tr class="odd">
+<td>D3D11_CULL_BACK = 3</td>
+<td>对处在视野背面的三角形进行裁剪</td>
+</tr>
+</tbody>
+</table>
+<p>创建及设置光栅化状态：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function">HRESULT <span class="hljs-title">ID3D11Device::CreateRasterizerState</span><span class="hljs-params">( </span></span><br><span class="hljs-params"><span class="hljs-function">    <span class="hljs-type">const</span> D3D11_RASTERIZER_DESC *pRasterizerDesc,    <span class="hljs-comment">// [In]光栅化状态描述</span></span></span><br><span class="hljs-params"><span class="hljs-function">    ID3D11RasterizerState **ppRasterizerState)</span> </span>= <span class="hljs-number">0</span>;  <span class="hljs-comment">// [Out]输出光栅化状态</span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ID3D11DeviceContext::RSSetState</span><span class="hljs-params">(</span></span><br><span class="hljs-params"><span class="hljs-function">  ID3D11RasterizerState *pRasterizerState)</span></span>;  <span class="hljs-comment">// [In]光栅化状态，若为nullptr，则使用默认光栅化状态</span><br></code></pre></td></tr></table></figure>
+<h1 id="作业-5">作业 5</h1>
+<p>这里为了省事对于在多个面上的顶点只赋了一条法线。朝向屏幕外侧的面的顶点赋(0.f,0.f,-1.f)，内侧的赋(0.f,0.f,1.f)。</p>
+<p>通过数字键控制3种光源开关。1：开关方向光（猩红）；2：开关点光（板岩暗蓝灰）；
+3：开关聚光（金）。</p>
+<p>三种光源默认开启，开关情况在左上角的UI界面底部显示。</p>
+<p>方向光1个，方向固定。</p>
+<p>点光3个，在字符矩阵上做随机运动。</p>
+<p>聚光1个，跟随相机照亮前方。</p>
+<p>使用Blinn-Phong替换Phong计算光照。</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-20-05%20Lighting.png" srcset="/img/loading.gif" lazyload
+alt="05 Lighting" />
+<figcaption aria-hidden="true">05 Lighting</figcaption>
+</figure>
+<h1 id="几何着色器">08 几何着色器</h1>
+<p>在上一节的基础上添加几何着色器，需要以下步骤：</p>
+<ol type="1">
+<li><p>创建Light_GS.hlsl文件，在文件的属性中配置好着色器编译后对应的<strong>对象文件名</strong>HLSL%(Filename).cso、<strong>入口点名称</strong>GS、<strong>着色器类型</strong>/gs、<strong>着色器名称</strong>/5_0。</p></li>
+<li><p>在C++端创建几何着色器</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 创建几何着色器</span><br><span class="hljs-built_in">HR</span>(<span class="hljs-built_in">CreateShaderFromFile</span>(<span class="hljs-string">L&quot;HLSL\\Light_GS.cso&quot;</span>, <span class="hljs-string">L&quot;HLSL\\Light_GS.hlsl&quot;</span>, <span class="hljs-string">&quot;GS&quot;</span>, <span class="hljs-string">&quot;gs_5_0&quot;</span>, blob.<span class="hljs-built_in">ReleaseAndGetAddressOf</span>()));<br><span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateGeometryShader</span>(blob-&gt;<span class="hljs-built_in">GetBufferPointer</span>(), blob-&gt;<span class="hljs-built_in">GetBufferSize</span>(), <span class="hljs-literal">nullptr</span>, m_pGeometryShader.<span class="hljs-built_in">GetAddressOf</span>()));<br></code></pre></td></tr></table></figure></li>
+<li><p>在C++绑定几何着色器到渲染管线上并设置它的常量缓冲区</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 绑定几何着色器</span><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">GSSetShader</span>(m_pGeometryShader.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>);<br><span class="hljs-comment">// GS常量缓冲区对应HLSL寄存于b0的常量缓冲区</span><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">GSSetConstantBuffers</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pConstantBuffers[<span class="hljs-number">0</span>].<span class="hljs-built_in">GetAddressOf</span>());<br></code></pre></td></tr></table></figure></li>
+<li><p>设置调试对象名</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pGeometryShader.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;Light_GS&quot;</span>);<br></code></pre></td></tr></table></figure></li>
+<li><p>编写shader</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;Light.hlsli&quot;</span></span><br><br><span class="hljs-comment">/* </span><br><span class="hljs-comment">    对任意平面 Ax+By+Cz+D=0 求镜像点</span><br><span class="hljs-comment">*/</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">Symmetry</span><span class="hljs-params">(in float3 p, out float3 p_s)</span><br>&#123;<br>    <span class="hljs-type">float</span> A = <span class="hljs-number">0.f</span>, B = <span class="hljs-number">0.f</span>, C = <span class="hljs-number">1.f</span>, D = <span class="hljs-number">-2.f</span>;<br>    <span class="hljs-type">float</span> f1 = A * A + B * B + C * C;<br>    <span class="hljs-type">float</span> f2 = A * p.x + B * p.y + C * p.z + D;<br>    p_s.x = p.x - <span class="hljs-number">2</span> * A * (f2) / f1;<br>    p_s.y = p.y - <span class="hljs-number">2</span> * B * (f2) / f1;<br>    p_s.z = p.z - <span class="hljs-number">2</span> * C * (f2) / f1;<br>&#125;<br><br><br>[maxvertexcount(<span class="hljs-number">6</span>)]<br><span class="hljs-type">void</span> <span class="hljs-title function_">GS</span><span class="hljs-params">(</span><br><span class="hljs-params">	triangle VertexOut input[<span class="hljs-number">3</span>],</span><br><span class="hljs-params">	inout TriangleStream&lt;VertexOut&gt; output</span><br><span class="hljs-params">)</span><br>&#123;<br>    VertexOut vOri[<span class="hljs-number">3</span>], vNew[<span class="hljs-number">3</span>];<br>    <br>	[unroll]<br>    <span class="hljs-keyword">for</span> (uint i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)<br>	&#123;<br>        vOri[i] = input[i];<br>        output.Append(vOri[i]);<br>        <br>        <span class="hljs-comment">//镜像顶点</span><br>        Symmetry(input[i].posW, vNew[i].posW);<br>        <br>        <span class="hljs-comment">//世界到裁剪矩阵</span><br>        matrix viewProj = mul(g_View, g_Proj);<br>        vNew[i].posH = mul(float4(vNew[i].posW, <span class="hljs-number">1.0f</span>), viewProj);<br>        <br>        <span class="hljs-comment">//顶点自身颜色由白色改为 LimeGreen 酸橙绿</span><br>        vNew[i].color = float4(<span class="hljs-number">0.2f</span>, <span class="hljs-number">0.8f</span>, <span class="hljs-number">0.2f</span>, <span class="hljs-number">1.f</span>);<br>        <br>        <span class="hljs-comment">//镜像法线</span><br>        float3 normalWSta = input[i].posW;<br>        float3 normalWEnd = input[i].posW + input[i].normalW;<br>        Symmetry(normalWEnd, normalWEnd);<br>        vNew[i].normalW = normalWEnd - vNew[i].posW;<br>        <br>    &#125;<br>    <br>    <span class="hljs-comment">//在以线段或者三角形作为图元的时候，默认是以strip的形式输出的，如果我们不希望下一个输出的顶点与之前的顶点构成新图元，则需要调用此方法来重新开始新的strip。若希望输出的图元类型也保持和原来一样的TriangleList，则需要每调用3次Append方法后就调用一次RestartStrip。</span><br>    output.RestartStrip();<br>    <br>    [unroll]<br>    <span class="hljs-keyword">for</span> (uint i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++)<br>    &#123;<br>        output.Append(vNew[i]);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<h1 id="作业6">作业6</h1>
+<p>利用几何着色器对字符森林关于z=2平面作镜像。</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-26-06%20Geometry.png" srcset="/img/loading.gif" lazyload
+alt="06 Geometry" />
+<figcaption aria-hidden="true">06 Geometry</figcaption>
+</figure>
+<h1 id="纹理">09 纹理</h1>
+<p>包含<code>DDSTextureLoader11.h</code>和<code>WICTextureLoader11.h</code>进项目，以读取创建纹理。</p>
+<blockquote>
+<p>第一种：在<a
+target="_blank" rel="noopener" href="https://github.com/Microsoft/DirectXTex">DirectXTex</a>中找到<code>DDSTextureLoader</code>文件夹和<code>WICTextureLoader</code>文件夹中分别找到对应的头文件和源文件(不带12的)，并加入到你的项目中。</p>
+<p>第二种：将<a
+target="_blank" rel="noopener" href="https://github.com/Microsoft/DirectXTK">DirectXTK</a>库添加到你的项目中。</p>
+</blockquote>
+<p>为了方便贴图，仅渲染一个平面贴上照片。</p>
+<p>汉字使用的顶点类型为<code>VertexPosNormalColor</code>，平面使用的顶点类型为
+<code>VertexPosNormalTex</code>，因此有两套着色器和C++端输入装配阶段。</p>
+<p>对于 <code>VertexPosNormalTex</code>类型顶点：</p>
+<ol type="1">
+<li>在着色器端增加纹理和采样器状态</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">Texture2D g_Tex : <span class="hljs-keyword">register</span>(t0);<br>SamplerState g_SamLinear : <span class="hljs-keyword">register</span>(s0);<br></code></pre></td></tr></table></figure>
+<ol start="2" type="1">
+<li>在C++端初始化纹理和采样器状态</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//GameApp.h</span><br>ComPtr&lt;ID3D11ShaderResourceView&gt; m_pPhoto;			    <span class="hljs-comment">// 照片纹理</span><br>ComPtr&lt;ID3D11SamplerState&gt; m_pSamplerState;				<span class="hljs-comment">// 采样器状态</span><br><br><span class="hljs-comment">//GameApp.cpp </span><br><span class="hljs-comment">//bool GameApp::InitResource()</span><br><br><span class="hljs-comment">// 初始化照片纹理</span><br><span class="hljs-built_in">HR</span>(<span class="hljs-built_in">CreateWICTextureFromFile</span>(m_pd3dDevice.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">L&quot;Texture\\photo.png&quot;</span>, <span class="hljs-literal">nullptr</span>, m_pPhoto.<span class="hljs-built_in">GetAddressOf</span>()));<br><br><span class="hljs-comment">// 初始化采样器状态</span><br>D3D11_SAMPLER_DESC sampDesc;<br><span class="hljs-built_in">ZeroMemory</span>(&amp;sampDesc, <span class="hljs-built_in">sizeof</span>(sampDesc));<br>sampDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;<br>sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;<br>sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;<br>sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;<br>sampDesc.ComparisonFunc = D3D11_COMPARISON_NEVER;<br>sampDesc.MinLOD = <span class="hljs-number">0</span>;<br>sampDesc.MaxLOD = D3D11_FLOAT32_MAX;<br><span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateSamplerState</span>(&amp;sampDesc, m_pSamplerState.<span class="hljs-built_in">GetAddressOf</span>()));<br><br><span class="hljs-comment">// PS设置采样器和纹理</span><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">PSSetSamplers</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pSamplerState.<span class="hljs-built_in">GetAddressOf</span>());<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">PSSetShaderResources</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pPhoto.<span class="hljs-built_in">GetAddressOf</span>());<br><br><span class="hljs-comment">//调试</span><br><span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pSamplerState.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;SSLinearWrap&quot;</span>);<br></code></pre></td></tr></table></figure>
+<ol start="3" type="1">
+<li>每次渲染平面时单独设置着色器和输入装配</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//设置Plane</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">GameApp::SetPlane</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-comment">// ******************</span><br>    <span class="hljs-comment">// 设置顶点缓冲区和索引缓冲区</span><br>    <span class="hljs-comment">//</span><br>    <br>    <span class="hljs-comment">// 释放旧资源</span><br>    m_pVertexBuffer.<span class="hljs-built_in">Reset</span>();<br>    m_pIndexBuffer.<span class="hljs-built_in">Reset</span>();<br><br>    <span class="hljs-comment">// 创建Plane顶点</span><br>    VertexPosNormalTex* vertices = <span class="hljs-literal">nullptr</span>;<br>    Plane::<span class="hljs-built_in">CreateVertexs_PosNormalTex</span>(&amp;vertices, m_VertexCount_Plane);<br><br>    <span class="hljs-comment">// 设置顶点缓冲区描述</span><br>    D3D11_BUFFER_DESC vbd;<br>    <span class="hljs-built_in">ZeroMemory</span>(&amp;vbd, <span class="hljs-built_in">sizeof</span>(vbd));<br>    vbd.Usage = D3D11_USAGE_IMMUTABLE;<br>    vbd.ByteWidth = m_VertexCount_Plane * <span class="hljs-keyword">sizeof</span> VertexPosNormalTex;<br>    vbd.BindFlags = D3D11_BIND_VERTEX_BUFFER;<br>    vbd.CPUAccessFlags = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// 新建顶点缓冲区</span><br>    D3D11_SUBRESOURCE_DATA InitData;<br>    <span class="hljs-built_in">ZeroMemory</span>(&amp;InitData, <span class="hljs-built_in">sizeof</span>(InitData));<br>    InitData.pSysMem = vertices;<br>    <span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateBuffer</span>(&amp;vbd, &amp;InitData, m_pVertexBuffer.<span class="hljs-built_in">GetAddressOf</span>()));<br><br>    <span class="hljs-comment">// 输入装配阶段的顶点缓冲区设置</span><br>    UINT stride = <span class="hljs-built_in">sizeof</span>(VertexPosNormalTex);	<span class="hljs-comment">// 跨越字节数</span><br>    UINT offset = <span class="hljs-number">0</span>;							<span class="hljs-comment">// 起始偏移量</span><br><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">IASetVertexBuffers</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pVertexBuffer.<span class="hljs-built_in">GetAddressOf</span>(), &amp;stride, &amp;offset);<br><br>    <span class="hljs-comment">// 创建Plane索引</span><br>    DWORD* indices = <span class="hljs-literal">nullptr</span>;<br>    Plane::<span class="hljs-built_in">CreateIndices</span>(&amp;indices, m_IndexCount_Plane);<br><br>    <span class="hljs-comment">// 设置索引缓冲区描述</span><br>    D3D11_BUFFER_DESC ibd;<br>    <span class="hljs-built_in">ZeroMemory</span>(&amp;ibd, <span class="hljs-built_in">sizeof</span>(ibd));<br>    ibd.Usage = D3D11_USAGE_IMMUTABLE;<br>    ibd.ByteWidth = m_IndexCount_Plane * <span class="hljs-built_in">sizeof</span>(DWORD);<br>    ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;<br>    ibd.CPUAccessFlags = <span class="hljs-number">0</span>;<br>    <span class="hljs-comment">// 新建索引缓冲区</span><br>    InitData.pSysMem = indices;<br>    <span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateBuffer</span>(&amp;ibd, &amp;InitData, m_pIndexBuffer.<span class="hljs-built_in">GetAddressOf</span>()));<br>    <span class="hljs-comment">// 输入装配阶段的索引缓冲区设置</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">IASetIndexBuffer</span>(m_pIndexBuffer.<span class="hljs-built_in">Get</span>(), DXGI_FORMAT_R32_UINT, <span class="hljs-number">0</span>);<br><br>    <span class="hljs-comment">// 设置调试对象名</span><br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pVertexBuffer.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;VertexBuffer&quot;</span>);<br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pIndexBuffer.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;IndexBuffer&quot;</span>);<br><br>    <span class="hljs-comment">//释放堆内存</span><br>    <span class="hljs-keyword">delete</span> [] vertices;<br>    <span class="hljs-keyword">delete</span> [] indices;<br><br>    <span class="hljs-comment">// ******************</span><br>    <span class="hljs-comment">// 给渲染管线各个阶段绑定好所需资源</span><br>    <span class="hljs-comment">//</span><br><br>    <span class="hljs-comment">// 设置图元类型，设定输入布局</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">IASetPrimitiveTopology</span>(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);<br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">IASetInputLayout</span>(m_pVertexLayout_Plane.<span class="hljs-built_in">Get</span>());<br><br>    <span class="hljs-comment">// 绑定VS</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">VSSetShader</span>(m_pVertexShader_Plane.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-comment">// VS常量缓冲区对应HLSL寄存于b0的常量缓冲区</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">VSSetConstantBuffers</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pConstantBuffers[<span class="hljs-number">0</span>].<span class="hljs-built_in">GetAddressOf</span>());<br>    <span class="hljs-comment">// 绑定PS</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">PSSetShader</span>(m_pPixelShader_Plane.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>);<br>    <span class="hljs-comment">// PS常量缓冲区对应HLSL寄存于b1的常量缓冲区</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">PSSetConstantBuffers</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>, m_pConstantBuffers[<span class="hljs-number">1</span>].<span class="hljs-built_in">GetAddressOf</span>());<br>    <span class="hljs-comment">// PS设置采样器和纹理</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">PSSetSamplers</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pSamplerState.<span class="hljs-built_in">GetAddressOf</span>());<br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">PSSetShaderResources</span>(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>, m_pPhoto.<span class="hljs-built_in">GetAddressOf</span>());<br><br>    <span class="hljs-comment">// ******************</span><br>    <span class="hljs-comment">// 设置调试对象名</span><br>    <span class="hljs-comment">//</span><br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pVertexLayout_Plane.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;VertexPosNormalColorLayout_Plane&quot;</span>);<br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pVertexShader_Plane.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;VS_Plane&quot;</span>);<br>    <span class="hljs-built_in">D3D11SetDebugObjectName</span>(m_pPixelShader_Plane.<span class="hljs-built_in">Get</span>(), <span class="hljs-string">&quot;PS_Plane&quot;</span>);<br><br>    <span class="hljs-comment">//更新常量缓冲区</span><br>    <span class="hljs-built_in">UpdateConstantBuffer</span>();<br>    <span class="hljs-comment">// 绘制顶点</span><br>    m_pd3dImmediateContext-&gt;<span class="hljs-built_in">DrawIndexed</span>(m_IndexCount_Plane, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="作业7">作业7</h1>
+<p>添加一个正方形面片，贴上照片纹理，放置在x=1平面处，两侧字符森林通过GS以X=1平面对称。</p>
+<p>在PS常量缓冲区增加g_Time变量传入时间，随时间在PS里移动纹理坐标实现平移动画。</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-10-08-07%20Texture.png" srcset="/img/loading.gif" lazyload
+alt="07 Texture" />
+<figcaption aria-hidden="true">07 Texture</figcaption>
+</figure>
+<h1 id="transparent-and-mirror">08 Transparent and Mirror</h1>
+<p>初始化混合状态：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//GameApp.h</span><br>ComPtr&lt;ID3D11BlendState&gt; BSTransparent = <span class="hljs-literal">nullptr</span>;     <span class="hljs-comment">//透明混合状态</span><br><br><span class="hljs-comment">//GameApp.pp</span><br><span class="hljs-comment">// ***********</span><br><span class="hljs-comment">// 初始化混合状态</span><br><span class="hljs-comment">//</span><br>D3D11_BLEND_DESC blendDesc;<br><span class="hljs-built_in">ZeroMemory</span>(&amp;blendDesc, <span class="hljs-built_in">sizeof</span>(blendDesc));<br><span class="hljs-keyword">auto</span>&amp; rtDesc = blendDesc.RenderTarget[<span class="hljs-number">0</span>];<br><span class="hljs-comment">// 透明混合模式</span><br><span class="hljs-comment">// Color = SrcAlpha * SrcColor + (1 - SrcAlpha) * DestColor </span><br><span class="hljs-comment">// Alpha = SrcAlpha</span><br>blendDesc.AlphaToCoverageEnable = <span class="hljs-literal">false</span>;<br>blendDesc.IndependentBlendEnable = <span class="hljs-literal">false</span>;<br>rtDesc.BlendEnable = <span class="hljs-literal">true</span>;<br>rtDesc.SrcBlend = D3D11_BLEND_SRC_ALPHA;<br>rtDesc.DestBlend = D3D11_BLEND_INV_SRC_ALPHA;<br>rtDesc.BlendOp = D3D11_BLEND_OP_ADD;<br>rtDesc.SrcBlendAlpha = D3D11_BLEND_ONE;<br>rtDesc.DestBlendAlpha = D3D11_BLEND_ZERO;<br>rtDesc.BlendOpAlpha = D3D11_BLEND_OP_ADD;<br><span class="hljs-comment">//不能省略</span><br>rtDesc.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;<br><span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateBlendState</span>(&amp;blendDesc, BSTransparent.<span class="hljs-built_in">GetAddressOf</span>()));<br></code></pre></td></tr></table></figure>
+<p>在PS里将纹理alpha改为0.3。设置混合状态后绘制，注意先绘制不透明的。到这一步就实现了透明效果：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++">m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetBlendState</span>(BSTransparent.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0xFFFFFFFF</span>);<br><span class="hljs-built_in">DrawHanzi</span>(scale, theta, phi, rotateAngle);<br><span class="hljs-built_in">DrawPlane</span>();<br></code></pre></td></tr></table></figure>
+<p>初始化要用的深度/模板状态：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 写入模板值的深度/模板状态</span><br><span class="hljs-comment">// 这里不写入深度信息</span><br><span class="hljs-comment">// 无论是正面还是背面，原来指定的区域的模板值都会被写入StencilRef</span><br>dsDesc.DepthEnable = <span class="hljs-literal">true</span>;<br>dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;<br>dsDesc.DepthFunc = D3D11_COMPARISON_LESS;<br><br>dsDesc.StencilEnable = <span class="hljs-literal">true</span>;<br>dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;<br>dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;<br><br>dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;<br><span class="hljs-comment">//使用StencilRef的值替换模板模板值</span><br>dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;<br><span class="hljs-comment">//总是返回真</span><br>dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;<br><span class="hljs-comment">// 对于背面的几何体我们是不进行渲染的，所以这里的设置无关紧要</span><br>dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;<br>dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;<br><br><span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateDepthStencilState</span>(&amp;dsDesc, DSSWriteStencil.<span class="hljs-built_in">GetAddressOf</span>()));<br><br><span class="hljs-comment">// 对指定模板值进行绘制的深度/模板状态</span><br><span class="hljs-comment">// 对满足模板值条件的区域才进行绘制，并更新深度</span><br>dsDesc.DepthEnable = <span class="hljs-literal">true</span>;<br>dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;<br>dsDesc.DepthFunc = D3D11_COMPARISON_LESS;<br><br>dsDesc.StencilEnable = <span class="hljs-literal">true</span>;<br>dsDesc.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;<br>dsDesc.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;<br><br>dsDesc.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_EQUAL;<br><span class="hljs-comment">// 对于背面的几何体我们是不进行渲染的，所以这里的设置无关紧要</span><br>dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;<br>dsDesc.BackFace.StencilFunc = D3D11_COMPARISON_EQUAL;<br><br><span class="hljs-built_in">HR</span>(m_pd3dDevice-&gt;<span class="hljs-built_in">CreateDepthStencilState</span>(&amp;dsDesc, DSSDrawWithStencil.<span class="hljs-built_in">GetAddressOf</span>()));<br></code></pre></td></tr></table></figure>
+<p>绘制过程：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs c++"> m_pd3dImmediateContext-&gt;<span class="hljs-built_in">ClearRenderTargetView</span>(m_pRenderTargetView.<span class="hljs-built_in">Get</span>(), <span class="hljs-built_in">reinterpret_cast</span>&lt;<span class="hljs-type">const</span> <span class="hljs-type">float</span>*&gt;(&amp;Colors::Black));<br> m_pd3dImmediateContext-&gt;<span class="hljs-built_in">ClearDepthStencilView</span>(m_pDepthStencilView.<span class="hljs-built_in">Get</span>(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, <span class="hljs-number">1.0f</span>, <span class="hljs-number">0</span>);<br><br><span class="hljs-comment">// 1. 单独写入镜子的模板值为1，不写入颜色</span><br><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">RSSetState</span>(<span class="hljs-literal">nullptr</span>);<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetDepthStencilState</span>(DSSWriteStencil.<span class="hljs-built_in">Get</span>(), <span class="hljs-number">1</span>);<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetBlendState</span>(BSNoColorWrite.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0xFFFFFFFF</span>);<br><span class="hljs-built_in">DrawMirror</span>();<br><br><span class="hljs-comment">// 2. 绘制镜面反射汉字</span><br><br><span class="hljs-comment">// 开启反射绘制</span><br>m_CBStates.isReflection = <span class="hljs-literal">true</span>;<br>D3D11_MAPPED_SUBRESOURCE mappedData;<br><span class="hljs-built_in">HR</span>(m_pd3dImmediateContext-&gt;<span class="hljs-built_in">Map</span>(m_pConstantBuffers[<span class="hljs-number">2</span>].<span class="hljs-built_in">Get</span>(), <span class="hljs-number">0</span>, D3D11_MAP_WRITE_DISCARD, <span class="hljs-number">0</span>, &amp;mappedData));<br><span class="hljs-built_in">memcpy_s</span>(mappedData.pData, <span class="hljs-built_in">sizeof</span>(CBDrawingStates), &amp;m_CBStates, <span class="hljs-built_in">sizeof</span>(CBDrawingStates));<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">Unmap</span>(m_pConstantBuffers[<span class="hljs-number">2</span>].<span class="hljs-built_in">Get</span>(), <span class="hljs-number">0</span>);<br><br><span class="hljs-comment">// 顺时针裁剪</span><br><span class="hljs-comment">// 仅对模板值为1的镜面区域绘制</span><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">RSSetState</span>(RSCullClockWise.<span class="hljs-built_in">Get</span>());<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetDepthStencilState</span>(DSSDrawWithStencil.<span class="hljs-built_in">Get</span>(), <span class="hljs-number">1</span>);<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetBlendState</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0xFFFFFFFF</span>);<br><br><span class="hljs-built_in">DrawHanzi</span>(scale, theta, phi, rotateAngle);<br><br><span class="hljs-comment">// 3. 绘制镜面反射透明照片</span><br><br><span class="hljs-comment">// 关闭顺逆时针裁剪</span><br><span class="hljs-comment">// 仅对模板值为1的镜面区域绘制</span><br><span class="hljs-comment">// 透明混合</span><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">RSSetState</span>(RSNoCull.<span class="hljs-built_in">Get</span>());<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetDepthStencilState</span>(DSSDrawWithStencil.<span class="hljs-built_in">Get</span>(), <span class="hljs-number">1</span>);<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetBlendState</span>(BSTransparent.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0xFFFFFFFF</span>);<br><br><span class="hljs-built_in">DrawPlane</span>();<br><span class="hljs-built_in">DrawMirror</span>();<br><br><span class="hljs-comment">// 关闭反射绘制</span><br>m_CBStates.isReflection = <span class="hljs-literal">false</span>;<br><span class="hljs-built_in">HR</span>(m_pd3dImmediateContext-&gt;<span class="hljs-built_in">Map</span>(m_pConstantBuffers[<span class="hljs-number">2</span>].<span class="hljs-built_in">Get</span>(), <span class="hljs-number">0</span>, D3D11_MAP_WRITE_DISCARD, <span class="hljs-number">0</span>, &amp;mappedData));<br><span class="hljs-built_in">memcpy_s</span>(mappedData.pData, <span class="hljs-built_in">sizeof</span>(CBDrawingStates), &amp;m_CBStates, <span class="hljs-built_in">sizeof</span>(CBDrawingStates));<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">Unmap</span>(m_pConstantBuffers[<span class="hljs-number">2</span>].<span class="hljs-built_in">Get</span>(), <span class="hljs-number">0</span>);<br><br><span class="hljs-comment">// 4. 绘制汉字</span><br><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">RSSetState</span>(<span class="hljs-literal">nullptr</span>);<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetDepthStencilState</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>);<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetBlendState</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0xFFFFFFFF</span>);<br><br><span class="hljs-built_in">DrawHanzi</span>(scale, theta, phi, rotateAngle);<br><br><span class="hljs-comment">// 5. 绘制透明照片</span><br><br><span class="hljs-comment">// 关闭裁剪</span><br><span class="hljs-comment">// 透明混合</span><br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">RSSetState</span>(RSNoCull.<span class="hljs-built_in">Get</span>());<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetDepthStencilState</span>(<span class="hljs-literal">nullptr</span>, <span class="hljs-number">0</span>);<br>m_pd3dImmediateContext-&gt;<span class="hljs-built_in">OMSetBlendState</span>(BSTransparent.<span class="hljs-built_in">Get</span>(), <span class="hljs-literal">nullptr</span>, <span class="hljs-number">0xFFFFFFFF</span>);<br><br><span class="hljs-built_in">DrawPlane</span>();<br><br><span class="hljs-comment">// 下面这句话会触发ImGui在Direct3D的绘制</span><br><span class="hljs-comment">// 因此需要在此之前将后备缓冲区绑定到渲染管线上</span><br><span class="hljs-built_in">ImGui_ImplDX11_RenderDrawData</span>(ImGui::<span class="hljs-built_in">GetDrawData</span>());<br><span class="hljs-built_in">HR</span>(m_pSwapChain-&gt;<span class="hljs-built_in">Present</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>));<br></code></pre></td></tr></table></figure>
+<h1 id="作业8">作业8</h1>
+<p>在PS里将照片的alpha通道修改为0.3，设置混合状态实现透明。</p>
+<p>渲染平面镜实现镜像效果。渲染顺序为：镜子模板值 -&gt; 反射字符森林
+-&gt; 反射透明照片-&gt;汉字-&gt;透明照片。</p>
+<figure>
+<img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-10-14-08%20Transparent%20and%20Mirror.png" srcset="/img/loading.gif" lazyload
+alt="08 Transparent and Mirror" />
+<figcaption aria-hidden="true">08 Transparent and Mirror</figcaption>
+</figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Project/" class="category-chain-item">Project</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CG/">#CG</a>
+      
+        <a href="/tags/DirectX/">#DirectX</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DX11-Practice</div>
+      <div>https://reddish.fun/posts/Project/DX11-Practice/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月5日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/posts/Project/OpenGL-Practice/" title="OpenGL-Practice">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OpenGL-Practice</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Notebook/Introduction-to-3D-Game-Programming-with-DirectX-12-note/" title="《DirectX 12 3D 游戏开发实战》笔记">
+                        <span class="hidden-mobile">《DirectX 12 3D 游戏开发实战》笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
