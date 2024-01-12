@@ -771,7 +771,7 @@ html {
 html,
 body {
   height: 100%;
-  font-family: var(--font-family-sans-serif);
+  font-family: system-ui;
   overflow-wrap: break-word;
 }
 body {
@@ -1319,7 +1319,7 @@ figure.highlight td.code > pre {
 .markdown-body {
   font-size: 1rem;
   line-height: 1.6;
-  font-family: var(--font-family-sans-serif);
+  font-family: system-ui;
   margin-bottom: 2rem;
   color: var(--post-text-color);
 }
