@@ -24,7 +24,7 @@
 <meta property="og:description" content="BRDF实现速成课">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-12T05:52:44.207Z">
-<meta property="article:modified_time" content="2024-01-12T09:56:27.447Z">
+<meta property="article:modified_time" content="2024-01-14T03:07:24.849Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CG">
 <meta name="twitter:card" content="summary_large_image">
@@ -313,9 +313,8 @@ src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-10-Figure_1.jpg" s
 <p><em>图1 使用本博文描述的BRDF的BEEPLE
 Zero-Day场景渲染结果<sup><a class=n href="#ref1">[1]</a></sup>。使用Falcor路径追踪器<sup><a class=n href="#ref2">[2]</a></sup>，每像素两百万条光线。</em></p>
 <h1 id="introduction">1 Introduction</h1>
-<p>创造逼真的材质模型作为计算机图形学研究的一个主题已经有几十年了。多年来已经提出了许多模型——经验模型、基于物理的模型、基于物理表面测量数据的模型。早期的经验模型，例如Phong或
-Lambertian，在利用有限的计算资源求值的同时提供合理的结果。它们长盛不衰的关键之一是能够合理地再现一系列真实世界的材质，提供直观的参数供美工调整（而不是物理单位）。</p>
-<p>用于有效求解场景中光传输的算法的进步，例如路径追踪、光子映射和其他方法，使我们能够基于光在有大量表面的场景中的多重交互求解复杂材质，同时隐式渲染焦散、间接（全局）照明、软阴影等效果。光传输算法负责建立光在场景中传播的路径，材质模型则计算光如何与沿路径的表面相互作用。这种方法的形式模型由著名的渲染方程<sup><a class=n href="#ref3">[3]</a></sup>描述，其中表面上材质的贡献由BRDF给出。</p>
+<p>创造逼真的材质模型作为计算机图形学研究的一个主题已经有几十年了。多年来已经提出了许多模型——经验模型、基于物理的模型、基于物理表面测量数据的模型。早期的经验模型，例如Phong或Lambertian，在利用有限的计算资源求值的同时提供合理的结果。它们长盛不衰的关键之一是能够合理地再现一系列真实世界的材质，提供直观的参数供美工调整（而不是物理单位）。</p>
+<p>用于有效求解场景中光传输的算法的进步，例如路径追踪、光子映射和其他方法，使我们能够基于光在有大量表面的场景中的多重交互求解复杂材质，同时隐式渲染焦散（caustics）、间接（全局）照明、软阴影等效果。光传输算法负责建立光在场景中传播的路径，材质模型则计算光如何与沿路径的表面相互作用。这种方法的形式模型由著名的渲染方程<sup><a class=n href="#ref3">[3]</a></sup>描述，其中表面上材质的贡献由BRDF给出。</p>
 <blockquote>
 <p>光栅化方法需要显示渲染焦散、间接（全局）照明、软阴影等效果。</p>
 </blockquote>
@@ -339,7 +338,7 @@ Designer）的出现。材质也可以独立于渲染算法进行研究和开发
 Disney模型<sup><a class=n href="#ref5">[5]</a></sup>不是能量守恒的（但他们的后续文章<sup><a class=n href="#ref6">[6]</a></sup>讨论了以后的项目的能量守恒），Autodesk模型<sup><a class=n href="#ref7">[7]</a></sup>不一定满足Helmholtz互易性。迪士尼模型与单向路径追踪结合使用，缺乏互易性不会带来严重问题。完美的能量守恒也可能不是一个严格的要求，因为除非BRDF反射的能量多于它接收的能量，否则不太可能造成问题，除了能量损失的表面会变暗之外。最后，BRDF实现的高性能和美工的易用性可能比满足
 BRDF 的所有理论要求更可取，尤其是在渲染内容完全受控时。</p>
 <h2 id="construction-of-brdf">2.1 Construction of BRDF</h2>
-<p>游戏中使用的大多数BRDF由两个BRDF组成：漫反射（diffuse）波瓣（lobe）和镜面反射（specular）波瓣。这种分解来自这样一个事实：当光与表面相互作用时，部分光被反射走（镜面反射BRDF），其余部分则散射到表面中。在材质内部，会发生更多的次表面散射，部分光最终再次集中表面并以随机方向离开材质（漫反射BRDF）。由于表面内部的散射，这种光被“过滤”并导致物体呈现出某一颜色。这也意味着光可以在表面下传播一段距离，将光带离入口点，从而产生“次表面散射”效果。常见的简化方法是忽略这种现象并将退出点设置为等于进入点。我们不会在本文中详细讨论次表面散射，推荐Pettineo<sup><a class=n href="#ref8">[8]</a></sup>最近发表的一篇博文，该文提供了有关这个主题的精彩总结。</p>
+<p>游戏中使用的大多数BRDF由两个BRDF组成：漫反射（diffuse）波瓣和镜面反射（specular）波瓣。这种分解来自这样一个事实：当光与表面相互作用时，部分光被反射走（镜面反射BRDF），其余部分则散射到表面中。在材质内部，会发生更多的次表面散射，部分光最终再次集中表面并以随机方向离开材质（漫反射BRDF）。由于表面内部的散射，这种光被“过滤”并导致物体呈现出某一颜色。这也意味着光可以在表面下传播一段距离，将光带离入口点，从而产生“次表面散射”效果。常见的简化方法是忽略这种现象并将退出点设置为等于进入点。我们不会在本文中详细讨论次表面散射，推荐Pettineo<sup><a class=n href="#ref8">[8]</a></sup>最近发表的一篇博文，该文提供了有关这个主题的精彩总结。</p>
 <p><img
 src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-10-Figure_3.jpg" srcset="/img/loading.gif" lazyload /></p>
 <p><em>图3
@@ -538,7 +537,8 @@ diffuse、Frostbite diffuse。</em></p>
 <sup><a class=n href="#ref30">[30]</a></sup>的文章中引入到图形社区。微面模型的动机是为了更好地理解和模拟来自粗糙表面的光反射，如测量所示，这与简单的Lambertian和菲涅尔反射预测的结果不匹配。例如，微面理论解释了称为非镜面峰值的现象，当偏离完美反射方向的方向达到最大反射率时，就会发生这种现象，如Torrance和Sparrow<sup><a class=n href="#ref31">[31]</a></sup>所讨论的。</p>
 <p>使用微面模型的BRDF通常被称为基于物理的，以表明它们是根据物理定律（光学）设计的，而不是根据观察经验进行设计的，尽管在计算机图形学中，我们经常使用简化和近似来使计算可行，并通过消除物理单位和参数使
 BRDF更加实用。</p>
-<p>这种简化的一个很好的例子是省略菲涅耳方程中使用的复杂折射率。有时，“物理合理”一词也用于描述行为与观察到的现实世界材质相同的模型，但不一定是使用光学定律导出的。对于实时渲染，我们通常还使用几何光学和RGB三元组来表示光，而不是波动光学和光谱分布。权衡是此类渲染器无法考虑薄膜干涉引起的衍射和光偏振等效应。</p>
+<p>这种简化的一个很好的例子是省略菲涅耳方程中使用的复杂折射率（index of
+refraction）。有时，“物理合理”一词也用于描述行为与观察到的现实世界材质相同的模型，但不一定是使用光学定律导出的。对于实时渲染，我们通常还使用几何光学和RGB三元组来表示光，而不是波动光学和光谱分布。权衡是此类渲染器无法考虑薄膜干涉引起的衍射和光偏振等效应。</p>
 <p><img
 src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-10-Figure_7.jpg" srcset="/img/loading.gif" lazyload /></p>
 <p><em>图7
@@ -675,7 +675,7 @@ class="math inline">\(G\)</span>函数<sup><a class=n href="#ref32">[32]</a></su
 <p><img
 src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-10-Figure_9.jpg" srcset="/img/loading.gif" lazyload /></p>
 <p><em>图9
-当入射光被<strong>微表面</strong>（microsurfacce）（蓝色）上的其他<strong>微面</strong>（microfacet）阻挡时，就会出现<strong>阴影</strong>（shadowing）（左）。当反射光被另一微面阻挡时发生<strong>掩蔽</strong>（masking）（右）。</em></p>
+当入射光被<strong>微表面</strong>（microsurface）（蓝色）上的其他<strong>微面</strong>（microfacet）阻挡时，就会出现<strong>阴影</strong>（shadowing）（左）。当反射光被另一微面阻挡时发生<strong>掩蔽</strong>（masking）（右）。</em></p>
 <p>发生几何衰减是因为许多微面可以以某种方式定向以反射给定方向下入射的光，但最终只有最接近光源的微面成功反射光（其他微面被阴影，如图9所示）。这同样适用于反射光，反射光在离开微表面时可能会被其他微面掩蔽。Smith的<span
 class="math inline">\(G_1\)</span>函数可用于阴影<span
 class="math inline">\(G_1(H,L)\)</span>和掩蔽<span
@@ -710,7 +710,7 @@ class="math inline">\(G\)</span>项的各向同性版本，但根据各向异性
 <h2 id="fresnel-term">4.3 Fresnel Term</h2>
 <p>菲涅耳项<span
 class="math inline">\(F\)</span>决定了有多少光将从表面反射，有效地告诉我们有多少光将用于计算BRDF。剩余部分<span
-class="math inline">\(1-F\)</span>将传递到底层材质层（如漫反射BRDF或透射BTDF）。到目前为止，我们的实现仅讨论了两层（镜面反射和漫反射），但可以创建具有多个层的复杂材质。菲涅耳项应在光从一层传播到另一层的每个界面上进行计算。为简单起见，各个层的厚度通常为零，但可以结合光谱渲染对一些厚度进行建模，当层界面比穿过它的光的波长薄时产生衍射（虹彩（iridescence））等效果。为了进一步讨论分层材质，我们推荐Autodesk的文章<sup><a class=n href="#ref7">[7]</a></sup>和Jakob等人<sup><a class=n href="#ref47">[47]</a></sup>、Weidlich和Wilkie<sup><a class=n href="#ref48">[48]</a></sup>的作品。对于实现虹彩，Belcour和Parla最近发表的论文很有趣<sup><a class=n href="#ref49">[49]</a></sup>。</p>
+class="math inline">\(1-F\)</span>将传递到底层材质层（如漫反射BRDF或透射BTDF）。到目前为止，我们的实现仅讨论了两层（镜面反射和漫反射），但可以创建具有多个层的复杂材质。菲涅耳项应在光从一层传播到另一层的每个界面上进行计算。为简单起见，各个层的厚度通常为零，但可以结合光谱渲染对一些厚度进行建模，当层界面比穿过它的光的波长薄时产生衍射（diffraction）（虹彩（iridescence））等效果。为了进一步讨论分层材质，我们推荐Autodesk的文章<sup><a class=n href="#ref7">[7]</a></sup>和Jakob等人<sup><a class=n href="#ref47">[47]</a></sup>、Weidlich和Wilkie<sup><a class=n href="#ref48">[48]</a></sup>的作品。对于实现虹彩，Belcour和Parla最近发表的论文很有趣<sup><a class=n href="#ref49">[49]</a></sup>。</p>
 <p>菲涅耳项取决于视线方向、表面法线、材料属性（折射率和消光系数），并由相对复杂的菲涅耳方程表示，但该方程也考虑了光的偏振。菲涅耳项对于掠射角始终接近统一，这意味着所有光都会被反射，尽管对于中间角度，如Cook和Torrance<sup><a class=n href="#ref30">[30]</a></sup>所讨论的那样，会发生“color
 shift”。</p>
 <p>Christophe
@@ -731,7 +731,8 @@ class="math inline">\(F_{0}\)</span>。使用Schlick公式的另一个结果是�
 <h3 id="specifying-reflectance-at-normal-incidence">4.3.1 Specifying
 reflectance at normal incidence</h3>
 <p>消除<span class="math inline">\(n\)</span>和<span
-class="math inline">\(k\)</span>简化了计算，但也导致失去对材质是否表现为电介质（低吸收系数——塑料、木材等）或导体（高吸收系数——铜、金等）的控制。这些之间的差异最好通过金属反射的色调来观察（因为部分光谱被吸收），而电介质的反射则接手光源的不变颜色。正如Cook和Torrance<sup><a class=n href="#ref30">[30]</a></sup>所指出的，金属反射是根据法线入射（表示为<span
+class="math inline">\(k\)</span>简化了计算，但也导致失去对材质是否表现为电介质（低吸收系数——塑料、木材等）或导体（高吸收系数——铜、金等）的控制。这些之间的差异最好通过金属反射的色调（color
+tint）来观察（因为部分光谱被吸收），而电介质的反射则接手光源的不变颜色。正如Cook和Torrance<sup><a class=n href="#ref30">[30]</a></sup>所指出的，金属反射是根据法线入射（表示为<span
 class="math inline">\(F_{0}\)</span>，有时也表示为<span
 class="math inline">\(R_{F0}\)</span>）的材质的基色着色的。利用这些知识，我们可以通过引入一个称为金属度<sup><a class=n href="#ref52">[52]</a></sup>（metalness）的参数来“修复”金属菲涅尔反射的颜色，该参数将<span
 class="math inline">\(F_{0}\)</span>作为电介质的默认反射率和金属的基色之间的混合计算<sup><a class=n href="#ref53">[53]</a></sup>：
@@ -742,7 +743,8 @@ class="math inline">\(F_{0Dielectricss}\)</span>的一个常用值是0.04（4%�
 <span class="math display">\[
 diffuse\_reflectance=base\_color*(1-metalness)
 \]</span></p>
-<p>这个参数组合（基色和金属度）有时称为金属度工作流，并且具有限制性，无法为漫反射和镜面反射设置不同的色相。另一种方法是镜面工作流，它可以直接指定漫反射和镜面反射率<sup><a class=n href="#ref54">[54]</a></sup>，而不是根据基色计算它。它需要更多的存储空间，但可以创建更广泛的材质，包括具有显著不同的漫反射和镜面反射率的非真实材料，从而提供更大的美术自由。</p>
+<p>这个参数组合（基色和金属度）有时称为金属度工作流，并且具有限制性，无法为漫反射和镜面反射设置不同的色相（color
+hue）。另一种方法是镜面工作流，它可以直接指定漫反射和镜面反射率<sup><a class=n href="#ref54">[54]</a></sup>，而不是根据基色计算它。它需要更多的存储空间，但可以创建更广泛的材质，包括具有显著不同的漫反射和镜面反射率的非真实材料，从而提供更大的美术自由。</p>
 <blockquote>
 <p>Schlick近似求<span class="math inline">\(F_0\)</span>公式：</p>
 <p><span class="math display">\[
@@ -1126,47 +1128,6 @@ Surfaces," 2015. </a></p>
 https://twitter.com/CasualEffects/status/1174191724694032387. </a></p>
 <p><a name="ref73">[73] P. Shirley, Ray Tracing in One Weekend,
 2018.</a></p>
-<h1 id="附录">附录</h1>
-<h2 id="翻译对照表">翻译对照表</h2>
-<table>
-<thead>
-<tr class="header">
-<th>英文</th>
-<th>中文</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>diffuse</td>
-<td>漫反射</td>
-</tr>
-<tr class="even">
-<td>specular</td>
-<td>镜面反射</td>
-</tr>
-<tr class="odd">
-<td>highlight</td>
-<td>高光</td>
-</tr>
-<tr class="even">
-<td>color tint</td>
-<td>色调</td>
-</tr>
-<tr class="odd">
-<td>color hue</td>
-<td>色相</td>
-</tr>
-<tr class="even">
-<td>reflectance</td>
-<td>反射率</td>
-</tr>
-<tr class="odd">
-<td>index of refraction</td>
-<td>折射率</td>
-</tr>
-</tbody>
-</table>
-<h2 id="尾注">尾注</h2>
 <section class="footnotes">
 <div class="footnote-list">
 <ol>
