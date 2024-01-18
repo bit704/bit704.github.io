@@ -18,13 +18,13 @@
   
     <meta name="description" content="blender、UE、Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="specular anisotropic源码分析">
+<meta property="og:title" content="specular anisotropic实现">
 <meta property="og:url" content="https://reddish.fun/posts/Article/specular-anisotropy/index.html">
 <meta property="og:site_name" content="Homeworld">
 <meta property="og:description" content="blender、UE、Unity">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-18T15:42:34.794Z">
-<meta property="article:modified_time" content="2024-01-18T18:32:41.881Z">
+<meta property="article:modified_time" content="2024-01-18T18:42:29.091Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CG">
 <meta property="article:tag" content="UE">
@@ -35,7 +35,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>specular anisotropic源码分析 - Homeworld</title>
+  <title>specular anisotropic实现 - Homeworld</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -233,7 +233,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="specular anisotropic源码分析"></span>
+            <span id="subtitle" data-typed-text="specular anisotropic实现"></span>
           
         </div>
 
@@ -297,7 +297,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">specular anisotropic源码分析</h1>
+            <h1 style="display: none">specular anisotropic实现</h1>
             
             
               <div class="markdown-body">
@@ -376,10 +376,10 @@ aspect=\sqrt{1-0.9a}
 <li>OpenPBR proposed mapping 2023</li>
 </ol>
 <p><span class="math display">\[
-\alpha_x = \min(\frac{r^2}{\sqrt{1-a}}, 1.0)
+\alpha_x = r^2 \sqrt{\frac{2}{1 + (1 - a)^2}}
 \]</span></p>
 <p><span class="math display">\[
-\alpha_y = r^2 \sqrt{1-a}
+\alpha_y = (1 - a)\alpha_x
 \]</span></p>
 <p><a
 target="_blank" rel="noopener" href="https://github.com/blender/blender">Blender</a>中cycles用的Burley
@@ -455,7 +455,7 @@ parametrisation · Issue #82 · AcademySoftwareFoundation/OpenPBR</a>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>specular anisotropic源码分析</div>
+      <div>specular anisotropic实现</div>
       <div>https://reddish.fun/posts/Article/specular-anisotropy/</div>
     </div>
     <div class="license-meta">
