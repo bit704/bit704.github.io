@@ -1,0 +1,1432 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="OpenPBR Surface shading model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenPBR介绍">
+<meta property="og:url" content="https://reddish.fun/posts/Article/OpenPBR-intro/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="OpenPBR Surface shading model">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-01-17T22:54:50.011Z">
+<meta property="article:modified_time" content="2024-01-17T23:16:57.055Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="CG">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>OpenPBR介绍 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>相关链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="OpenPBR介绍"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-01-18 06:54" pubdate>
+          2024年1月18日 早上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          3.9k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">OpenPBR介绍</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>OpenPBR Surface shading model</p>
+<span id="more"></span>
+<p><strong>超级着色器</strong>（über-shader）即覆盖各种情况的单一整体材质，它拥有一组定义明确的参数，可以调整这些参数来创作现实中和想象中的材质。例如Disney的Principled
+Shader<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="McAuley S, Hill S, Hoffman N, et al. Practical physically-based shading in film and game production[M]//ACM SIGGRAPH 2012 Courses. 2012: 1-7.">[1]</span></a></sup>、Allegorithmic的PBR
+shading
+model<sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://argos.vu/wp-content/uploads/2016/03/PBR_Guide_Vol.1.pdf">[2]</span></a></sup>、Autodesk的Standard
+Surface
+shader<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://autodesk.github.io/standard-surface/">[3]</span></a></sup>、Adobe的Standard
+Material<sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://helpx.adobe.com/substance-3d-general/adobe-standard-material.html">[4]</span></a></sup>、Blender的Principled
+BSDF<sup id="fnref:5" class="footnote-ref"><a href="#fn:5" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://docs.blender.org/manual/en/latest/render/shader_nodes/shader/principled.html">[5]</span></a></sup>等。
+<strong>OpenPBR</strong>旨在成为不同产品之间的通用接口，覆盖大多数日常用例（未涵盖更专业的用例，如非常高端的皮肤、头发、布料或体积着色）。</p>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/AcademySoftwareFoundation/OpenPBR">OpenPBR(Github)</a>作为MaterialX的一个子项目于2023年8月2日由<a
+target="_blank" rel="noopener" href="https://www.aswf.io/">ASWF</a>发布。该项目由Autodesk和Adobe开发，用MaterialX编写，任何已经支持MaterialX都可以自动支持OpenPBR。</p>
+<blockquote>
+<p>已有Pixar USD、SideFX Houdini、Autodesk Maya、Autodesk 3ds Max、Apple
+VisionOS、Unreal Engine、NVIDIA Omniverse、Autodesk Arnold、Pixar
+RenderMan、Chaos V-Ray支持MaterialX。</p>
+</blockquote>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/AcademySoftwareFoundation/MaterialX">MaterialX(Github)</a>是在计算机图形学中表示丰富材质和外观开发内容的开放标准，它使美工能够以通用的网络形式描述材质，从而为资产提供<strong>跨渲染器和平台</strong>的一致外观。本质上，MaterialX是一种使用XML格式文件在不同DCC工具之间交换数据的机制。</p>
+<p>使用MaterialX Graph
+Editor编辑OpenPBR的参考实现<code>open_pbr_surface.mtlx</code>的节点图：</p>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-18-open_pbr_surface_graph.png" srcset="/img/loading.gif" lazyload /></p>
+<p>节点图中空着的槽对应的属性可以在MaterialXView中调整：</p>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-18-open_pbr_surface_view.png" srcset="/img/loading.gif" lazyload /></p>
+<p>OpenPBR结构<sup id="fnref:6" class="footnote-ref"><a href="#fn:6" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="https://academysoftwarefoundation.github.io/OpenPBR/">[6]</span></a></sup>如下：</p>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-18-openpbr_model_schematic.svg" srcset="/img/loading.gif" lazyload /></p>
+<ul>
+<li><p>由金属或电介质的混合物构成的base
+substrate。该基层的界面（电介质或金属）提供<strong>主镜面反射波瓣</strong>。电介质基底代表三种成分中的任一种，可以统计混合：</p>
+<ul>
+<li>Glossy-diffuse：具有不透明内部介质的电介质，如木材、花岗岩、混凝土、纸板和墙漆。</li>
+<li>Subsurface：具有致密高散射内部介质的电介质，如塑料、大理石、皮肤、植物和食物。</li>
+<li>Translucent-base：具有半透明内部介质的电介质，如玻璃、晶体和液体。</li>
+</ul></li>
+<li><p>Coat：可选的电介质层，可具有吸收介质，充当base
+substrate顶部的涂层。该层的电介质界面提供<strong>次镜面反射波瓣</strong>。</p></li>
+<li><p>Fuzz：可选层，表示来自在其他所有物体之上的微纤维（例如细毛、桃绒、纺织线和灰尘颗粒）的反射。</p></li>
+</ul>
+<p>参数设计如下：</p>
+<table style="width:100%;">
+
+<thead>
+<tr class="header">
+<th style="text-align: left;">Identifier</th>
+<th style="text-align: left;">Label</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: center;">Range</th>
+<th style="text-align: center;">Norm</th>
+<th style="text-align: center;">Default</th>
+<th style="text-align: left;">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Base</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>base_weight</code></td>
+<td style="text-align: left;">Weight</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>base_color</code></td>
+<td style="text-align: left;">Color</td>
+<td style="text-align: left;">color3</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((0.8,0.8,0.8)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>base_roughness</code></td>
+<td style="text-align: left;">Roughness</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>base_metalness</code></td>
+<td style="text-align: left;">Metalness</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Specular</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>specular_weight</code></td>
+<td style="text-align: left;">Weight</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>specular_color</code></td>
+<td style="text-align: left;">Color</td>
+<td style="text-align: left;">color</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((1,1,1)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>specular_roughness</code></td>
+<td style="text-align: left;">Roughness</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.3\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>specular_anisotropy</code></td>
+<td style="text-align: left;">Anisotropy</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>specular_rotation</code></td>
+<td style="text-align: left;">Rotation</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>specular_ior</code></td>
+<td style="text-align: left;">IOR</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\((0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([1,3]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1.5\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>specular_ior_level</code></td>
+<td style="text-align: left;">IOR level</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.5\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Transmission</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>transmission_weight</code></td>
+<td style="text-align: left;">Weight</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>transmission_color</code></td>
+<td style="text-align: left;">Color</td>
+<td style="text-align: left;">color</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((1,1,1)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>transmission_depth</code></td>
+<td style="text-align: left;">Depth</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"><span
+class="math inline">\(length\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>transmission_scatter</code></td>
+<td style="text-align: left;">Scatter</td>
+<td style="text-align: left;">color</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((0,0,0)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td
+style="text-align: left;"><code>transmission_scatter_anisotropy</code></td>
+<td style="text-align: left;">Anisotropy</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([-1,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td
+style="text-align: left;"><code>transmission_dispersion_abbe_number</code></td>
+<td style="text-align: left;">Abbe number</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\((0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([9,91]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(20\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td
+style="text-align: left;"><code>transmission_dispersion_scale</code></td>
+<td style="text-align: left;">Dispersion scale</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Subsurface</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>subsurface_weight</code></td>
+<td style="text-align: left;">Weight</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>subsurface_color</code></td>
+<td style="text-align: left;">Color</td>
+<td style="text-align: left;">color</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((0.8,0.8,0.8)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>subsurface_radius</code></td>
+<td style="text-align: left;">Radius</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: left;"><span
+class="math inline">\(length\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>subsurface_radius_scale</code></td>
+<td style="text-align: left;">Radius scale</td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((1.0,0.5,0.25)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>subsurface_anisotropy</code></td>
+<td style="text-align: left;">Anisotropy</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([-1,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Coat</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>coat_weight</code></td>
+<td style="text-align: left;">Weight</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>coat_color</code></td>
+<td style="text-align: left;">Color</td>
+<td style="text-align: left;">color</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((1,1,1)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>coat_roughness</code></td>
+<td style="text-align: left;">Roughness</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>coat_anisotropy</code></td>
+<td style="text-align: left;">Anisotropy</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>coat_rotation</code></td>
+<td style="text-align: left;">Rotation</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>coat_ior</code></td>
+<td style="text-align: left;">IOR</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\((0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([1,3]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1.6\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>coat_ior_level</code></td>
+<td style="text-align: left;">IOR level</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.5\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Fuzz</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>fuzz_weight</code></td>
+<td style="text-align: left;">Weight</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>fuzz_color</code></td>
+<td style="text-align: left;">Color</td>
+<td style="text-align: left;">color</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((1,1,1)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>fuzz_roughness</code></td>
+<td style="text-align: left;">Roughness</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(0.5\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Emission</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>emission_luminance</code></td>
+<td style="text-align: left;">Luminance</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1000]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"><span
+class="math inline">\(nits\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>emission_color</code></td>
+<td style="text-align: left;">Color</td>
+<td style="text-align: left;">color</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]^3\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\((1,1,1)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Thin-film</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>thin_film_thickness</code></td>
+<td style="text-align: left;">Thickness</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([0,2000]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: left;"><span
+class="math inline">\(nanometers\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>thin_film_ior</code></td>
+<td style="text-align: left;">IOR</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\((0,\infty)\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\([1,3]\)</span></td>
+<td style="text-align: center;"><span
+class="math inline">\(1.5\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Geometry</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>geometry_opacity</code></td>
+<td style="text-align: left;">Opacity</td>
+<td style="text-align: left;">float</td>
+<td style="text-align: center;"><span
+class="math inline">\([0,1]\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(1\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>geometry_thin_walled</code></td>
+<td style="text-align: left;">Thin walled</td>
+<td style="text-align: left;">boolean</td>
+<td style="text-align: center;"><span class="math inline">\(\{false,
+true\}\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(false\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>geometry_normal</code></td>
+<td style="text-align: left;">Normal</td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: center;"><span
+class="math inline">\(N/A\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(unperturbed\  normal\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>geometry_tangent</code></td>
+<td style="text-align: left;">Tangent</td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: center;"><span
+class="math inline">\(N/A\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(unperturbed\  normal\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>geometry_coat_normal</code></td>
+<td style="text-align: left;">Coat Normal</td>
+<td style="text-align: left;">vector</td>
+<td style="text-align: center;"><span
+class="math inline">\(N/A\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span
+class="math inline">\(unperturbed\  normal\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span>McAuley S, Hill S, Hoffman
+N, et al. Practical physically-based shading in film and game
+production[M]//ACM SIGGRAPH 2012 Courses. 2012: 1-7.
+<a href="#fnref:1" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:2"
+class="footnote-text"><span>https://argos.vu/wp-content/uploads/2016/03/PBR_Guide_Vol.1.pdf
+<a href="#fnref:2" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:3"
+class="footnote-text"><span>https://autodesk.github.io/standard-surface/
+<a href="#fnref:3" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:4"
+class="footnote-text"><span>https://helpx.adobe.com/substance-3d-general/adobe-standard-material.html
+<a href="#fnref:4" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:5"
+class="footnote-text"><span>https://docs.blender.org/manual/en/latest/render/shader_nodes/shader/principled.html
+<a href="#fnref:5" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+<li>
+<span id="fn:6"
+class="footnote-text"><span>https://academysoftwarefoundation.github.io/OpenPBR/
+<a href="#fnref:6" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+</ol>
+</div>
+</section>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Article/" class="category-chain-item">Article</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CG/">#CG</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>OpenPBR介绍</div>
+      <div>https://reddish.fun/posts/Article/OpenPBR-intro/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年1月18日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Article/CPP-Coroutine/" title="C++协程">
+                        <span class="hidden-mobile">C++协程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

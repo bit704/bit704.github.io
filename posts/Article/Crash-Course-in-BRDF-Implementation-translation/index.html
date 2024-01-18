@@ -24,7 +24,7 @@
 <meta property="og:description" content="BRDF实现速成课">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-12T05:52:44.207Z">
-<meta property="article:modified_time" content="2024-01-14T03:07:24.849Z">
+<meta property="article:modified_time" content="2024-01-17T17:11:39.222Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CG">
 <meta name="twitter:card" content="summary_large_image">
@@ -611,7 +611,7 @@ class="math inline">\(N \cdot H\)</span>就可计算： <span
 class="math display">\[
 D_{Beckmann}=\frac{e^{\frac{\cos^2\theta_h-1}{\alpha^2\cos^2\theta_h}}}{\pi\alpha^2\cos^4\theta_h}
 \]</span> GG-X分布定义为： <span class="math display">\[
-D_{GGX}=\frac{\alpha^2}{\pi\cos^4(\alpha^2+tan^2(\theta_h))^2}
+D_{GGX}=\frac{\alpha^2}{\pi\cos^4\theta_h(\alpha^2+tan^2(\theta_h))^2}
 \]</span>
 该公式还可以进一步简化<sup><a class=n href="#ref35">[35]</a></sup>。我们以与Beckmann分布相同的方式替换正切函数，并展开分母，然后可以将其表示为<span
 class="math inline">\(((\alpha^2-1)\cos^2\theta_h+1)\)</span>平方。得到的优化公式为：
