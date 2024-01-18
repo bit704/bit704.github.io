@@ -16,24 +16,26 @@
   <meta name="author" content="bit704">
   <meta name="keywords" content="blog">
   
-    <meta name="description" content="到底能活多久呢……">
+    <meta name="description" content="blender、UE、Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="科学饮食与锻炼">
-<meta property="og:url" content="https://reddish.fun/posts/Article/keep-healthy/index.html">
+<meta property="og:title" content="specular anisotropic源码分析">
+<meta property="og:url" content="https://reddish.fun/posts/Article/specular-anisotropy/index.html">
 <meta property="og:site_name" content="Homeworld">
-<meta property="og:description" content="到底能活多久呢……">
+<meta property="og:description" content="blender、UE、Unity">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-01-03T06:03:06.255Z">
-<meta property="article:modified_time" content="2024-01-06T12:15:05.165Z">
+<meta property="article:published_time" content="2024-01-18T15:42:34.794Z">
+<meta property="article:modified_time" content="2024-01-18T18:32:41.881Z">
 <meta property="article:author" content="bit704">
-<meta property="article:tag" content="MISC">
+<meta property="article:tag" content="CG">
+<meta property="article:tag" content="UE">
+<meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary_large_image">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>科学饮食与锻炼 - Homeworld</title>
+  <title>specular anisotropic源码分析 - Homeworld</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -231,7 +233,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="科学饮食与锻炼"></span>
+            <span id="subtitle" data-typed-text="specular anisotropic源码分析"></span>
           
         </div>
 
@@ -242,8 +244,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-01-03 14:03" pubdate>
-          2023年1月3日 下午
+        <time datetime="2024-01-18 23:42" pubdate>
+          2024年1月18日 晚上
         </time>
       </span>
     
@@ -255,7 +257,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.3k 字
+          3k 字
         
       </span>
     
@@ -295,108 +297,115 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">科学饮食与锻炼</h1>
+            <h1 style="display: none">specular anisotropic源码分析</h1>
             
             
               <div class="markdown-body">
                 
-                <p>到底能活多久呢……</p>
+                <p>blender、UE、Unity</p>
 <span id="more"></span>
-<h1 id="基本知识">1 基本知识</h1>
-<p>不能通过节食减肥，通过运动提高肌肉含量是关键。对男性来说，节食更是会导致其睾酮含量降至阉割水平。</p>
-<p>食物<strong>GI</strong>，是指摄入含有100克碳水化合物（不包括纤维）的该食物后，身体2小时后的血糖上升水平。GI的缺陷在于以每百克碳水作为评估基准，但并没有综合考虑含有那么多碳水的食物实际分量有多少，这就会导致有些食物虽然GI很高，但你很难吃下去那么多。</p>
-<p>食物<strong>GL</strong>是GI的升级版，是用来描述单位食物中可利用的碳水，在身体里的消化吸收速度和血糖应答的指标。</p>
-<p>经常喝甜饮会引起血糖波动，让人饿得更快，进而吃得更多。含糖饮料、高糖，不仅会让人胖，而且还会影响日常行为，让人变得更懒和更不想动。</p>
-<h1 id="平时吃">2 平时吃</h1>
-<h2 id="中国居民膳食指南">2.1 中国居民膳食指南</h2>
-<figure>
-<img
-src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E4%B8%AD%E5%9B%BD%E5%B1%85%E6%B0%91%E8%86%B3%E9%A3%9F%E6%8C%87%E5%8D%97.PNG" srcset="/img/loading.gif" lazyload
-alt="中国居民膳食指南" />
-<figcaption aria-hidden="true">中国居民膳食指南</figcaption>
-</figure>
-<p><strong>1）食物多样，谷类为主。</strong></p>
-<p>每日膳食摄入应包括谷薯类、蔬菜水果类、畜禽鱼蛋奶类、大豆坚果类等食物。</p>
-<p>平均每天建议摄入12种以上食物，每周25种以上。</p>
-<p>每日建议摄入谷薯类食物250~400克，其中全谷物和杂豆类50~150克，薯类50~100克。</p>
-<p>食物多样，谷类为主是平衡膳食模式的重要特征。</p>
-<p>推荐谷物类：大米、小米、小麦、荞麦、藜麦</p>
-<p>推荐蔬类：菠菜、西蓝花、苦瓜、丝瓜、番茄等富含维生素的蔬菜</p>
-<p>推荐豆类：大豆、绿豆、黄豆、红豆、黑豆</p>
-<p>推荐薯类：红薯、马铃薯、山药、芋头</p>
-<p><strong>2）多吃蔬果、奶类、大豆</strong></p>
-<p>蔬菜水果是平衡膳食的重要组成部分，奶类富含钙，大豆富含优质蛋白质。</p>
-<p>餐餐有蔬菜，保证每天摄入300~500克蔬菜，深绿色蔬菜应占1/2。</p>
-<p>天天吃水果，保证每天摄入200~350克新鲜水果，果汁不能代替鲜果。</p>
-<p>吃各种各样的奶制品，相当于每天摄入液态奶300克。</p>
-<p>经常吃豆制品，适量吃坚果。</p>
-<p>“果汁不能代替鲜果”。市售的勾兑果味果汁就不说了，基本就是色素加糖加果味添加剂。不过即使是鲜榨果汁，也绝非水果的健康替代品。因为鲜榨果汁改变了水果的物理性状，某种程度上提升了水果的GI值，容易导致人们发胖或者代谢类疾病。此外，鲜榨果汁为了口感，也抛弃了一部分对健康有益的膳食纤维。</p>
-<p><strong>3）适量吃鱼、禽、蛋、瘦肉</strong></p>
-<p>鱼、禽、蛋和瘦肉摄入要适量。·每周吃鱼280~525克，畜禽肉280~525克，蛋类280~350克，平均每天摄入总量120~200克。</p>
-<p>优先选择鱼和禽肉。</p>
-<p>吃鸡蛋不弃蛋黄。2015年《美国居民膳食指南》里胆固醇限制被取消，因为目前的研究表示，通过饮食摄入的胆固醇，对血液中胆固醇的变化波动其实非常非常小，并不会最终导致心血管疾病的发生。但是蛋黄的脂肪含量仍然很高。</p>
-<p>少吃肥肉、烟熏和腌制肉制品。</p>
-<p><strong>4）少盐少油，控糖限酒</strong></p>
-<p>培养清淡饮食习惯，少吃高盐和油炸食品。成人每天食盐量不超过6克，每天烹调油量控制在25~30克。</p>
-<p>控制添加糖的摄入量，每天摄入不超过50克，最好控制在25克以下。</p>
-<p>足量饮水，成年人每天7~8杯（1500~1700毫升），提倡饮用白开水和茶水；不喝或少喝含糖饮料。</p>
-<p>儿童、少年、孕妇、乳母不应饮酒。成人如饮酒，男性一天饮用酒的酒精量不超过25克，女性不超过15克。</p>
-<h2 id="dash饮食">2.2 DASH饮食</h2>
-<figure>
-<img
-src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-DASH-diet.png" srcset="/img/loading.gif" lazyload
-alt="DASH饮食" />
-<figcaption aria-hidden="true">DASH饮食</figcaption>
-</figure>
-<p>DASH（Dietary Approaches to Stop
-Hypertension），直译就是“防治高血压饮食对策”，最早是根据1997年美国的一项大型高血压防治计划发展出来的饮食模式。</p>
-<p>“杯”，欧美国家使用的非正式计量单位，1杯＝240毫升(美国），表格中“碗”与“杯”意义相同。“大勺”“小勺”，欧美国家使用的非正式计量单位，1大勺＝15毫升，1小勺＝5毫升
-(美国)。</p>
-<p>当你喝牛奶的时候，<strong>要选择脱脂或者低脂的</strong>，并且不建议大家摄入饱和脂肪。虽然脂肪也是很重要的营养元素，但是牛奶中的脂肪较多，占总热量构成的25%以上，可以算是高脂食物了。此外，饱和脂肪算不上特别健康，而且现代都市人也真的不缺摄入饱和脂肪的机会。除了极端的饮食控制者，很少有人会摄入饱和脂肪不足，而更好的脂肪来源是鱼类、坚果等不饱和脂肪。</p>
-<h2 id="规律睡眠">2.3 规律睡眠</h2>
-<p>香港中文大学一项针对运动与睡眠的研究发现，虽然坚持运动可以明显降低超重和肥胖的概率，但对睡眠不足的人来说，活动水平就算比较高，也很难让人瘦——这一点，在男性身上尤其明显。</p>
-<p>因为昼夜节律紊乱本身也会扰乱身体的相关激素分泌，导致身体往容易胖的激素水平调节。</p>
-<h1 id="健身吃">3 健身吃</h1>
-<h2 id="注意事项">3.1 注意事项</h2>
-<p><strong>1）忌脂肪</strong></p>
-<p>在运动期间，为了达到更好的训练效果，健身前后2小时，请尽量避免摄入脂肪！</p>
-<p>训练后肌肉蛋白的合成速率大大提高，人体也会进行超量恢复，是最佳的进食时间，此时应该多摄入高GI碳水化合物和蛋白质来满足更多的胰岛素分泌和身体糖原合成储备。日常饮食中可以适量摄入脂肪，不过训练前后2小时，请大家尽可能少吃脂肪，巧克力、士力架、奶糖、全脂牛奶什么的，并不是运动期间的合适食物。</p>
-<p><strong>2）吃饭时间</strong></p>
-<p>同样一碗饭，运动后吃，会变成减肥的能源；平时吃，会变成肥肉！也就是说，如果你一天摄入的食物总量不变，你运动后吃，肯定会比其他时间吃要瘦得多。</p>
-<p><strong>3）运动顺序</strong></p>
-<p>对于增肌而言，先做无氧；对于减脂而言，先做有氧。</p>
-<h2 id="健身前">3.2 健身前</h2>
-<p>对于<strong>塑性健身</strong>，一般训练者在<strong>训前2小时摄入低GI的食物</strong>，可以增加训练中的耐力和脂肪燃烧。</p>
-<p>对于<strong>减脂</strong>，<strong>空腹训练</strong>更有益于脂肪的消耗，并且能提高静息代谢率。空腹运动时多喝水，不仅更有利于减脂，还可以避免脂肪动员消耗过程中产生的过多酮体给身体带来的副作用。</p>
-<p>对以<strong>增肌</strong>，<strong>训前即刻服用必需氨基酸+碳水化合物</strong>（实际上也就是蛋白粉+糖），比训练结束后再服用，更有利于肌肉蛋白的合成，能促进肌肉增长。力量训练后，身体的肌肉蛋白合成率会增长近300%，是肌肉合成最快的时候，此时目标肌群里的氨基酸含量越高，自然越有利于肌肉的合成。如果想极限增肌，在训练前摄入蛋白质+碳水化合物，最有利于刺激肌肉的生长。也就是说，训练前来一杯运动饮料冲服的蛋白粉，就非常不错。</p>
-<p><strong>有氧运动前来1~2杯绿茶</strong>，不仅可以加速燃脂，对提高运动表现也很有好处。喝绿茶可以促进身体对脂肪的利用，让你的燃脂能力更高。不过训练后就不建议喝绿茶了，训练后一般需要即刻进食，来促进恢复与生长，还要好好补充蛋白质。而绿茶里面的鞣酸，会与食物中的蛋白质结合生成一种块状的、不易消化吸收的鞣酸蛋白，阻碍你的吸收，还让你便秘。</p>
-<h2 id="健身后">3.3 健身后</h2>
-<p>训后饮食最重要的有三点：多吃高GI碳水化合物；多吃蛋白质；尽量不吃脂肪。有氧运动和力量训练后饮食模式基本一样，只是力量训练后应多吃些蛋白质。</p>
-<p><strong>有氧运动后</strong>，必须吃东西，不吃更胖。原因是有氧运动后及时补充碳水化合物和蛋白质，身体会把吃下去的食物变成下次运动的能源储备，帮你越吃越瘦；相反，你平时不运动时吃同等的食物则容易被身体储存为脂肪。</p>
-<p><strong>力量训练后</strong>，立即补充碳水化合物和蛋白质→身体分泌更多胰岛素→更好地促进肌肉吸收氨基酸和恢复糖原→肌肉更好地合成、糖原储备更多→训练效果更好、下次运动更高效。因为运动后的胰岛素分泌，不会囤积脂肪，反而会优先促进肌肉吸收氨基酸和恢复糖原，增加肌肉合成，所以运动后是个比较特殊的时段，更推荐此时吃高GI食物。</p>
-<p>运动后的那一餐，可以选择吃口感好的精米精面，搭配少油低脂肪的瘦肉、鸡蛋来补充必需的蛋白质就可以。</p>
-<h2 id="简易饮食指南">3.4 简易饮食指南</h2>
-<figure>
-<img
-src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-09-18-%E5%81%A5%E8%BA%AB%E9%A5%AE%E9%A3%9F%E6%8C%87%E5%8D%97.JPG" srcset="/img/loading.gif" lazyload
-alt="健身饮食指南" />
-<figcaption aria-hidden="true">健身饮食指南</figcaption>
-</figure>
-<h1 id="食物推荐">4 食物推荐</h1>
-<h2 id="原则">4.1 原则</h2>
-<p>平时吃：热量适中，饱腹感强，营养搭配合理，GI值较低，有助于控制血糖波动，更扛饿；</p>
-<p>训后吃：高GI碳水化合物、高蛋白、低脂肪，能更好地促进糖原、肌肉合成和身体恢复，横菜为主，可以大快朵颐；</p>
-<p>随便吃：吃热量低，饱腹感强，解馋不怕胖的食物。</p>
-<h2 id="技巧">4.2 技巧</h2>
-<p>如果是真的全麦面包，那么食品配料表的第一位应该写的是全麦粉，而非小麦粉。</p>
-<p>鸭脖是个好东西，从营养成分来看，基本不含脂肪和碳水化合物，而且高蛋白、低热量、低GI，具备了健康美食的所有标准，非常适合作为零食。</p>
-<p>咖喱中的姜黄素，可以起到消毒、杀菌的作用，对于训练后的肌肉酸疼和炎症等也有很好的缓解效果。</p>
-<p>牛板筋里面几乎都是蛋白质。</p>
-<p>运动前适量摄入含有小苏打的食物，比如苏打饼干什么的，对提高运动表现会更有帮助。</p>
-<h1 id="锻炼计划">5 锻炼计划</h1>
-<h1 id="参考资料">6 参考资料</h1>
-<p>硬派健身 / 斌卡</p>
-<p>囚徒健身系列 / Paul Wade</p>
+<p>anisotropic即不同方向上不均匀的结构特性。在计算机图形学的材质方面，specular、transmission、subsuface、coat均可能为anisotropic。</p>
+<p>常用的计算specular
+BRDF的Cook-Torrance微面模型的<strong>D项</strong>为<strong>GGX</strong>。</p>
+<p>isotropic GGX： <span class="math display">\[
+D_{GGX}(H) = \frac{\alpha^2}{\pi((N\cdot H)^2 (\alpha^2 - 1) + 1)^2}
+\]</span> anisotropic GGX： <span class="math display">\[
+D_{GGXaniso}(H) = \frac{1}{\pi \alpha_x \alpha_y} \frac{1}{ \left(
+\frac{(X \cdot H)^2}{\alpha_x^2} + \frac{(Y \cdot H)^2}{\alpha_y^2} +
+(N\cdot H)^2 \right)^2 }
+\]</span> 其中<span class="math inline">\(x\)</span>、<span
+class="math inline">\(y\)</span>分别代表切线和副切线方向，<span
+class="math inline">\(\alpha_x\)</span>、<span
+class="math inline">\(\alpha_y\)</span>即对应方向上的roughness。</p>
+<p>设anisotropic值为<span
+class="math inline">\(a\)</span>、roughness值为<span
+class="math inline">\(r\)</span>，不同的<span
+class="math inline">\(\alpha_x\)</span>、<span
+class="math inline">\(\alpha_y\)</span>参数化方法<sup id="fnref:1" class="footnote-ref"><a href="#fn:1" rel="footnote"><span
+class="hint--top hint--rounded"
+aria-label="OpenPBR issue: [Anisotropy parametrisation · Issue #82 · AcademySoftwareFoundation/OpenPBR](https://github.com/AcademySoftwareFoundation/OpenPBR/issues/82)">[1]</span></a></sup>如下：</p>
+<ol type="1">
+<li>Burley 2012 (Disney model)</li>
+</ol>
+<p><span class="math display">\[
+aspect=\sqrt{1-0.9a}
+\]</span></p>
+<p><span class="math display">\[
+\alpha_x=\frac{r^2}{aspect}
+\]</span></p>
+<p><span class="math display">\[
+\alpha_y=r^2\cdot aspect
+\]</span></p>
+<ol start="2" type="1">
+<li>Georgiev 2019 (Standard Surface)</li>
+</ol>
+<p><span class="math display">\[
+\alpha_x = \min(\frac{r^2}{\sqrt{1-a}}, 1.0)
+\]</span></p>
+<p><span class="math display">\[
+\alpha_y = r^2 \sqrt{1-a}
+\]</span></p>
+<ol start="3" type="1">
+<li>Kulla 2017 (Sony Pictures Imageworks)</li>
+</ol>
+<p><span class="math display">\[
+\alpha_x = r^2 (1 + a)
+\]</span></p>
+<p><span class="math display">\[
+\alpha_y = r^2 (1 - a)
+\]</span></p>
+<ol start="4" type="1">
+<li>Neubelt 2013 (The Order: 1886)</li>
+</ol>
+<p><span class="math display">\[
+\alpha_x = r^2
+\]</span></p>
+<p><span class="math display">\[
+\alpha_y = \mathrm{lerp}(0, r^2, 1 - a)
+\]</span></p>
+<ol start="5" type="1">
+<li>Kutz 2021 (Adobe Standard Material)</li>
+</ol>
+<p><span class="math display">\[
+\alpha_x = r^2 + a^4
+\]</span></p>
+<p><span class="math display">\[
+\alpha_y = r^2
+\]</span></p>
+<ol start="6" type="1">
+<li>OpenPBR proposed mapping 2023</li>
+</ol>
+<p><span class="math display">\[
+\alpha_x = \min(\frac{r^2}{\sqrt{1-a}}, 1.0)
+\]</span></p>
+<p><span class="math display">\[
+\alpha_y = r^2 \sqrt{1-a}
+\]</span></p>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/blender/blender">Blender</a>中cycles用的Burley
+2012：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// intern\cycles\kernel\osl\shaders\node_principled_bsdf.osl</span><br><br><span class="hljs-comment">// Roughness默认为0.5</span><br><br><span class="hljs-type">float</span> r2 = clamp(Roughness, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>);<br>r2 = r2 * r2;<br><span class="hljs-type">float</span> alpha_x = r2, alpha_y = r2;<br><br><span class="hljs-built_in">vector</span> T = Tangent;<br><span class="hljs-keyword">if</span> (Anisotropic &gt; <span class="hljs-number">0.0</span>) &#123;<br><span class="hljs-type">float</span> aspect = <span class="hljs-built_in">sqrt</span>(<span class="hljs-number">1.0</span> - clamp(Anisotropic, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>) * <span class="hljs-number">0.9</span>);<br>alpha_x /= aspect;<br>alpha_y *= aspect;<br><span class="hljs-keyword">if</span> (AnisotropicRotation != <span class="hljs-number">0.0</span>)<br>  T = rotate(T, AnisotropicRotation * M_2PI, point(<span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">0.0</span>), Normal);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://github.com/EpicGames/UnrealEngine">UE</a>中默认使用Kulla
+2017：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Engine\Shaders\Private\BRDF.ush</span><br><br><span class="hljs-comment">// Alpha为Roughness的平方</span><br><br><span class="hljs-comment">// Convert a roughness and an anisotropy factor into GGX alpha values respectively for the major and minor axis of the tangent frame</span><br><span class="hljs-type">void</span> <span class="hljs-title function_">GetAnisotropicRoughness</span><span class="hljs-params">(<span class="hljs-type">float</span> Alpha, <span class="hljs-type">float</span> Anisotropy, out <span class="hljs-type">float</span> ax, out <span class="hljs-type">float</span> ay)</span><br>&#123;<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> 1</span><br>	<span class="hljs-comment">// Anisotropic parameters: ax and ay are the roughness along the tangent and bitangent	</span><br>	<span class="hljs-comment">// Kulla 2017, &quot;Revisiting Physically Based Shading at Imageworks&quot;</span><br>	ax = max(Alpha * (<span class="hljs-number">1.0</span> + Anisotropy), <span class="hljs-number">0.001f</span>);<br>	ay = max(Alpha * (<span class="hljs-number">1.0</span> - Anisotropy), <span class="hljs-number">0.001f</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br>	<span class="hljs-type">float</span> K = <span class="hljs-built_in">sqrt</span>(<span class="hljs-number">1.0f</span> - <span class="hljs-number">0.95f</span> * Anisotropy);<br>	ax = max(Alpha / K, <span class="hljs-number">0.001f</span>);<br>	ay = max(Alpha * K, <span class="hljs-number">0.001f</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><a
+target="_blank" rel="noopener" href="https://unity.com/releases/editor/archive">Unity</a>的HDRP中使用Kulla
+2017：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// 2021.3.11f1c2\Editor\Data\Resources\PackageManager\BuiltInPackages\com.unity.render-pipelines.core\ShaderLibrary\CommonMaterial.hlsl</span><br><br>real <span class="hljs-title function_">PerceptualRoughnessToRoughness</span><span class="hljs-params">(real perceptualRoughness)</span><br>&#123;<br>    <span class="hljs-keyword">return</span> perceptualRoughness * perceptualRoughness;<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">ConvertValueAnisotropyToValueTB</span><span class="hljs-params">(real value, real anisotropy, out real valueT, out real valueB)</span><br>&#123;<br>    <span class="hljs-comment">// Use the parametrization of Sony Imageworks.</span><br>    <span class="hljs-comment">// Ref: Revisiting Physically Based Shading at Imageworks, p. 15.</span><br>    valueT = value * (<span class="hljs-number">1</span> + anisotropy);<br>    valueB = value * (<span class="hljs-number">1</span> - anisotropy);<br>&#125;<br><br><span class="hljs-type">void</span> <span class="hljs-title function_">ConvertAnisotropyToRoughness</span><span class="hljs-params">(real perceptualRoughness, real anisotropy, out real roughnessT, out real roughnessB)</span><br>&#123;<br>    real roughness = PerceptualRoughnessToRoughness(perceptualRoughness);<br>    ConvertValueAnisotropyToValueTB(roughness, anisotropy, roughnessT, roughnessB);<br>&#125;<br></code></pre></td></tr></table></figure>
+<section class="footnotes">
+<div class="footnote-list">
+<ol>
+<li>
+<span id="fn:1" class="footnote-text"><span>OpenPBR issue: <a
+target="_blank" rel="noopener" href="https://github.com/AcademySoftwareFoundation/OpenPBR/issues/82">Anisotropy
+parametrisation · Issue #82 · AcademySoftwareFoundation/OpenPBR</a>
+<a href="#fnref:1" rev="footnote" class="footnote-backref">
+↩︎</a></span></span>
+</li>
+</ol>
+</div>
+</section>
 
                 
               </div>
@@ -430,7 +439,11 @@ alt="健身饮食指南" />
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/MISC/">#MISC</a>
+        <a href="/tags/CG/">#CG</a>
+      
+        <a href="/tags/UE/">#UE</a>
+      
+        <a href="/tags/Unity/">#Unity</a>
       
     </div>
   
@@ -442,8 +455,8 @@ alt="健身饮食指南" />
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>科学饮食与锻炼</div>
-      <div>https://reddish.fun/posts/Article/keep-healthy/</div>
+      <div>specular anisotropic源码分析</div>
+      <div>https://reddish.fun/posts/Article/specular-anisotropy/</div>
     </div>
     <div class="license-meta">
       
@@ -455,7 +468,7 @@ alt="健身饮食指南" />
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年1月3日</div>
+          <div>2024年1月18日</div>
         </div>
       
       
@@ -487,18 +500,12 @@ alt="健身饮食指南" />
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/posts/Notebook/Docker-note/" title="Docker笔记">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Docker笔记</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/posts/Article/estimation/" title="估计">
-                        <span class="hidden-mobile">估计</span>
+                      <a href="/posts/Article/OpenPBR-intro/" title="OpenPBR介绍">
+                        <span class="hidden-mobile">OpenPBR介绍</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
