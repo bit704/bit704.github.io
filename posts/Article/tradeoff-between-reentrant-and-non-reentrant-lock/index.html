@@ -24,7 +24,7 @@
 <meta property="og:description" content="观点整理">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-12-27T06:23:12.484Z">
-<meta property="article:modified_time" content="2024-01-08T12:34:39.241Z">
+<meta property="article:modified_time" content="2024-01-18T19:00:28.658Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CS">
 <meta name="twitter:card" content="summary_large_image">
@@ -255,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          669 字
+          840 字
         
       </span>
     
@@ -322,6 +322,10 @@ mutexes</a>）</p>
 mutex的情况，我想将来遇到了都可以借助wrapper改用non-recursive
 mutex，代码只会更清晰。（<a
 target="_blank" rel="noopener" href="https://www.cnblogs.com/Solstice/archive/2010/02/12/multithreaded_server.html">多线程服务器的常用编程模型</a>）</p>
+</blockquote>
+<p>《C++并发编程实战》第二版（Anthony Williams著）认为：</p>
+<blockquote>
+<p>我们通常可以采取更好的方法（避免使用递归锁）：根据这两个公有函数的共同部分，提取出一个新的私有函数，新函数由这两个公有函数调用，而它假定互斥已经被锁住，遂无须重复加锁。经过上面的改良设计，读者可以更进一步地仔细推敲，什么情形应当调用新函数，以及数据在该情形中处于什么状态。</p>
 </blockquote>
 <p><strong>认为可重入锁更好</strong>的一方认为，没有一定需要不可重入锁的业务场景。</p>
 <p>HBLOG认为：</p>

@@ -24,7 +24,7 @@
 <meta property="og:description" content="个人总结">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-02T17:24:29.943Z">
-<meta property="article:modified_time" content="2024-01-17T12:28:27.083Z">
+<meta property="article:modified_time" content="2024-01-19T11:54:01.122Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="Log">
 <meta name="twitter:card" content="summary_large_image">
@@ -255,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          24k 字
+          25k 字
         
       </span>
     
@@ -811,6 +811,9 @@ target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/language/
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-string">&quot;end&quot;</span> &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-comment">// 优先</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span>... Args&gt;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-type">const</span> T &amp;firstArg, <span class="hljs-type">const</span> Args &amp;...args)</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; firstArg &lt;&lt; <span class="hljs-string">&quot; &quot;</span> &lt;&lt; <span class="hljs-keyword">sizeof</span>...(args) &lt;&lt; std::endl; <span class="hljs-comment">// sizeof ... args代表获取参数个数</span><br>	<span class="hljs-built_in">print</span>(args...);<br>&#125;<br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span>... Types&gt;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">print</span><span class="hljs-params">(<span class="hljs-type">const</span> Types &amp;...args)</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-string">&quot;never&quot;</span> &lt;&lt; std::endl;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;A&#x27;</span>, <span class="hljs-string">&#x27;B&#x27;</span>, <span class="hljs-string">&#x27;C&#x27;</span>);<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">/*</span><br><span class="hljs-comment">输出</span><br><span class="hljs-comment">A 2</span><br><span class="hljs-comment">B 1</span><br><span class="hljs-comment">C 0</span><br><span class="hljs-comment">end</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
 <h3 id="并发编程">并发编程❔</h3>
 <p>原子操作库提供了头文件<code>atomic</code>，线程支持库提供了头文件<code>thread</code>、<code>mutex</code>、<code>condition_variable</code>和<code>future</code>。</p>
+<p>《C++并发编程实战》第二版——各并发程序库的简要对比：</p>
+<p><img
+src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-19-comparison-of-concurrent-libraries.jpg" srcset="/img/loading.gif" lazyload /></p>
 <h2 id="c14">2.5 C++14</h2>
 <h3 id="变量模板">变量模板❔</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br><span class="hljs-keyword">constexpr</span> T kPI = <span class="hljs-built_in">T</span>(<span class="hljs-number">3.1415926535897932385</span>);<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; kPI&lt;<span class="hljs-type">int</span>&gt; &lt;&lt; std::endl;<br>	std::cout &lt;&lt; kPI&lt;<span class="hljs-type">double</span>&gt; &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -846,7 +849,7 @@ Homeworld</a></p>
 target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/default_comparisons">Default
 comparisons (since C++20) - cppreference.com</a></p>
 <h3 id="约束模板类型">约束模板类型❔</h3>
-<p>利用SFINAE（Substitution Failure Is Not An
+<p>利用<strong>SFINAE</strong>（Substitution Failure Is Not An
 Error）机制来约束模板类型。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-comment">// C++11</span><br><span class="hljs-comment">// template &lt;typename T, std::enable_if_t&lt;std::is_integral_v&lt;T&gt;, T&gt; = 0&gt;</span><br><span class="hljs-comment">// T add(T a, T b)</span><br><span class="hljs-comment">// &#123;</span><br><span class="hljs-comment">// 	return a + b;</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// C++20</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> integral = std::is_integral_v&lt;T&gt;;<br><br><span class="hljs-keyword">template</span> &lt;integral T&gt;<br><span class="hljs-function">T <span class="hljs-title">add</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> a + b;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h1 id="计算机基础">3 计算机基础</h1>
@@ -854,15 +857,27 @@ Error）机制来约束模板类型。</p>
 <h3 id="冯诺曼结构">冯诺曼结构❔</h3>
 <p>存储器、运算器、控制器、输出设备、输入设备。</p>
 <h3 id="cpu性能取决于">CPU性能取决于❔</h3>
-<p>CPU执行时间 = CPU时钟周期数/主频 = (指令条数xCPI)/主频</p>
+<p>CPU执行时间 = CPU时钟周期数 / 主频 = (指令条数 * CPI) / 主频</p>
 <p>CPI：Clock cycle Per Instruction</p>
 <h3 id="什么是指令流水线">什么是指令流水线❔</h3>
 <p>指令流水线是把指令分解为若干子过程，通过将每个子过程与其他子过程并行执行，来提高计算机的吞吐率的技术。</p>
 <h3 id="chs和lba寻址方式">CHS和LBA寻址方式❔</h3>
 <p>CHS（Cylinder、Head、Sector）使用柱面号C、磁头号H和扇区号S寻址。</p>
 <p>LBA（Logical Block Addressing）通过逻辑块寻址：LBA = (S + H * NS + C
-* NH* NS) - 1。其中NH、NS为每柱面磁头数、每磁道扇区数。</p>
+* NH * NS) - 1。其中NH、NS为每柱面磁头数、每磁道扇区数。</p>
 <h2 id="操作系统">3.2 操作系统</h2>
+<h3 id="进程线程协程区别">进程、线程、协程区别❔</h3>
+<p>进程是资源分配和拥有的基本单位，线程是由进程创建的程序执行的基本单位。协程是比线程更加轻量级的存在，进程、线程切换都由操作系统内核控制，而协程切换由程序自己控制，不需要进入内核态，完全在用户态运行
+。</p>
+<p>进程持有CPU资源、内存资源、文件资源和句柄等，线程持有程序计数器、寄存器、栈和状态字，协程持有自己的寄存器上下文和栈。</p>
+<h3 id="进程调度算法有哪些">进程调度算法有哪些❔</h3>
+<p>先来先服务（first come first server）、最短作业优先（shortest job
+first）、最短剩余时间优先（shortest remaining time
+next）、轮转调度（Round Robin Scheduling）、优先级调度（Priority
+Scheduling）、多级反馈队列调度（Multilevel Feedback Queue
+Scheduling）。</p>
+<h3 id="用户态切换到内核态的方式">用户态切换到内核态的方式❔</h3>
+<p>系统调用、异常、中断。</p>
 <h3 id="shell换行方式">shell换行方式❔</h3>
 <p>主流的shell有bash、cmd、powershell、fish、tcsh、xonsh、zsh等。</p>
 <p>bash、cmd、powershell的<strong>转义字符</strong>分别为<code>\</code>、<code>^</code>、<code>`</code>，转义字符放在行尾表示转义换行符，即换行后继续输入。</p>
