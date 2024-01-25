@@ -24,7 +24,7 @@
 <meta property="og:description" content="个人总结">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-02T17:24:29.943Z">
-<meta property="article:modified_time" content="2024-01-22T19:15:06.164Z">
+<meta property="article:modified_time" content="2024-01-25T20:13:42.795Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="Log">
 <meta name="twitter:card" content="summary_large_image">
@@ -352,11 +352,14 @@ unit）。描述一个具有<strong>文件作用域</strong>的变量时，它�
 id="为什么可以在一条声明中多次使用同一个限定符">为什么可以在一条声明中多次使用同一个限定符❔</h3>
 <p>C99 为类型限定符增加了一个新属性：幂等（idempotent）。</p>
 <h3
-id="在文件间共享const数据有什么方法">在文件间共享const数据有什么方法❔</h3>
+id="在文件间共享const变量有什么方法">在文件间共享const变量有什么方法❔</h3>
 <p>可以采用两个策略。</p>
 <ol type="1">
-<li>遵循外部变量的常用规则，即在一个文件中使用定义式声明，在其他文件中使用引用式声明（用extern关键字）。</li>
-<li>把const变量放在一个头文件中，用关键字static声明，然后在其他文件中包含该头文件。相当于给每个文件提供了一个单独的数据副本。</li>
+<li><p>遵循外部变量的常用规则，即在一个文件中使用定义式声明，在其他文件中使用引用式声明（用extern关键字）。</p>
+<blockquote>
+<p>注意，extern用于普通变量时，只需要在声明处加extern；用于const变量时，声明和定义处都需要加extern。</p>
+</blockquote></li>
+<li><p>把const变量放在一个头文件中，用关键字static声明，然后在其他文件中包含该头文件。相当于给每个文件提供了一个单独的数据副本。</p></li>
 </ol>
 <h3 id="volatile用法">volatile用法❔</h3>
 <p>volatile限定符告知计算机，代理（而不是变量所在的程序）可以改变该变量的值。例如，一个地址上可能储存着当前的时钟时间，无论程序做什么，地址上的值都随时间的变化而改变。或者一个地址用于接受另一台计算机传入的信息。</p>
