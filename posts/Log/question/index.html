@@ -18,13 +18,13 @@
   
     <meta name="description" content="个人总结">
 <meta property="og:type" content="article">
-<meta property="og:title" content="计算机相关Q&amp;A集锦">
+<meta property="og:title" content="C&#x2F;C++疑问集锦">
 <meta property="og:url" content="https://reddish.fun/posts/Log/question/index.html">
 <meta property="og:site_name" content="Homeworld">
 <meta property="og:description" content="个人总结">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-02T17:24:29.943Z">
-<meta property="article:modified_time" content="2024-02-01T16:26:38.252Z">
+<meta property="article:modified_time" content="2024-02-07T11:26:18.226Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="Log">
 <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +33,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>计算机相关Q&amp;A集锦 - Homeworld</title>
+  <title>C/C++疑问集锦 - Homeworld</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -231,7 +231,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="计算机相关Q&amp;A集锦"></span>
+            <span id="subtitle" data-typed-text="C/C++疑问集锦"></span>
           
         </div>
 
@@ -255,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          26k 字
+          24k 字
         
       </span>
     
@@ -295,7 +295,7 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">计算机相关Q&amp;A集锦</h1>
+            <h1 style="display: none">C/C++疑问集锦</h1>
             
             
               <div class="markdown-body">
@@ -878,53 +878,6 @@ comparisons (since C++20) - cppreference.com</a></p>
 <p>利用<strong>SFINAE</strong>（Substitution Failure Is Not An
 Error）机制来约束模板类型。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-comment">// C++11</span><br><span class="hljs-comment">// template &lt;typename T, std::enable_if_t&lt;std::is_integral_v&lt;T&gt;, T&gt; = 0&gt;</span><br><span class="hljs-comment">// T add(T a, T b)</span><br><span class="hljs-comment">// &#123;</span><br><span class="hljs-comment">// 	return a + b;</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// C++20</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> integral = std::is_integral_v&lt;T&gt;;<br><br><span class="hljs-keyword">template</span> &lt;integral T&gt;<br><span class="hljs-function">T <span class="hljs-title">add</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> a + b;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h1 id="计算机基础">3 计算机基础</h1>
-<h2 id="计算机组成原理">3.1 计算机组成原理</h2>
-<h3 id="冯诺曼结构">冯诺曼结构❔</h3>
-<p>存储器、运算器、控制器、输出设备、输入设备。</p>
-<h3 id="cpu性能取决于">CPU性能取决于❔</h3>
-<p>CPU执行时间 = CPU时钟周期数 / 主频 = (指令条数 * CPI) / 主频</p>
-<p>CPI：Clock cycle Per Instruction</p>
-<h3 id="什么是指令流水线">什么是指令流水线❔</h3>
-<p>指令流水线是把指令分解为若干子过程，通过将每个子过程与其他子过程并行执行，来提高计算机的吞吐率的技术。</p>
-<h3 id="chs和lba寻址方式">CHS和LBA寻址方式❔</h3>
-<p>CHS（Cylinder、Head、Sector）使用柱面号C、磁头号H和扇区号S寻址。</p>
-<p>LBA（Logical Block Addressing）通过逻辑块寻址：LBA = (S + H * NS + C
-* NH * NS) - 1。其中NH、NS为每柱面磁头数、每磁道扇区数。</p>
-<h2 id="操作系统">3.2 操作系统</h2>
-<h3 id="进程线程协程区别">进程、线程、协程区别❔</h3>
-<p>进程是资源分配和拥有的基本单位，线程是由进程创建的程序执行的基本单位。协程是比线程更加轻量级的存在，进程、线程切换都由操作系统内核控制，而协程切换由程序自己控制，不需要进入内核态，完全在用户态运行
-。</p>
-<p>进程持有CPU资源、内存资源、文件资源和句柄等，线程持有程序计数器、寄存器、栈和状态字，协程持有自己的寄存器上下文和栈。</p>
-<h3 id="进程调度算法有哪些">进程调度算法有哪些❔</h3>
-<p>先来先服务（first come first server）、最短作业优先（shortest job
-first）、最短剩余时间优先（shortest remaining time
-next）、轮转调度（Round Robin Scheduling）、优先级调度（Priority
-Scheduling）、多级反馈队列调度（Multilevel Feedback Queue
-Scheduling）。</p>
-<h3 id="用户态切换到内核态的方式">用户态切换到内核态的方式❔</h3>
-<p>系统调用、异常、中断。</p>
-<h3 id="shell换行方式">shell换行方式❔</h3>
-<p>主流的shell有bash、cmd、powershell、fish、tcsh、xonsh、zsh等。</p>
-<p>bash、cmd、powershell的<strong>转义字符</strong>分别为<code>\</code>、<code>^</code>、<code>`</code>，转义字符放在行尾表示转义换行符，即换行后继续输入。</p>
-<h3 id="悲观锁和乐观锁">悲观锁和乐观锁❔</h3>
-<p><strong>悲观锁</strong>直接加锁阻塞事务。<strong>乐观锁</strong>读时不加锁，写时检查数据是否被更新，若更新重新读，不断循环。用CAS（Compare-and-Swap）策略可以实现乐观锁，不需要真正的加锁，只是循环重试。</p>
-<h3 id="java中的锁">Java中的锁❔</h3>
-<p>Java有两种加锁的方式：synchronized关键字、Lock接口的实现类。</p>
-<p>synchronized锁是<strong>可重入</strong>的。第一次执行到synchronized代码块时，锁对象变成<strong>偏向锁</strong>（通过CAS修改对象头里的锁标志位）（偏向于第一个获得它的线程的锁）。执行完同步代码块后，线程并不会主动释放偏向锁。第二次到达同步代码块时，线程会判断此时持有锁的线程是否是自己（持有锁的线程ID在对象头里），如果是则正常往下执行。由于之前没有释放锁，这里也就不需要重新加锁。如果自始至终使用锁的线程只有一个，很明显偏向锁几乎没有额外开销，性能极高。一旦有第二个线程加入锁竞争（发生阻塞），偏向锁就升级为<strong>轻量级锁（自旋锁）</strong>，没有抢到锁的线程将自旋。如果锁竞争情况严重，某个达到最大自旋次数的线程，会将轻量级锁升级为<strong>重量级锁</strong>，此时没有抢到锁的线程将挂起等待被唤醒。</p>
-<p>参考：<a
-target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/aWm3SWDLIh7FbUkzALZ-bQ">各种锁及其Java实现</a></p>
-<h2 id="计算机网络">3.3 计算机网络</h2>
-<h3 id="网络模型">网络模型❔</h3>
-<p>OSI七层网络模型：应用层、表示层、会话层、运输层、网络层、链路层、物理层。</p>
-<p>TCP/IP四层网络模型：应用层、运输层、网际层、接口层。</p>
-<h3 id="http报文结构">HTTP报文结构❔</h3>
-<p>请求报文：请求行、请求头、请求体</p>
-<p>请求行：请求方法+请求URL+HTTP协议及版本</p>
-<p><code>POST /pow/index.html HTTP/1.1</code></p>
-<p>响应报文：响应行、响应头、响应体</p>
-<p>响应行：HTTP协议及版本+状态码+状态描述</p>
-<p><code>HTTP/1.1 404 Not Found</code></p>
 
                 
               </div>
@@ -970,7 +923,7 @@ target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/aWm3SWDLIh7FbUkz
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>计算机相关Q&amp;A集锦</div>
+      <div>C/C++疑问集锦</div>
       <div>https://reddish.fun/posts/Log/question/</div>
     </div>
     <div class="license-meta">
