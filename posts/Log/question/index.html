@@ -24,8 +24,9 @@
 <meta property="og:description" content="个人总结">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-02T17:24:29.943Z">
-<meta property="article:modified_time" content="2024-02-07T11:26:18.226Z">
+<meta property="article:modified_time" content="2024-02-09T02:32:19.959Z">
 <meta property="article:author" content="bit704">
+<meta property="article:tag" content="CPP">
 <meta property="article:tag" content="Log">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -255,7 +256,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          24k 字
+          25k 字
         
       </span>
     
@@ -853,6 +854,10 @@ src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-19-comparison-of-c
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span>... Args&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">sum</span><span class="hljs-params">(Args... args)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> (... + args);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>) &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="编译期if">编译期if❔</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-type">int</span> N, <span class="hljs-type">int</span>... Ns&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">sum</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-function"><span class="hljs-keyword">if</span> <span class="hljs-title">constexpr</span> <span class="hljs-params">(<span class="hljs-number">0</span> == <span class="hljs-keyword">sizeof</span>...(Ns))</span></span><br><span class="hljs-function">		<span class="hljs-keyword">return</span> N</span>;<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-keyword">return</span> N + <span class="hljs-built_in">sum</span>&lt;Ns...&gt;();<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-built_in">sum</span>&lt;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&gt;() &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="pmr">PMR❔</h3>
+<p>PMR即polymorphic memory
+resource，使用<code>std::pmr</code>命名空间下的<code>polymorphic_allocator</code>和<code>memory_resource</code>等类型，可以逐对象而不是逐类型指定内存分配器类型。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;string&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;array&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;memory_resource&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;cstddef&gt;</span></span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::array&lt;std::byte, 200000&gt; buf;<br>    std::pmr::monotonic_buffer_resource pool&#123;buf.<span class="hljs-built_in">data</span>(), buf.<span class="hljs-built_in">size</span>()&#125;;<br><br>    <span class="hljs-keyword">using</span> basic_string = std::basic_string&lt;<span class="hljs-type">char</span>, std::char_traits&lt;<span class="hljs-type">char</span>&gt;, std::pmr::polymorphic_allocator&lt;<span class="hljs-type">char</span>&gt;&gt;;<br><br>    std::vector&lt;std::basic_string&lt;<span class="hljs-type">char</span>, std::char_traits&lt;<span class="hljs-type">char</span>&gt;, std::pmr::polymorphic_allocator&lt;<span class="hljs-type">char</span>&gt;&gt;,<br>                std::pmr::polymorphic_allocator&lt;std::basic_string&lt;<span class="hljs-type">char</span>, std::char_traits&lt;<span class="hljs-type">char</span>&gt;, std::pmr::polymorphic_allocator&lt;<span class="hljs-type">char</span>&gt;&gt;&gt;&gt;<br>        <span class="hljs-built_in">coll</span>(&amp;pool);<br>    <span class="hljs-comment">// 简写为 std::pmr::vector&lt;std::pmr::string&gt; coll(&amp;pool);</span><br><br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; ++i)<br>    &#123;<br>        coll.<span class="hljs-built_in">emplace_back</span>(<span class="hljs-string">&quot;just a non-SSO string&quot;</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="如何利用缓存行大小">如何利用缓存行大小❔</h3>
 <p><code>std::hardware_destructive_interference_size</code>：作为两个对象之间的偏移量，以避免由于不同线程的不同运行时访问模式而导致的破坏性干扰（假共享）。</p>
 <p><code>std::hardware_constructive_interference_size</code>：作为两个对象的组合内存占用大小和基本对齐的限制，以促进它们之间的构造性干扰（真共享）。</p>
@@ -910,6 +915,8 @@ Error）机制来约束模板类型。</p>
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CPP/">#CPP</a>
       
         <a href="/tags/Log/">#Log</a>
       
@@ -1321,20 +1328,5 @@ Error）机制来约束模板类型。</p>
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
