@@ -24,7 +24,7 @@
 <meta property="og:description" content="个人总结">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-02T17:24:29.943Z">
-<meta property="article:modified_time" content="2024-02-09T02:32:19.959Z">
+<meta property="article:modified_time" content="2024-02-09T11:17:22.307Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CPP">
 <meta property="article:tag" content="Log">
@@ -303,8 +303,8 @@
                 
                 <p>个人总结</p>
 <span id="more"></span>
-<h1 id="c">1 C</h1>
-<h2 id="基础">1.1 基础</h2>
+<h1 id="c">C</h1>
+<h2 id="基础">1 基础</h2>
 <h3 id="char的具体实现是什么">char的具体实现是什么❔</h3>
 <p>有些C编译器把char实现为有符号类型，即char可表示的范围是-128-127。有些C编译器把char实现为无符号类型，即char可表示的范围是0-255。</p>
 <p>如不想由编译器决定，根据C90标准，C语言允许在关键字char前面使用signed或unsigned。</p>
@@ -384,7 +384,7 @@ id="函数指针和函数名可以互换使用吗">函数指针和函数名可�
 <p>可以。利用C11
 新增的泛型选择表达式定义一个泛型宏，根据参数类型选择最合适的数学函数版本。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> SQRT(X) _Generic((X), long double: sqrtl,  default: sqrt, float: sqrtf)(X)</span><br></code></pre></td></tr></table></figure>
-<h2 id="标准库">1.2 标准库</h2>
+<h2 id="标准库">2 标准库</h2>
 <h3 id="为什么不建议使用gets">为什么不建议使用<code>gets()</code>❔</h3>
 <p><code>gets()</code>唯一的参数是words，它无法检查数组是否装得下输入行，若输入的字符串过长，会导致缓冲区溢出（buffer
 overflow），可能引发段错误（Segmentation
@@ -405,7 +405,7 @@ ASCII或Unicode）表示文本（就像C字符串那样），该文件就是<str
 <p>C
 提供两种访问文件的途径：二进制模式和文本模式。在二进制模式中，程序可以访问文件的每个字节。而在文本模式中，程序所见的内容和文件的实际内容不同。程序以文本模式读取文件时，把本地环境表示的行末尾或文件结尾映射为C模式。例如，C文本模式程序在MS-DOS平台读取文件时，把<code>\r\n</code>转换成<code>\n</code>；写入文件时，把<code>\n</code>转换成<code>\r\n</code>。在其他环境中编写的文本模式程序也会做类似的转换。</p>
 <p>虽然C提供了二进制模式和文本模式，但是这两种模式的实现可以相同。前面提到过，因为UNIX使用一种文件格式，这两种模式<strong>对于UNIX实现而言</strong>完全相同。Linux也是如此。</p>
-<h2 id="内存管理">1.3 内存管理</h2>
+<h2 id="内存管理">3 内存管理</h2>
 <h3 id="什么是存储类别">什么是存储类别❔</h3>
 <p>不同的存储类别（storage class）具有不同的存储期（storage
 duration）、作用域（scope）和链接（linkage）。</p>
@@ -490,7 +490,7 @@ scope）。具有文件作用域的变量，从它的定义处到该定义所在
 <p>与自动变量不同的是，如果未初始化外部变量，它们会被<strong>自动初始化</strong>为0。这一原则也适用于外部定义的数组元素。与自动变量的情况不同，只能使用常量表达式初始化文件作用域变量。</p>
 <p>除了以上存储类别，还可以使用malloc和free进行动态内存分配，即<strong>动态分配存储期</strong>。</p>
 </blockquote>
-<h2 id="和c区别">1.4 和C++区别</h2>
+<h2 id="和c区别">4 和C++区别</h2>
 <p>准确来说C++和C只有交集关系，C89之后诞生C++98和C99，然后是C++1x和C11，后续渐行渐远（C++<strong>不是</strong>C的超集）。</p>
 <p>C++中有许多规则与C不同，这些不同使得C程序作为C++程序编译时可能以不同的方式运行或根本不能运行。</p>
 <h3 id="auto关键字用法">auto关键字用法❔</h3>
@@ -530,8 +530,8 @@ specifier），在C++中是类型说明符。</p>
 <p>变长数组；</p>
 <p>伸缩型数组成员；</p>
 <p>带可变数量参数的宏。</p>
-<h1 id="c-1">2 C++</h1>
-<h2 id="基础-1">2.1 基础</h2>
+<h1 id="c-1">C++</h1>
+<h2 id="基础-1">1 基础</h2>
 <h3
 id="对于类的特殊成员函数用户显式声明和编译器隐式声明的关系">对于类的特殊成员函数，用户显式声明和编译器隐式声明的关系❔</h3>
 <p><img
@@ -575,8 +575,7 @@ id="dynamic_cast和static_cast的区别"><code>dynamic_cast</code>和<code>stati
 <p>1）在类层次间进行上行转换时，两者一样。</p>
 <p>2）在类层次间进行下行转换时，<code>dynamic_cast</code>具有类型检查的功能，比<code>static_cast</code>更安全。转换失败<code>dynamic_cast</code>会返回空指针，而<code>static_cast</code>只会转换，难以发现错误。</p>
 <h3 id="constexpr和const区别">constexpr和const区别❔</h3>
-<p>constexpr是C++11引入的关键字，指示值或返回值是
-constant（常数），<strong>如果可能</strong>，将在编译时进行计算。</p>
+<p>constexpr是C++11引入的关键字，指示值或返回值（<strong>如果可能</strong>）将在编译时进行计算。</p>
 <p>const并未区分出编译期常量和运行期常量，constexpr限定在了编译期常量。因此可以用函数返回值给const变量赋值，但不能用其给constexpr变量赋值。</p>
 <p>constexpr可以置于类构造函数前。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// 修饰变量时constexpr包含了const的含义，完全相同</span><br><span class="hljs-keyword">constexpr</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">5</span>;<br><span class="hljs-keyword">constexpr</span> <span class="hljs-type">int</span> N = <span class="hljs-number">5</span>;<br><br><span class="hljs-comment">// 此时必须同时使用const、constexpr，constexpr表示NP指针本身是常量表达式，而const表示指向的值是一个常量</span><br><span class="hljs-type">static</span> <span class="hljs-keyword">constexpr</span> <span class="hljs-type">int</span> N = <span class="hljs-number">3</span>;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">constexpr</span> <span class="hljs-type">const</span> <span class="hljs-type">int</span> *NP = &amp;N;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-comment">// C++11中对成员函数constexpr包含了const的含义</span><br><span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span></span>;<br><span class="hljs-comment">// 以后可能必须写成</span><br><span class="hljs-function"><span class="hljs-keyword">constexpr</span> <span class="hljs-type">void</span> <span class="hljs-title">f</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br></code></pre></td></tr></table></figure>
@@ -703,7 +702,7 @@ id="c模板的定义是否只能放在头文件中">C++模板的定义是否只�
 Endian即高位字节排放在内存的低地址端。以0x1234为例，Little
 Endian下0x34放在低地址端。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">is_little_endian_1</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-type">int</span> a = <span class="hljs-number">0x1234</span>;<br>    <span class="hljs-type">char</span> b = *(<span class="hljs-type">char</span> *)&amp;a; <span class="hljs-comment">// 取b等于a的低地址部分</span><br>    <span class="hljs-keyword">return</span> b == <span class="hljs-number">0x34</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">is_little_endian_2</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">union</span> <span class="hljs-title class_">NUM</span><br>    &#123;<br>        <span class="hljs-type">int</span> a;<br>        <span class="hljs-type">char</span> b;<br>    &#125; num;<br>    num.a = <span class="hljs-number">0x1234</span>;<br>    <span class="hljs-keyword">return</span> num.b == <span class="hljs-number">0x34</span>;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>    std::cout &lt;&lt; boolalpha &lt;&lt; <span class="hljs-built_in">is_little_endian_1</span>() &lt;&lt; endl;<br>    std::cout &lt;&lt; <span class="hljs-built_in">is_little_endian_2</span>() &lt;&lt; noboolalpha &lt;&lt; std::endl;<br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="标准库-1">2.2 标准库</h2>
+<h2 id="标准库-1">2 标准库</h2>
 <h3
 id="为什么stdstring没有emplace或emplace_back操作">为什么std::string没有emplace或emplace_back操作❔</h3>
 <p><code>std::vector&lt;T&gt;::emplace_back</code>的好处在于它直接在向量里构造类型为T的对象，而不是构造临时对象并拷贝。</p>
@@ -766,7 +765,7 @@ comparison，效果等同于直接使用<code>memcmp()</code>函数。</p>
 machine（Alpha、ARM、PowerPC等）上开销较大。</p>
 <p>获取-释放次序：<code>memory_order_consume</code>（C++17建议不用）、<code>memory_order_acquire</code>、<code>memory_order_release</code>、<code>memory_order_acq_rel</code>。</p>
 <p>宽松次序：<code>memory_order_relaxed</code>。无须任何额外的同步操作，线程间仅存的共有信息是每个变量的改动序列。</p>
-<h2 id="内存管理-1">2.3 内存管理</h2>
+<h2 id="内存管理-1">3 内存管理</h2>
 <h3 id="内存分区">内存分区❔</h3>
 <p>栈区：由编译器自动分配和释放，存放函数的参数值、局部变量的值等，大小受限于操作系统和硬件。</p>
 <p>堆区：由程序员手动分配和释放，通常用于动态内存分配，其大小受限于系统可用的虚拟内存大小。</p>
@@ -791,7 +790,7 @@ id="c03的auto_ptr为什么在c11被废弃">C++03的auto_ptr为什么在C++11被
 等容器兼容，论为失败品。</p>
 <h3 id="宽度位域有何作用">0宽度位域有何作用❔</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">stuff</span> <br>&#123;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> field1: <span class="hljs-number">30</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>       : <span class="hljs-number">2</span>; <span class="hljs-comment">// 使用未命名位域显式填充（一个位域成员不允许跨越两个unsigned int的边界）。</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> field2: <span class="hljs-number">4</span>;<br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span>       : <span class="hljs-number">0</span>; <span class="hljs-comment">// 0宽度位域，使下一个位域field3存在下一个unsigned int中。</span><br>    <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> field3: <span class="hljs-number">3</span>; <br>&#125;;<br></code></pre></td></tr></table></figure>
-<h2 id="c11">2.4 C++11</h2>
+<h2 id="c11">4 C++11</h2>
 <h3 id="新类型">新类型❔</h3>
 <p>支持64位（或更宽）的整型：<code>long long</code>
 <code>unsigned long long</code></p>
@@ -841,14 +840,14 @@ target="_blank" rel="noopener" href="https://zh.cppreference.com/w/cpp/language/
 <p>《C++并发编程实战》第二版中各并发程序库的简要对比：</p>
 <p><img
 src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-01-19-comparison-of-concurrent-libraries.jpg" srcset="/img/loading.gif" lazyload /></p>
-<h2 id="c14">2.5 C++14</h2>
+<h2 id="c14">5 C++14</h2>
 <h3 id="变量模板">变量模板❔</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">class</span> <span class="hljs-title class_">T</span>&gt;<br><span class="hljs-keyword">constexpr</span> T kPI = <span class="hljs-built_in">T</span>(<span class="hljs-number">3.1415926535897932385</span>);<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; kPI&lt;<span class="hljs-type">int</span>&gt; &lt;&lt; std::endl;<br>	std::cout &lt;&lt; kPI&lt;<span class="hljs-type">double</span>&gt; &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="decltypeauto">decltype(auto)❔</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-comment">// C++11</span><br><span class="hljs-comment">// template &lt;typename T, typename U&gt;</span><br><span class="hljs-comment">// auto func(T &amp;&amp;t, U &amp;&amp;u) -&gt; decltype(std::forward&lt;T&gt;(t) + std::forward&lt;U&gt;(u))</span><br><span class="hljs-comment">// &#123;</span><br><span class="hljs-comment">// 	return std::forward&lt;T&gt;(t) + std::forward&lt;U&gt;(u);</span><br><span class="hljs-comment">// &#125;;</span><br><br><span class="hljs-comment">// C++14</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-function"><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) <span class="hljs-title">func</span><span class="hljs-params">(T &amp;&amp;t, U &amp;&amp;u)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> std::forward&lt;T&gt;(t) + std::forward&lt;U&gt;(u);<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-built_in">func</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2.</span>) &lt;&lt; std::endl;<br>	std::cout &lt;&lt; std::boolalpha &lt;&lt; std::is_same_v&lt;<span class="hljs-keyword">decltype</span>(<span class="hljs-built_in">func</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2.</span>)), <span class="hljs-type">double</span>&gt; &lt;&lt; std::endl; <span class="hljs-comment">// true</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h3 id="智能指针-1">智能指针❔</h3>
 <p>补充了<code>make_unique</code>。</p>
-<h2 id="c17">2.6 C++17</h2>
+<h2 id="c17">6 C++17</h2>
 <h3 id="折叠表达式">折叠表达式❔</h3>
 <p>不使用显式递归的情况下使用可变参数模板。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span>... Args&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">sum</span><span class="hljs-params">(Args... args)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> (... + args);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-built_in">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>) &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -869,11 +868,15 @@ std::hardware_constructive_interference_size - cppreference.com</a></p>
 target="_blank" rel="noopener" href="https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0154r1.html">P0154R1
 constexpr std::hardware_{constructive,destructive}_interference_size
 (open-std.org)</a></p>
-<h2 id="c20">2.7 C++20</h2>
+<h2 id="c20">7 C++20</h2>
 <h3 id="协程">协程❔</h3>
 <p>参见笔记：<a
 href="https://reddish.fun/posts/Article/CPP-Coroutine/">C++协程 -
 Homeworld</a></p>
+<h3 id="consteval和constinit">consteval和constinit❔</h3>
+<p>当函数声明为constexpr时，只有当其所有参数都是编译期常量时，返回值才是编译期常量。</p>
+<p>consteval仅用于函数的声明，且调用该函数使用的参数<strong>必须</strong>是编译期常量，以保证该函数一定在编译期计算。</p>
+<p>constinit声明拥有静态或线程存储期的变量，不能和constexpr或consteval一同使用。声明引用时，constinit等价于constexpr；声明对象时，constexpr强制对象为const，而constinit不要求。</p>
 <h3 id="三路比较运算符">三路比较运算符❔</h3>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;compare&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;set&gt;</span></span><br><br><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Point</span><br>&#123;<br>	<span class="hljs-type">int</span> x;<br>	<span class="hljs-type">int</span> y;<br>	<span class="hljs-keyword">auto</span> <span class="hljs-built_in">operator</span>&lt;=&gt;(<span class="hljs-type">const</span> Point &amp;) <span class="hljs-type">const</span> = <span class="hljs-keyword">default</span>;<br>&#125;;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	Point pt1&#123;<span class="hljs-number">1</span>, <span class="hljs-number">1</span>&#125;, pt2&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>&#125;;<br>	std::set&lt;Point&gt; s;<br>	s.<span class="hljs-built_in">insert</span>(pt1);<br><br>	std::cout &lt;&lt; std::boolalpha<br>			  &lt;&lt; (pt1 == pt2) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>  <span class="hljs-comment">// false，operator==被隐式预置</span><br>			  &lt;&lt; (pt1 != pt2) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>  <span class="hljs-comment">// true</span><br>			  &lt;&lt; (pt1 &lt;  pt2) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>  <span class="hljs-comment">// true</span><br>			  &lt;&lt; (pt1 &lt;= pt2) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>  <span class="hljs-comment">// true</span><br>			  &lt;&lt; (pt1 &gt;  pt2) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>  <span class="hljs-comment">// false</span><br>			  &lt;&lt; (pt1 &gt;= pt2) &lt;&lt; <span class="hljs-string">&#x27; &#x27;</span>; <span class="hljs-comment">// false</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p><a
@@ -1328,5 +1331,20 @@ Error）机制来约束模板类型。</p>
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
