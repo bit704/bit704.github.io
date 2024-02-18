@@ -24,7 +24,7 @@
 <meta property="og:description" content="个人总结">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-02T17:24:29.943Z">
-<meta property="article:modified_time" content="2024-02-09T11:17:22.307Z">
+<meta property="article:modified_time" content="2024-02-18T12:33:15.847Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CPP">
 <meta property="article:tag" content="Log">
@@ -883,8 +883,7 @@ Homeworld</a></p>
 target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/language/default_comparisons">Default
 comparisons (since C++20) - cppreference.com</a></p>
 <h3 id="约束模板类型">约束模板类型❔</h3>
-<p>利用<strong>SFINAE</strong>（Substitution Failure Is Not An
-Error）机制来约束模板类型。</p>
+<p>利用concept约束模板类型。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span><br><br><span class="hljs-comment">// C++11</span><br><span class="hljs-comment">// template &lt;typename T, std::enable_if_t&lt;std::is_integral_v&lt;T&gt;, T&gt; = 0&gt;</span><br><span class="hljs-comment">// T add(T a, T b)</span><br><span class="hljs-comment">// &#123;</span><br><span class="hljs-comment">// 	return a + b;</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// C++20</span><br><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">concept</span> integral = std::is_integral_v&lt;T&gt;;<br><br><span class="hljs-keyword">template</span> &lt;integral T&gt;<br><span class="hljs-function">T <span class="hljs-title">add</span><span class="hljs-params">(T a, T b)</span></span><br><span class="hljs-function"></span>&#123;<br>	<span class="hljs-keyword">return</span> a + b;<br>&#125;<br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span><br><span class="hljs-function"></span>&#123;<br>	std::cout &lt;&lt; <span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) &lt;&lt; std::endl;<br>	<span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 
                 
