@@ -1,0 +1,1035 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN-spec" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <link rel="icon" href="https://bit704.oss-cn-beijing.aliyuncs.com/image/2023-10-17-logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="bit704">
+  <meta name="keywords" content="blog">
+  
+    <meta name="description" content="资料汇总">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于AI的材质研究">
+<meta property="og:url" content="https://reddish.fun/posts/Research/AI-based-Material-Research/index.html">
+<meta property="og:site_name" content="Homeworld">
+<meta property="og:description" content="资料汇总">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-03-04T10:58:36.131Z">
+<meta property="article:modified_time" content="2024-03-06T06:27:45.708Z">
+<meta property="article:author" content="bit704">
+<meta property="article:tag" content="CG">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>基于AI的材质研究 - Homeworld</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"reddish.fun","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":50,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 65vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>逝者如斯夫！不舍昼夜。</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>联系我</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-link-fill"></i>
+                <span>更多</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/links/">
+                    
+                    <span>外部链接</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="https://reddish.fun/posts/Article/additional/">
+                    
+                    <span>一些说明</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('https://bit704.oss-cn-beijing.aliyuncs.com/image/2022-11-15-spaceplane.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="基于AI的材质研究"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-03-04 18:58" pubdate>
+          2024年3月4日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          <!-- compatible with older versions-->
+          19k 字
+        
+      </span>
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">基于AI的材质研究</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>资料汇总</p>
+<span id="more"></span>
+<h1 id="论文">论文</h1>
+<p>分类并按年份排序。</p>
+<p>期刊会收录会议上的论文，比如TOG (SG), CGF
+(EG)。TOG每一年有六期，第四期收录SIGGRAPH，第六期收录SIGGRAPH
+Asia（仅Technical Papers，不包括Conference Proceedings）。</p>
+<h2 id="svbrdf">SVBRDF</h2>
+<p>估计Normal、Diffuse、Specular、Roughnesss四张贴图。</p>
+<h3 id="reflectance-modeling-by-neural-texture-synthesis">Reflectance
+Modeling by Neural Texture Synthesis</h3>
+<p>【TOG2016】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;aittala2016reflectance,</span><br><span class="hljs-template-variable">  title=&#123;Reflectance modeling by neural texture synthesis&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Aittala, Miika and Aila, Timo and Lehtinen, Jaakko&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics (ToG)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;35&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--13&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2016&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ACM New York, NY, USA&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="modeling-surface-appearance-from-a-single-photograph-using-self-augmented-convolutional-neural-networks">Modeling
+Surface Appearance from a Single Photograph using Self-augmented
+Convolutional Neural Networks</h3>
+<p>【TOG2017】【<a
+target="_blank" rel="noopener" href="https://github.com/msraig/self-augmented-net">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;li2017modeling,</span><br><span class="hljs-template-variable">  title=&#123;Modeling surface appearance from a single photograph using self-augmented convolutional neural networks&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Li, Xiao and Dong, Yue and Peers, Pieter and Tong, Xin&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics (ToG)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;36&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--11&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2017&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ACM New York, NY, USA&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="single-image-svbrdf-capture-with-a-rendering-aware-deep-network">Single-Image
+SVBRDF Capture with a Rendering-Aware Deep Network</h3>
+<p>【TOG2018】【<a
+target="_blank" rel="noopener" href="https://github.com/valentin-deschaintre/Single-Image-SVBRDF-Capture-rendering-loss">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;deschaintre2018single,</span><br><span class="hljs-template-variable">  title=&#123;Single-image svbrdf capture with a rendering-aware deep network&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Deschaintre, Valentin and Aittala, Miika and Durand, Fredo and Drettakis, George and Bousseau, Adrien&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics (ToG)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;37&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--15&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2018&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ACM New York, NY, USA&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="single-image-surface-appearance-modeling-with-self-augmented-cnns-and-inexact-supervision">Single
+Image Surface Appearance Modeling with Self-augmented CNNs and Inexact
+Supervision</h3>
+<p>【CGF2018】【<a
+target="_blank" rel="noopener" href="https://github.com/msraig/InexactSA">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;ye2018single,</span><br><span class="hljs-template-variable">  title=&#123;Single image surface appearance modeling with self-augmented cnns and inexact supervision&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Ye, Wenjie and Li, Xiao and Dong, Yue and Peers, Pieter and Tong, Xin&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;37&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;7&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;201--211&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2018&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="materials-for-masses-svbrdf-acquisition-with-a-single-mobile-phone-image">Materials
+for Masses: SVBRDF Acquisition with a Single Mobile Phone Image</h3>
+<p>【ECCV2018】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;li2018materials,</span><br><span class="hljs-template-variable">  title=&#123;Materials for masses: SVBRDF acquisition with a single mobile phone image&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Li, Zhengqin and Sunkavalli, Kalyan and Chandraker, Manmohan&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Proceedings of the European conference on computer vision (ECCV)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;72--87&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2018&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="flexible-svbrdf-capture-with-a-multi-image-deep-network">Flexible
+SVBRDF Capture with a Multi-Image Deep Network</h3>
+<p>【CGF2019】【<a
+target="_blank" rel="noopener" href="https://github.com/valentin-deschaintre/multi-image-deepNet-SVBRDF-acquisition">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;deschaintre2019flexible,</span><br><span class="hljs-template-variable">  title=&#123;Flexible svbrdf capture with a multi-image deep network&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Deschaintre, Valentin and Aittala, Miika and Durand, Fr&#123;\&#x27;e&#125;</span><span class="language-xml">do and Drettakis, George and Bousseau, Adrien&#125;,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer graphics forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;38&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--13&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2019&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="deep-inverse-rendering-for-high-resolution-svbrdf-estimation-from-an-arbitrary-number-of-images">Deep
+Inverse Rendering for High-resolution SVBRDF Estimation from an
+Arbitrary Number of Images</h3>
+<p>【TOG2019】【<a
+target="_blank" rel="noopener" href="https://github.com/msraig/DeepInverseRendering">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;gao2019deep,</span><br><span class="hljs-template-variable">  title=&#123;Deep inverse rendering for high-resolution SVBRDF estimation from an arbitrary number of images.&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Gao, Duan and Li, Xiao and Dong, Yue and Peers, Pieter and Xu, Kun and Tong, Xin&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Trans. Graph.&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;38&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;134--1&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2019&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="materialgan-reflectance-capture-using-a-generative-svbrdf-model">MaterialGAN:
+Reflectance Capture using a Generative SVBRDF Model</h3>
+<p>【SGA2020】【<a
+target="_blank" rel="noopener" href="https://github.com/tflsguoyu/materialgan">Github</a>】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@article&#123;guo2020materialgan,<br>  title=&#123;Materialgan: reflectance capture using a generative svbrdf model&#125;,<br>  author=&#123;Guo, Yu <span class="hljs-keyword">and </span>Smith, Cameron <span class="hljs-keyword">and </span>Ha&#123;\v&#123;s&#125;&#125;an, Milo&#123;\v&#123;s&#125;&#125; <span class="hljs-keyword">and </span>Sunkavalli, Kalyan <span class="hljs-keyword">and </span>Zhao, <span class="hljs-keyword">Shuang&#125;,</span><br><span class="hljs-keyword"></span>  <span class="hljs-keyword">journal=&#123;arXiv </span>preprint arXiv:<span class="hljs-number">2010</span>.<span class="hljs-number">00114</span>&#125;,<br>  year=&#123;<span class="hljs-number">2020</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="guided-fine-tuning-for-large-scale-material-transferm-flash-images">Guided
+Fine-Tuning for Large-Scale Material Transferm Flash Images</h3>
+<p>【CGF2020】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;deschaintre2020guided,</span><br><span class="hljs-template-variable">  title=&#123;Guided fine-tuning for large-scale material transfer&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Deschaintre, Valentin and Drettakis, George and Bousseau, Adrien&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;39&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;91--105&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2020&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3 id="deep-svbrdf-estimation-on-real-materials">Deep SVBRDF Estimation
+on Real Materials</h3>
+<p>【3DV2020】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;asselin2020deep,</span><br><span class="hljs-template-variable">  title=&#123;Deep SVBRDF estimation on real materials&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Asselin, Louis-Philippe and Laurendeau, Denis and Lalonde, Jean-Fran&#123;\c&#123;c&#125;</span><span class="language-xml">&#125;ois&#125;,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;2020 International Conference on 3D Vision (3DV)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1157--1166&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2020&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;IEEE&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="joint-svbrdf-recovery-and-synthesis-from-a-single-image-using-an-unsupervised-generative-adversarial-network">Joint
+SVBRDF Recovery and Synthesis From a Single Image using an Unsupervised
+Generative Adversarial Network</h3>
+<p>【EGSR2020】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;zhao2020joint,<br>  title=&#123;<span class="hljs-keyword">Joint </span>SVBRDF Recovery <span class="hljs-keyword">and </span>Synthesis From a Single Image using an Unsupervised Generative Adversarial Network.&#125;,<br>  author=&#123;Zhao, Yezi <span class="hljs-keyword">and </span>Wang, <span class="hljs-keyword">Beibei </span><span class="hljs-keyword">and </span>Xu, Yanning <span class="hljs-keyword">and </span>Zeng, Zheng <span class="hljs-keyword">and </span>Wang, Lu <span class="hljs-keyword">and </span>Holzschuch, Nicolas&#125;,<br>  <span class="hljs-keyword">booktitle=&#123;EGSR </span>(DL)&#125;,<br>  pages=&#123;<span class="hljs-number">53</span>--<span class="hljs-number">66</span>&#125;,<br>  year=&#123;<span class="hljs-number">2020</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="surfacenet-adversarial-svbrdf-estimation-from-a-single-image">SurfaceNet:
+Adversarial SVBRDF Estimation from a Single Image</h3>
+<p>【ICCV2021】【<a
+target="_blank" rel="noopener" href="https://github.com/perceivelab/surfacenet">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;vecchio2021surfacenet,</span><br><span class="hljs-template-variable">  title=&#123;Surfacenet: Adversarial svbrdf estimation from a single image&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Vecchio, Giuseppe and Palazzo, Simone and Spampinato, Concetto&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Proceedings of the IEEE/CVF International Conference on Computer Vision&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;12840--12848&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2021&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="generative-modelling-of-brdf-textures-from-flash-images">Generative
+Modelling of BRDF Textures from Flash Images</h3>
+<p>【arXiv2021】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@article&#123;henzler2021generative,<br>  title=&#123;Generative modelling of <span class="hljs-keyword">BRDF </span>textures from flash images&#125;,<br>  author=&#123;Henzler, Philipp <span class="hljs-keyword">and </span>Deschaintre, Valentin <span class="hljs-keyword">and </span>Mitra, Niloy <span class="hljs-keyword">J </span><span class="hljs-keyword">and </span>Ritschel, Tobias&#125;,<br>  <span class="hljs-keyword">journal=&#123;arXiv </span>preprint arXiv:<span class="hljs-number">2102</span>.<span class="hljs-number">11861</span>&#125;,<br>  year=&#123;<span class="hljs-number">2021</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="adversarial-single-image-svbrdf-estimation-with-hybrid-training">Adversarial
+Single-Image SVBRDF Estimation with Hybrid Training</h3>
+<p>【CGF2021】【<a
+target="_blank" rel="noopener" href="https://github.com/xilongzhou/Adversarial-Single-Image-SVBRDF-Estimation-with-Hybrid-Training">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;zhou2021adversarial,</span><br><span class="hljs-template-variable">  title=&#123;Adversarial Single-Image SVBRDF Estimation with Hybrid Training&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Zhou, Xilong and Kalantari, Nima Khademi&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;40&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;2&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;315--325&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2021&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="highlight-aware-two-stream-network-for-single-image-svbrdf-acquisition">Highlight-Aware
+Two-Stream Network for Single-Image SVBRDF Acquisition</h3>
+<p>【TOG2021】【<a
+target="_blank" rel="noopener" href="https://github.com/leisuzz/Highlight-Aware-Two-Stream-Network-for-Single-Image-SVBRDF-Acquisition">Github</a>】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@article&#123;guo2021highlight,<br>  title=&#123;Highlight-aware two-stream network for single-image SVBRDF acquisition&#125;,<br>  author=&#123;Guo, <span class="hljs-keyword">Jie </span><span class="hljs-keyword">and </span>Lai, <span class="hljs-keyword">Shuichang </span><span class="hljs-keyword">and </span>Tao, Chengzhi <span class="hljs-keyword">and </span>Cai, Yuelong <span class="hljs-keyword">and </span>Wang, Lei <span class="hljs-keyword">and </span>Guo, Yanwen <span class="hljs-keyword">and </span>Yan, Ling-Qi&#125;,<br>  <span class="hljs-keyword">journal=&#123;ACM </span>Transactions on Graphics (TOG)&#125;,<br>  volume=&#123;<span class="hljs-number">40</span>&#125;,<br>  number=&#123;<span class="hljs-number">4</span>&#125;,<br>  pages=&#123;<span class="hljs-number">1</span>--<span class="hljs-number">14</span>&#125;,<br>  year=&#123;<span class="hljs-number">2021</span>&#125;,<br>  publisher=&#123;ACM New York, NY, USA&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="tilegen-tileable-controllable-material-generation-and-capture">TileGen:
+Tileable, Controllable Material Generation and Capture</h3>
+<p>【SGA2022】【<a
+target="_blank" rel="noopener" href="https://github.com/xilongzhou/TileGen">Github</a>】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;zhou2022tilegen,<br>  title=&#123;Tilegen: Tileable, controllable material generation <span class="hljs-keyword">and </span>capture&#125;,<br>  author=&#123;Zhou, Xilong <span class="hljs-keyword">and </span>Hasan, Milos <span class="hljs-keyword">and </span>Deschaintre, Valentin <span class="hljs-keyword">and </span>Guerrero, Paul <span class="hljs-keyword">and </span>Sunkavalli, Kalyan <span class="hljs-keyword">and </span>Kalantari, Nima Khademi&#125;,<br>  <span class="hljs-keyword">booktitle=&#123;SIGGRAPH </span>Asia <span class="hljs-number">2022</span> Conference Papers&#125;,<br>  pages=&#123;<span class="hljs-number">1</span>--<span class="hljs-number">9</span>&#125;,<br>  year=&#123;<span class="hljs-number">2022</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="look-ahead-training-with-learned-reflectance-loss-for-single-image-svbrdf-estimation">Look-Ahead
+Training with Learned Reflectance Loss for Single-Image SVBRDF
+Estimation</h3>
+<p>【TOG2022】【<a
+target="_blank" rel="noopener" href="https://github.com/xilongzhou/lookahead_svbrdf">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;zhou2022look,</span><br><span class="hljs-template-variable">  title=&#123;Look-Ahead Training with Learned Reflectance Loss for Single-Image SVBRDF Estimation&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Zhou, Xilong and Kalantari, Nima Khademi&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics (TOG)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;41&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;6&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--12&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2022&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ACM New York, NY, USA&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="svbrdf-recovery-from-a-single-image-with-highlights-using-a-pretrained-generative-adversarial-network">SVBRDF
+Recovery From a Single Image with Highlights using a Pretrained
+Generative Adversarial Network</h3>
+<p>【CGF2022】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;wen2022svbrdf,</span><br><span class="hljs-template-variable">  title=&#123;SVBRDF Recovery from a Single Image with Highlights Using a Pre-trained Generative Adversarial Network&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Wen, Tao and Wang, Beibei and Zhang, Lei and Guo, Jie and Holzschuch, Nicolas&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;41&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;6&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;110--123&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2022&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="materia-single-image-high-resolution-material-capture-in-the-wild">MaterIA:
+Single Image High-Resolution Material Capture in the Wild</h3>
+<p>【CGF2022】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;martin2022materia,</span><br><span class="hljs-template-variable">  title=&#123;MaterIA: Single Image High-Resolution Material Capture in the Wild&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Martin, Rosalie and Roullier, Arthur and Rouffet, Romain and Kaiser, Adrien and Boubekeur, Tamy&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;41&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;2&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;163--177&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2022&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="data-driven-svbrdf-estimation-using-deep-embedded-clustering">Data
+Driven SVBRDF Estimation Using Deep Embedded Clustering</h3>
+<p>【Electronics2022】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;kim2022data,</span><br><span class="hljs-template-variable">  title=&#123;Data Driven SVBRDF Estimation Using Deep Embedded Clustering&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Kim, Yong Hwi and Lee, Kwan H&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;Electronics&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;11&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;19&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;3239&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2022&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;MDPI&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="deep-svbrdf-estimation-from-single-image-under-learned-planar-lighting">Deep
+SVBRDF Estimation from Single Image under Learned Planar Lighting</h3>
+<p>【SG2023】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;zhang2023deep,<br>  title=&#123;Deep SVBRDF Estimation from Single Image under Learned Planar Lighting&#125;,<br>  author=&#123;Zhang, Lianghao <span class="hljs-keyword">and </span>Gao, Fangzhou <span class="hljs-keyword">and </span>Wang, Li <span class="hljs-keyword">and </span>Yu, Minjing <span class="hljs-keyword">and </span>Cheng, <span class="hljs-keyword">Jiamin </span><span class="hljs-keyword">and </span>Zhang, <span class="hljs-keyword">Jiawan&#125;,</span><br><span class="hljs-keyword"></span>  <span class="hljs-keyword">booktitle=&#123;ACM </span>SIGGRAPH <span class="hljs-number">2023</span> Conference Proceedings&#125;,<br>  pages=&#123;<span class="hljs-number">1</span>--<span class="hljs-number">11</span>&#125;,<br>  year=&#123;<span class="hljs-number">2023</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="deepbasis-hand-held-single-image-svbrdf-capture-via-two-level-basis-material-model">DeepBasis:
+Hand-Held Single-Image SVBRDF Capture via Two-Level Basis Material
+Model</h3>
+<p>【SGA2023】【<a
+target="_blank" rel="noopener" href="https://github.com/CGLiWang/DeepBasis_SVBRDF">Github</a>】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;wang2023deepbasis,<br>  title=&#123;DeepBasis: Hand-Held Single-Image SVBRDF Capture via Two-Level <span class="hljs-keyword">Basis </span>Material Model&#125;,<br>  author=&#123;Wang, Li <span class="hljs-keyword">and </span>Zhang, Lianghao <span class="hljs-keyword">and </span>Gao, Fangzhou <span class="hljs-keyword">and </span>Zhang, <span class="hljs-keyword">Jiawan&#125;,</span><br><span class="hljs-keyword"></span>  <span class="hljs-keyword">booktitle=&#123;SIGGRAPH </span>Asia <span class="hljs-number">2023</span> Conference Papers&#125;,<br>  pages=&#123;<span class="hljs-number">1</span>--<span class="hljs-number">11</span>&#125;,<br>  year=&#123;<span class="hljs-number">2023</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="matfusion-a-generative-diffusion-model-for-svbrdf-capture">MatFusion:
+A Generative Diffusion Model for SVBRDF Capture</h3>
+<p>【SGA2023】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;sartor2023matfusion,</span><br><span class="hljs-template-variable">  title=&#123;Matfusion: a generative diffusion model for svbrdf capture&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Sartor, Sam and Peers, Pieter&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;SIGGRAPH Asia 2023 Conference Papers&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--10&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2023&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="opensvbrdf-a-database-of-measured-spatially-varying-reflectance">OpenSVBRDF:
+A Database of Measured Spatially-Varying Reflectance</h3>
+<p>【TOG2023】【<a target="_blank" rel="noopener" href="https://opensvbrdf.github.io/">Page</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;ma2023opensvbrdf,</span><br><span class="hljs-template-variable">  title=&#123;OpenSVBRDF: A Database of Measured Spatially-Varying Reflectance&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Ma, Xiaohe and Xu, Xianmin and Zhang, Leyao and Zhou, Kun and Wu, Hongzhi&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;42&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;6&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2023&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ASSOC COMPUTING MACHINERY 1601 Broadway, 10th Floor, NEW YORK, NY USA&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="ultra-high-resolution-svbrdf-recovery-from-a-single-image">Ultra-High
+Resolution SVBRDF Recovery from a Single Image</h3>
+<p>【TOG2023】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@article&#123;guo2023ultra,<br>  title=&#123;Ultra-High Resolution SVBRDF Recovery from a Single Image&#125;,<br>  author=&#123;Guo, <span class="hljs-keyword">Jie </span><span class="hljs-keyword">and </span>Lai, <span class="hljs-keyword">Shuichang </span><span class="hljs-keyword">and </span>Tu, Qinghao <span class="hljs-keyword">and </span>Tao, Chengzhi <span class="hljs-keyword">and </span>Zou, Changqing <span class="hljs-keyword">and </span>Guo, Yanwen&#125;,<br>  <span class="hljs-keyword">journal=&#123;ACM </span>Transactions on Graphics&#125;,<br>  year=&#123;<span class="hljs-number">2023</span>&#125;,<br>  publisher=&#123;ACM New York, NY&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="photomat-a-material-generator-learned-from-single-flash-photos">PhotoMat:
+A Material Generator Learned from Single Flash Photos</h3>
+<p>【SG2023】【<a
+target="_blank" rel="noopener" href="https://github.com/xilongzhou/PhotoMat">Github</a>】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;zhou2023photomat,<br>  title=&#123;Photomat: A material generator learned from single flash photos&#125;,<br>  author=&#123;Zhou, Xilong <span class="hljs-keyword">and </span>Hasan, Milos <span class="hljs-keyword">and </span>Deschaintre, Valentin <span class="hljs-keyword">and </span>Guerrero, Paul <span class="hljs-keyword">and </span>Hold-Geoffroy, Yannick <span class="hljs-keyword">and </span>Sunkavalli, Kalyan <span class="hljs-keyword">and </span>Kalantari, Nima Khademi&#125;,<br>  <span class="hljs-keyword">booktitle=&#123;ACM </span>SIGGRAPH <span class="hljs-number">2023</span> Conference Proceedings&#125;,<br>  pages=&#123;<span class="hljs-number">1</span>--<span class="hljs-number">11</span>&#125;,<br>  year=&#123;<span class="hljs-number">2023</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="brdf">BRDF</h2>
+<p>AI压缩BRDF测量数据，基于AI的BRDF模型。</p>
+<h3 id="efficient-reflectance-capture-using-an-autoencoder">Efficient
+Reflectance Capture Using an Autoencoder</h3>
+<p>【TOG2018】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;kang2018efficient,</span><br><span class="hljs-template-variable">  title=&#123;Efficient reflectance capture using an autoencoder.&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Kang, Kaizhang and Chen, Zimin and Wang, Jiaping and Zhou, Kun and Wu, Hongzhi&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Trans. Graph.&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;37&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;127--1&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2018&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3 id="unified-neural-encoding-of-btfs">Unified Neural Encoding of
+BTFs</h3>
+<p>【CGF2020】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;rainer2020unified,</span><br><span class="hljs-template-variable">  title=&#123;Unified neural encoding of BTFs&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Rainer, Gilles and Ghosh, Abhijeet and Jakob, Wenzel and Weyrich, Tim&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;39&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;2&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;167--178&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2020&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3 id="neural-btf-compression-and-interpolation">Neural BTF Compression
+and Interpolation</h3>
+<p>【CGF2020】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;rainer2019neural,</span><br><span class="hljs-template-variable">  title=&#123;Neural BTF compression and interpolation&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Rainer, Gilles and Jakob, Wenzel and Ghosh, Abhijeet and Weyrich, Tim&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;38&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;2&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;235--244&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2019&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="deepbrdf-a-deep-representation-for-manipulating-measured-brdf">DeepBRDF:
+A Deep Representation for Manipulating Measured BRDF</h3>
+<p>【CGF2020】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;hu2020deepbrdf,<br>  title=&#123;DeepBRDF: A deep representation for manipulating measured <span class="hljs-keyword">BRDF&#125;,</span><br><span class="hljs-keyword"></span>  author=&#123;Hu, <span class="hljs-keyword">Bingyang </span><span class="hljs-keyword">and </span>Guo, <span class="hljs-keyword">Jie </span><span class="hljs-keyword">and </span>Chen, Yanjun <span class="hljs-keyword">and </span>Li, Mengtian <span class="hljs-keyword">and </span>Guo, Yanwen&#125;,<br>  <span class="hljs-keyword">booktitle=&#123;Computer </span>Graphics Forum&#125;,<br>  volume=&#123;<span class="hljs-number">39</span>&#125;,<br>  number=&#123;<span class="hljs-number">2</span>&#125;,<br>  pages=&#123;<span class="hljs-number">157</span>--<span class="hljs-number">166</span>&#125;,<br>  year=&#123;<span class="hljs-number">2020</span>&#125;,<br>  <span class="hljs-keyword">organization=&#123;Wiley </span>Online Library&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="neural-brdf-representation-and-importance-sampling">Neural BRDF
+Representation and Importance Sampling</h3>
+<p>【CGF2021】【<a
+target="_blank" rel="noopener" href="https://github.com/asztr/Neural-BRDF">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@inproceedings</span><span class="hljs-template-variable">&#123;sztrajman2021neural,</span><br><span class="hljs-template-variable">  title=&#123;Neural BRDF representation and importance sampling&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Sztrajman, Alejandro and Rainer, Gilles and Ritschel, Tobias and Weyrich, Tim&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  booktitle=</span><span class="hljs-template-variable">&#123;Computer Graphics Forum&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;40&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;6&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;332--346&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2021&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  organization=</span><span class="hljs-template-variable">&#123;Wiley Online Library&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3 id="invertible-neural-brdf-for-object-inverse-rendering">Invertible
+Neural BRDF for Object Inverse Rendering</h3>
+<p>【PAMI2021】【<a
+target="_blank" rel="noopener" href="https://github.com/chenzhekl/iBRDF">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;chen2021invertible,</span><br><span class="hljs-template-variable">  title=&#123;Invertible neural BRDF for object inverse rendering&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Chen, Zhe and Nobuhara, Shohei and Nishino, Ko&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;IEEE Transactions on Pattern Analysis and Machine Intelligence&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;44&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;12&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;9380--9395&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2021&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;IEEE&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="a-compact-representation-of-measured-brdfs-using-neural-processes">A
+Compact Representation of Measured BRDFs Using Neural Processes</h3>
+<p>【TOG2021】【<a
+target="_blank" rel="noopener" href="https://github.com/Rendering-at-ZJU/NPs-BRDF">Github</a>】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;zheng2021compact,</span><br><span class="hljs-template-variable">  title=&#123;A compact representation of measured brdfs using neural processes&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Zheng, Chuankun and Zheng, Ruzhang and Wang, Rui and Zhao, Shuang and Bao, Hujun&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics (TOG)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;41&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;2&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--15&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2021&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ACM New York, NY&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3 id="neural-layered-brdfs">Neural Layered BRDFs</h3>
+<p>【SA2022】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;fan2022neural,<br>  title=&#123;Neural Layered <span class="hljs-keyword">BRDFs&#125;,</span><br><span class="hljs-keyword"></span>  author=&#123;Fan, <span class="hljs-keyword">Jiahui </span><span class="hljs-keyword">and </span>Wang, <span class="hljs-keyword">Beibei </span><span class="hljs-keyword">and </span>Hasan, Milos <span class="hljs-keyword">and </span>Yang, <span class="hljs-keyword">Jian </span><span class="hljs-keyword">and </span>Yan, Ling-Qi&#125;,<br>  <span class="hljs-keyword">booktitle=&#123;ACM </span>SIGGRAPH <span class="hljs-number">2022</span> Conference Proceedings&#125;,<br>  pages=&#123;<span class="hljs-number">1</span>--<span class="hljs-number">8</span>&#125;,<br>  year=&#123;<span class="hljs-number">2022</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="a-sparse-non-parametric-brdf-model">A Sparse Non-parametric BRDF
+Model</h3>
+<p>【TOG2022】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;tongbuasirilai2022sparse,</span><br><span class="hljs-template-variable">  title=&#123;A Sparse Non-parametric BRDF Model&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Tongbuasirilai, Tanaboon and Unger, Jonas and Guillemot, Christine and Miandji, Ehsan&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;41&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;5&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--18&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2022&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ACM New York, NY&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h2 id="material-shape">Material &amp; Shape</h2>
+<p>同时估计材质和形状。</p>
+<h3
+id="learning-to-reconstruct-shape-and-spatially-varying-reflectance-from-a-single-image">Learning
+to Reconstruct Shape and Spatially-Varying Reflectance from a Single
+Image</h3>
+<p>【TOG2018】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;li2018learning,</span><br><span class="hljs-template-variable">  title=&#123;Learning to reconstruct shape and spatially-varying reflectance from a single image&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Li, Zhengqin and Xu, Zexiang and Ramamoorthi, Ravi and Sunkavalli, Kalyan and Chandraker, Manmohan&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics (TOG)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;37&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;6&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;1--11&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2018&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  publisher=</span><span class="hljs-template-variable">&#123;ACM New York, NY, USA&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3
+id="learning-efficient-illumination-multiplexing-for-joint-capture-of-reflectance-and-shape">Learning
+Efficient Illumination Multiplexing for Joint Capture of Reflectance and
+Shape</h3>
+<p>【TOG2019】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@article&#123;kang2019learning,<br>  title=&#123;Learning efficient illumination <span class="hljs-keyword">multiplexing </span>for <span class="hljs-keyword">joint </span>capture of reflectance <span class="hljs-keyword">and </span><span class="hljs-keyword">shape.&#125;,</span><br><span class="hljs-keyword"></span>  author=&#123;Kang, Kaizhang <span class="hljs-keyword">and </span>Xie, Cihui <span class="hljs-keyword">and </span>He, Chengan <span class="hljs-keyword">and </span>Yi, Mingqi <span class="hljs-keyword">and </span>Gu, Minyi <span class="hljs-keyword">and </span>Chen, Zimin <span class="hljs-keyword">and </span>Zhou, Kun <span class="hljs-keyword">and </span>Wu, Hongzhi&#125;,<br>  <span class="hljs-keyword">journal=&#123;ACM </span>Trans. Graph.&#125;,<br>  volume=&#123;<span class="hljs-number">38</span>&#125;,<br>  number=&#123;<span class="hljs-number">6</span>&#125;,<br>  pages=&#123;<span class="hljs-number">165</span>--<span class="hljs-number">1</span>&#125;,<br>  year=&#123;<span class="hljs-number">2019</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="two-shot-spatially-varying-brdf-and-shape-estimation">Two-shot
+Spatially-varying BRDF and Shape Estimation</h3>
+<p>【CVPR2020】【<a
+target="_blank" rel="noopener" href="https://github.com/NVlabs/two-shot-brdf-shape">Github</a>】</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-comment">@inproceedings&#123;boss2020two,</span><br>  title=&#123;Two-shot spatially-varying brdf <span class="hljs-keyword">and</span> shape estimation&#125;,<br>  author=&#123;Boss, Mark <span class="hljs-keyword">and</span> Jampani, Varun <span class="hljs-keyword">and</span> Kim, Kihwan <span class="hljs-keyword">and</span> Lensch, Hendrik <span class="hljs-keyword">and</span> Kautz, Jan&#125;,<br>  booktitle=&#123;Proceedings of the IEEE/CVF Conference on Computer Vision <span class="hljs-keyword">and</span> Pattern Recognition&#125;,<br>  pages=&#123;<span class="hljs-number">3982</span>--<span class="hljs-number">3991</span>&#125;,<br>  year=&#123;<span class="hljs-number">2020</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="inverse-rendering-for-complex-indoor-scenes-shape-spatially-varying-lighting-and-svbrdf-from-a-single-image">Inverse
+Rendering for Complex Indoor Scenes: Shape, Spatially-Varying Lighting
+and SVBRDF from a Single Image</h3>
+<p>【CVPR2020】</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-comment">@inproceedings&#123;li2020inverse,</span><br>  title=&#123;Inverse rendering for complex indoor scenes: Shape, spatially-varying lighting <span class="hljs-keyword">and</span> svbrdf from a single image&#125;,<br>  author=&#123;Li, Zhengqin <span class="hljs-keyword">and</span> Shafiei, Mohammad <span class="hljs-keyword">and</span> Ramamoorthi, Ravi <span class="hljs-keyword">and</span> Sunkavalli, Kalyan <span class="hljs-keyword">and</span> Chandraker, Manmohan&#125;,<br>  booktitle=&#123;Proceedings of the IEEE/CVF Conference on Computer Vision <span class="hljs-keyword">and</span> Pattern Recognition&#125;,<br>  pages=&#123;<span class="hljs-number">2475</span>--<span class="hljs-number">2484</span>&#125;,<br>  year=&#123;<span class="hljs-number">2020</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="material-cont.">Material Cont.</h2>
+<p>其它材质相关。</p>
+<h3 id="neumip-multi-resolution-neural-materials">NeuMIP:
+Multi-Resolution Neural Materials</h3>
+<p>【TOG2021】</p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;kuznetsov2021neumip,</span><br><span class="hljs-template-variable">  title=&#123;NeuMIP: Multi-resolution neural materials&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Kuznetsov, Alexandr&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Transactions on Graphics (TOG)&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;40&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2021&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
+<h3 id="woven-fabric-capture-from-a-single-photo">Woven Fabric Capture
+from a Single Photo</h3>
+<p>【SGA2022】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;<span class="hljs-keyword">jin2022woven,</span><br><span class="hljs-keyword"></span>  title=&#123;Woven fabric capture from a single photo&#125;,<br>  author=&#123;<span class="hljs-keyword">Jin, </span>Wenhua <span class="hljs-keyword">and </span>Wang, <span class="hljs-keyword">Beibei </span><span class="hljs-keyword">and </span>Hasan, Milos <span class="hljs-keyword">and </span>Guo, Yu <span class="hljs-keyword">and </span>Marschner, Steve <span class="hljs-keyword">and </span>Yan, Ling-Qi&#125;,<br>  <span class="hljs-keyword">booktitle=&#123;SIGGRAPH </span>Asia <span class="hljs-number">2022</span> Conference Papers&#125;,<br>  pages=&#123;<span class="hljs-number">1</span>--<span class="hljs-number">8</span>&#125;,<br>  year=&#123;<span class="hljs-number">2022</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="a-semi-procedural-convolutional-material-prior">A
+Semi-procedural Convolutional Material Prior</h3>
+<p>【CGF2023】【<a
+target="_blank" rel="noopener" href="https://github.com/xilongzhou/Material_prior">Github</a>】</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">@inproceedings&#123;zhou2023semi,<br>  title=&#123;A Semi-Procedural Convolutional Material Prior&#125;,<br>  author=&#123;Zhou, Xilong <span class="hljs-keyword">and </span>Ha&#123;\v&#123;s&#125;&#125;an, Milo&#123;\v&#123;s&#125;&#125; <span class="hljs-keyword">and </span>Deschaintre, Valentin <span class="hljs-keyword">and </span>Guerrero, Paul <span class="hljs-keyword">and </span>Sunkavalli, Kalyan <span class="hljs-keyword">and </span>Kalantari, Nima Khademi&#125;,<br>  <span class="hljs-keyword">booktitle=&#123;Computer </span>Graphics Forum&#125;,<br>  year=&#123;<span class="hljs-number">2023</span>&#125;,<br>  <span class="hljs-keyword">organization=&#123;Wiley </span>Online Library&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h1 id="工具">工具</h1>
+<h2 id="软件">软件</h2>
+<p><a
+target="_blank" rel="noopener" href="https://www.adobe.com/hk_en/products/substance3d-sampler.html">Photogrammetry
+software for 3D capture - Adobe Substance 3D</a></p>
+<ul>
+<li>支持从照片生成材质。</li>
+<li>算法来自论文：MaterIA: Single Image High‐Resolution Material Capture
+in the Wild。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://boundingboxsoftware.com/materialize/">Bounding Box
+Software - Materialize</a></p>
+<ul>
+<li>支持从照片生成材质，编辑自由度很高。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://armorlab.org/">ArmorLab | PBR Texture
+Creation</a></p>
+<ul>
+<li>基于节点，支持从照片生成材质、超分、修复、平铺转化、文生图、文字辅助变种生成。最高16k。</li>
+</ul>
+<h2 id="在线">在线</h2>
+<p><a target="_blank" rel="noopener" href="https://toggle3d.com/ai">Generate PBR Material with AI
+(toggle3d.com)</a></p>
+<ul>
+<li>支持从照片生成材质、文生材质、材质属性调整。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://poly.cam/tools/ai-texture-generator">AI Texture
+Generator for Blender, Unreal, Unity | Polycam</a></p>
+<ul>
+<li>支持文生材质，可以附加参考图片。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://textures.digimans.ai/">Online AI PBR Material
+Generator - Digimans.ai</a></p>
+<ul>
+<li>支持从照片生成材质。</li>
+</ul>
+<h1 id="文章">文章</h1>
+<p><a
+target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/620852185">AI生成游戏中基于物理的渲染（PBR）贴图探索
+- 知乎 (zhihu.com)</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Research/" class="category-chain-item">Research</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CG/">#CG</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基于AI的材质研究</div>
+      <div>https://reddish.fun/posts/Research/AI-based-Material-Research/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>bit704</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年3月4日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/posts/Article/specular-anisotropy/" title="specular anisotropic实现">
+                        <span class="hidden-mobile">specular anisotropic实现</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <br> 欢迎光临 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
