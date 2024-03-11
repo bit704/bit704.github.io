@@ -24,7 +24,7 @@
 <meta property="og:description" content="常识记录">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-12-31T23:32:16.447Z">
-<meta property="article:modified_time" content="2024-03-06T06:19:01.386Z">
+<meta property="article:modified_time" content="2024-03-11T15:02:28.784Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CG">
 <meta name="twitter:card" content="summary_large_image">
@@ -255,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.1k 字
+          4.3k 字
         
       </span>
     
@@ -344,6 +344,8 @@ Deschaintre</a></p>
 <p><a target="_blank" rel="noopener" href="https://boksajak.github.io/">GFX Caffeinist Blog</a></p>
 <h1 id="材质">材质</h1>
 <h2 id="常用概念">常用概念</h2>
+<p>切线空间的法线贴图标准有DirectX和OpenGL两种。OpenGL标准用于Blender、Maya、Unity；DirectX标准用于Unreal、3ds
+Max。需要反转法线贴图的RGB通道中的Green通道（切线空间TBN三轴中的B）（法线贴图的值域为[0,1]，法线的值域为[1,-1]，需要映射）。</p>
 <p><span class="math inline">\(F_0\)</span>：0度菲涅尔反射值。</p>
 <p>菲涅尔反射值代表材质的镜面反射颜色与强度，是真实世界材质的核心测量数值。其中非金属具有非彩色的镜面反射颜色，而金属具有彩色的镜面反射颜色，即非金属的<span
 class="math inline">\(F_0\)</span>是一个float，金属的<span
@@ -960,20 +962,5 @@ class="math inline">\(0.21^{0.45}\approx 0.5\)</span>）。</p>
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
-            processEscapes: true
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax();
-        for (var i = 0; i < all.length; ++i)
-            all[i].SourceElement().parentNode.className += ' has-jax';
-    });
-</script>
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
