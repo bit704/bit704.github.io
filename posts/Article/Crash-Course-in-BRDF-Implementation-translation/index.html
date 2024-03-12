@@ -24,7 +24,7 @@
 <meta property="og:description" content="BRDF实现速成课">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-12T05:52:44.207Z">
-<meta property="article:modified_time" content="2024-01-17T17:11:39.222Z">
+<meta property="article:modified_time" content="2024-03-12T21:12:54.161Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CG">
 <meta name="twitter:card" content="summary_large_image">
@@ -554,7 +554,10 @@ aria-label="但是Heitz发表了一篇有趣的论文，该论文以程序方式
 <p>微面模型反射项定义为<sup><a class=n href="#ref30">[30]</a></sup><sup><a class=n href="#ref31">[31]</a></sup><sup><a class=n href="#ref32">[32]</a></sup>：
 <span class="math display">\[
 R=\frac{F(L,H)G(L,V,H)D(H)}{4(N \cdot L)(N \cdot V)}
-\]</span> 其中<span class="math inline">\(N\)</span>是着色法线，<span
+\]</span> &gt; 勘误：<span
+class="math inline">\(F(L,H)\)</span>应为<span
+class="math inline">\(F(V,H)\)</span>。</p>
+<p>其中<span class="math inline">\(N\)</span>是着色法线，<span
 class="math inline">\(H\)</span>是指向<span
 class="math inline">\(L\)</span>和<span
 class="math inline">\(V\)</span>之间方向的半向量（<span
