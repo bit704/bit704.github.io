@@ -24,7 +24,7 @@
 <meta property="og:description" content="资料汇总">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-08-11T04:12:59.416Z">
-<meta property="article:modified_time" content="2024-03-12T22:00:58.300Z">
+<meta property="article:modified_time" content="2024-03-19T09:42:18.124Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CG">
 <meta name="twitter:card" content="summary_large_image">
@@ -255,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          19k 字
+          20k 字
         
       </span>
     
@@ -308,7 +308,7 @@
 (EG)。TOG每一年有六期，第四期收录SIGGRAPH，第六期收录SIGGRAPH
 Asia（仅Technical Papers，不包括Conference Proceedings）。</p>
 <h2 id="svbrdf">SVBRDF</h2>
-<p>估计Normal、Diffuse、Specular、Roughnesss四张贴图。</p>
+<p>估计SVBRDF相关的解析BRDF模型的参数（如Diffuse、Specular、Roughnesss、Normal四张贴图）。</p>
 <h3 id="reflectance-modeling-by-neural-texture-synthesis">Reflectance
 Modeling by Neural Texture Synthesis</h3>
 <p>【TOG2016】</p>
@@ -329,6 +329,7 @@ target="_blank" rel="noopener" href="https://github.com/valentin-deschaintre/Sin
 <h3 id="efficient-reflectance-capture-using-an-autoencoder">Efficient
 Reflectance Capture Using an Autoencoder</h3>
 <p>【TOG2018】</p>
+<p>OpenSVBRDF的前置工作之一。</p>
 <figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml">@article</span><span class="hljs-template-variable">&#123;kang2018efficient,</span><br><span class="hljs-template-variable">  title=&#123;Efficient reflectance capture using an autoencoder.&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  author=</span><span class="hljs-template-variable">&#123;Kang, Kaizhang and Chen, Zimin and Wang, Jiaping and Zhou, Kun and Wu, Hongzhi&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  journal=</span><span class="hljs-template-variable">&#123;ACM Trans. Graph.&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  volume=</span><span class="hljs-template-variable">&#123;37&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  number=</span><span class="hljs-template-variable">&#123;4&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  pages=</span><span class="hljs-template-variable">&#123;127--1&#125;</span><span class="language-xml">,</span><br><span class="language-xml">  year=</span><span class="hljs-template-variable">&#123;2018&#125;</span><span class="language-xml"></span><br><span class="language-xml">&#125;</span><br></code></pre></td></tr></table></figure>
 <h3
 id="single-image-surface-appearance-modeling-with-self-augmented-cnns-and-inexact-supervision">Single
@@ -529,6 +530,12 @@ Rendering for Complex Indoor Scenes: Shape, Spatially-Varying Lighting
 and SVBRDF from a Single Image</h3>
 <p>【CVPR2020】</p>
 <figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-comment">@inproceedings&#123;li2020inverse,</span><br>  title=&#123;Inverse rendering for complex indoor scenes: Shape, spatially-varying lighting <span class="hljs-keyword">and</span> svbrdf from a single image&#125;,<br>  author=&#123;Li, Zhengqin <span class="hljs-keyword">and</span> Shafiei, Mohammad <span class="hljs-keyword">and</span> Ramamoorthi, Ravi <span class="hljs-keyword">and</span> Sunkavalli, Kalyan <span class="hljs-keyword">and</span> Chandraker, Manmohan&#125;,<br>  booktitle=&#123;Proceedings of the IEEE/CVF Conference on Computer Vision <span class="hljs-keyword">and</span> Pattern Recognition&#125;,<br>  pages=&#123;<span class="hljs-number">2475</span>--<span class="hljs-number">2484</span>&#125;,<br>  year=&#123;<span class="hljs-number">2020</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3
+id="a-unified-spatial-angular-structured-light-for-single-view-acquisition-of-shape-and-reflectance">A
+Unified Spatial-Angular Structured Light for Single-View Acquisition of
+Shape and Reflectance</h3>
+<p>【CVPR2023】</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-comment">@inproceedings&#123;xu2023unified,</span><br>  title=&#123;A unified spatial-angular structured light for single-view acquisition of shape <span class="hljs-keyword">and</span> reflectance&#125;,<br>  author=&#123;Xu, Xianmin <span class="hljs-keyword">and</span> Lin, Yuxin <span class="hljs-keyword">and</span> Zhou, Haoyang <span class="hljs-keyword">and</span> Zeng, Chong <span class="hljs-keyword">and</span> Yu, Yaxin <span class="hljs-keyword">and</span> Zhou, Kun <span class="hljs-keyword">and</span> Wu, Hongzhi&#125;,<br>  booktitle=&#123;Proceedings of the IEEE/CVF Conference on Computer Vision <span class="hljs-keyword">and</span> Pattern Recognition&#125;,<br>  pages=&#123;<span class="hljs-number">206</span>--<span class="hljs-number">215</span>&#125;,<br>  year=&#123;<span class="hljs-number">2023</span>&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <h2 id="material-cont.">Material Cont.</h2>
 <p>其它材质相关。</p>
 <h3 id="neumip-multi-resolution-neural-materials">NeuMIP:
