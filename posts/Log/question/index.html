@@ -16,18 +16,18 @@
   <meta name="author" content="bit704">
   <meta name="keywords" content="blog">
   
-    <meta name="description" content="个人总结">
+    <meta name="description" content="个人整理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="C&#x2F;C++疑问集锦">
 <meta property="og:url" content="https://reddish.fun/posts/Log/question/index.html">
 <meta property="og:site_name" content="Homeworld">
-<meta property="og:description" content="个人总结">
+<meta property="og:description" content="个人整理">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-01-02T17:24:29.943Z">
-<meta property="article:modified_time" content="2024-02-18T12:33:15.847Z">
+<meta property="article:modified_time" content="2024-03-28T14:09:56.766Z">
 <meta property="article:author" content="bit704">
-<meta property="article:tag" content="Log">
 <meta property="article:tag" content="CPP">
+<meta property="article:tag" content="Log">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -301,7 +301,7 @@
             
               <div class="markdown-body">
                 
-                <p>个人总结</p>
+                <p>个人整理</p>
 <span id="more"></span>
 <h1 id="c">C</h1>
 <h2 id="基础">1 基础</h2>
@@ -314,8 +314,8 @@
 <p>运算对象是类型时，圆括号必不可少；但是对于特定量，可有可无。</p>
 <h3
 id="sizeof返回值与实现有关如何打印">sizeof返回值与实现有关，如何打印❔</h3>
-<p>为了可移植性，stddef.h头文件（在包含stdio.h头文件时已包含其中）把size_t定义成系统使用sizeof返回的类型，这被称为底层类型（underlying
-type）。其次，printf()使用z修饰符表示打印相应的类型。同样，C还定义了ptrdiff_t类型和t修饰符来表示系统使用的两个地址差值的底层有符号整数类型。</p>
+<p>为了可移植性，stddef.h头文件（在包含stdio.h头文件时已包含其中）把<code>size_t</code>定义成系统使用sizeof返回的类型，这被称为底层类型（underlying
+type），printf()可使用z修饰符打印相应的类型。C还定义了<code>ptrdiff_t</code>类型和t修饰符来表示系统使用的两个地址差值的底层有符号整数类型。</p>
 <h3 id="负数的整数除法的规则是什么">负数的整数除法的规则是什么❔</h3>
 <p>C99以前不同的实现采用不同的方法，C99规定使用趋零截断。如-3.8截断为-3。</p>
 <h3
@@ -344,14 +344,14 @@ id="空白字符分隔的字符串字面量会自动串联吗">空白字符分�
 <li><code>_Alignof</code>或<code>alignof</code></li>
 </ol>
 <h3 id="什么是翻译单元">什么是翻译单元❔</h3>
-<p>你认为的多个文件在编译器中可能以一个文件出现。例如，通常在源代码（.c扩展名）中包含一个或多个头文件（.h
-扩展名）。头文件会依次包含其他头文件，所以会包含多个单独的物理文件。但是，C预处理实际上是用包含的头文件内容替换#include指令。所以，编译器源代码文件和所有的头文件都看成是一个包含信息的单独文件。这个文件被称为<strong>翻译单元</strong>（translation
+<p>通常在源代码（.c扩展名）中包含一个或多个头文件（.h
+扩展名）。头文件会依次包含其他头文件，所以会包含多个单独的物理文件。但是，C预处理实际上是用包含的头文件内容替换#include指令。所以源代码文件和所有的头文件都看成是一个包含信息的单独文件，这个文件被称为<strong>翻译单元</strong>（translation
 unit）。描述一个具有<strong>文件作用域</strong>的变量时，它的实际可见范围是整个翻译单元。如果程序由多个源代码文件组成，那么该程序也将由多个翻译单元组成。每个翻译单元均对应一个源代码文件和它所包含的文件。</p>
 <h3 id="c语言有哪些存储类别说明符">C语言有哪些存储类别说明符❔</h3>
 <p>C语言有6个关键字作为存储类别说明符：auto、register、static、extern、_Thread_local和typedef。typedef关键字与任何内存存储无关，把它归于此类有一些语法上的原因。尤其是，在绝大多数情况下，不能在声明中使用多个存储类别说明符，所以这意味着不能使用多个存储类别说明符作为typedef的一部分。唯一例外的是_Thread_local，它可以和static或extern一起使用。</p>
 <h3
 id="为什么可以在一条声明中多次使用同一个限定符">为什么可以在一条声明中多次使用同一个限定符❔</h3>
-<p>C99 为类型限定符增加了一个新属性：幂等（idempotent）。</p>
+<p>C99为类型限定符增加了一个新属性：幂等（idempotent）。</p>
 <h3
 id="在文件间共享const变量有什么方法">在文件间共享const变量有什么方法❔</h3>
 <p>可以采用两个策略。</p>
@@ -366,7 +366,11 @@ target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/cpp/cpp/e
 <li><p>把const变量放在一个头文件中，用关键字static声明，然后在其他文件中包含该头文件。相当于给每个文件提供了一个单独的数据副本。</p></li>
 </ol>
 <h3 id="volatile用法">volatile用法❔</h3>
-<p>volatile限定符告知计算机，代理（而不是变量所在的程序）可以改变该变量的值。例如，一个地址上可能储存着当前的时钟时间，无论程序做什么，地址上的值都随时间的变化而改变。或者一个地址用于接受另一台计算机传入的信息。</p>
+<p>volatile限定符告知计算机，代理（而不是变量所在的程序）可以改变该变量的值。例如：</p>
+<ol type="1">
+<li>一个地址上可能储存着当前的时钟时间，无论程序做什么，地址上的值都随时间的变化而改变。</li>
+<li>一个地址用于接受另一台计算机传入的信息。</li>
+</ol>
 <h3 id="restrict用法">restrict用法❔</h3>
 <p>restrict关键字允许编译器优化某部分代码以更好地支持计算。它只能用于指针，表明该指针是访问数据对象的唯一且初始的方式。</p>
 <h3 id="的优先级"><code>*</code> <code>()</code>
@@ -381,8 +385,7 @@ target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/cpp/cpp/e
 id="函数指针和函数名可以互换使用吗">函数指针和函数名可以互换使用吗❔</h3>
 <p>可以。</p>
 <h3 id="c可以使用泛型吗">C可以使用泛型吗❔</h3>
-<p>可以。利用C11
-新增的泛型选择表达式定义一个泛型宏，根据参数类型选择最合适的数学函数版本。</p>
+<p>可以。利用C11新增的泛型选择表达式定义一个泛型宏，根据参数类型选择最合适的数学函数版本。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> SQRT(X) _Generic((X), long double: sqrtl,  default: sqrt, float: sqrtf)(X)</span><br></code></pre></td></tr></table></figure>
 <h2 id="标准库">2 标准库</h2>
 <h3 id="为什么不建议使用gets">为什么不建议使用<code>gets()</code>❔</h3>
@@ -504,7 +507,7 @@ specifier），在C++中是类型说明符。</p>
 <p>C++中使用嵌套结构时要使用<code>::</code>，C不需要。</p>
 <h3 id="void"><code>void*</code>❔</h3>
 <p>C++要求在把<code>void*</code>指针赋给任何类型的指针时必须进行强制类型转换。C没有这样的要求。</p>
-<p>顺带一提，C++可以把派生类对象的地址赋给基类指针。</p>
+<p>另外，C++可以把派生类对象的地址赋给基类指针。</p>
 <h3 id="函数原型">函数原型❔</h3>
 <p>C可以没有<strong>函数原型</strong>，以下的代码在C中是正确的，在C++中是错误的。</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">slice</span><span class="hljs-params">()</span></span>;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span> </span>&#123;<br>    <span class="hljs-built_in">slice</span>(<span class="hljs-number">20</span>, <span class="hljs-number">50</span>);<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">slice</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>&#123;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -584,7 +587,7 @@ id="dynamic_cast和static_cast的区别"><code>dynamic_cast</code>和<code>stati
 <p>在对内置类型使用的时候，经过编译器优化，两者效率没有区别。</p>
 <p>对于自定义类，通常的实现方式是：前置++自增后返回引用；后置++先用临时对象保存原来的对象，然后对原对象调用前置++，再返回临时对象。所以自定义类的客户使用前置++效率更高。</p>
 <h3 id="纯虚函数可以有函数体吗">纯虚函数可以有函数体吗❔</h3>
-<p>实现纯虚函数一般不常见，但对纯虚析构函数，它不只是常见，它是必须。</p>
+<p>实现纯虚函数一般不常见，但纯虚析构函数必须实现。</p>
 <p>如有函数体必须定义在类的外部。</p>
 <h3 id="cfront是什么">cfront是什么❔</h3>
 <p>最初Stroustrup实现C++时，使用了一个C++到C的编译器程序，而不是开发直接的C++到目标代码的编译器。前者叫做cfront
@@ -642,7 +645,8 @@ Y派生而来。在这种情况下，类M从虚派生祖先（即类C和D）那�
 </blockquote>
 <p>有<strong>间接虚基类</strong>的派生类包含直接调用间接基类构造函数的构造函数。这对于间接非虚基类是非法的。</p>
 <h3 id="嵌套类是什么">嵌套类是什么❔</h3>
-<p>在另一个类中声明的类被称为嵌套类（nested class）。</p>
+<p>在另一个类中声明的类被称为<strong>嵌套类</strong>（nested
+class）。</p>
 <p>嵌套类、结构和枚举的作用域特征：</p>
 <table>
 
@@ -918,9 +922,9 @@ comparisons (since C++20) - cppreference.com</a></p>
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Log/">#Log</a>
-      
         <a href="/tags/CPP/">#CPP</a>
+      
+        <a href="/tags/Log/">#Log</a>
       
     </div>
   
