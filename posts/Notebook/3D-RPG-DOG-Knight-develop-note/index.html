@@ -24,7 +24,7 @@
 <meta property="og:description" content="unity开发">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-01-05T09:23:36.261Z">
-<meta property="article:modified_time" content="2024-01-10T07:10:38.717Z">
+<meta property="article:modified_time" content="2024-04-02T08:10:17.972Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="Unity">
 <meta name="twitter:card" content="summary_large_image">
@@ -362,26 +362,26 @@ Collider。</p>
 <p>此类代码用于全局管理，都是单例的。单例泛型类实现如下.</p>
 <p>此外，它们不随关卡变化销毁，需在各自<code>Awake()</code>方法里加上<code>DontDestroyOnLoad(this);</code>。</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">using</span> System.Collections;<br><span class="hljs-keyword">using</span> System.Collections.Generic;<br><span class="hljs-keyword">using</span> UnityEngine;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title">Singleton</span>&lt;<span class="hljs-title">T</span>&gt; : <span class="hljs-title">MonoBehaviour</span> <span class="hljs-keyword">where</span> <span class="hljs-title">T</span> : <span class="hljs-title">Singleton</span>&lt;<span class="hljs-title">T</span>&gt;<br>&#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> T instance;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> T Instance<br>    &#123;<br>        <span class="hljs-keyword">get</span> =&gt; instance;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-built_in">bool</span> IsInitialized<br>    &#123;<br>        <span class="hljs-keyword">get</span> =&gt; instance != <span class="hljs-literal">null</span>;<br>    &#125;<br><br><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">Awake</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (instance != <span class="hljs-literal">null</span>)<br>            Destroy(gameObject);<br>        <span class="hljs-keyword">else</span><br>            instance = (T)<span class="hljs-keyword">this</span>;<br>    &#125;<br><br>    <span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">OnDestory</span>()</span><br>    &#123;<br>        <span class="hljs-keyword">if</span> (instance == <span class="hljs-keyword">this</span>)<br>        &#123;<br>            instance = <span class="hljs-literal">null</span>;<br>        &#125;<br>    &#125;<br><br><br>&#125;<br></code></pre></td></tr></table></figure>
-<h2 id="mousemanager">3.1.1 MouseManager</h2>
+<h3 id="mousemanager">3.1.1 MouseManager</h3>
 <p><strong>通过观察者模式控制鼠标点击触发的操作</strong></p>
 <p>继承<code>UnityEngine.Events</code>中的<code>UnityEvent&lt;&gt;</code>可以建立事件类。（由于没有继承自MonoBehaviour，需要给类加上[System.Serializable]，其变量才能在窗口中显示出来。）在窗口中控制事件类的对象触发的操作。</p>
 <p>也可以自行创建委托代替事件类，编写代码控制委托触发的操作。这里我是用这种方法。</p>
 <p><strong>Update()</strong></p>
 <p><code>Camera.main.ScreenPointToRay(Input.mousePosition)</code>获取摄像机向鼠标位置发出的光线，<code>Physics.Raycast(ray, out hitInfo)</code>获取光线碰撞信息到hitInfo，然后根据hitInfo获取游戏对象的tag，根据tag设置鼠标的纹理<code>Cursor.SetCursor</code>。</p>
 <p><code>Input.GetMouseButtonDown(0)</code>当鼠标左键点击时，根据当前点击游戏对象的tag触发委托，进行移动、攻击等操作。</p>
-<h2 id="gamemanager">3.1.2 GameManager</h2>
+<h3 id="gamemanager">3.1.2 GameManager</h3>
 <p>创建IEndGameObserver接口作为观察者：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title">IEndGameObserver</span><br>&#123;<br>    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">EndNotify</span>()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>使用列表<code>List&lt;IEndGameObserver&gt;</code>储存观察者，主体包含一下管理观察者的方法：</p>
 <figure class="highlight c#"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c#"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">AddObserver</span>(<span class="hljs-params">IEndGameObserver observer</span>)</span><br>&#123;<br>    endGameObservers.Add(observer);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">RemoveObserver</span>(<span class="hljs-params">IEndGameObserver observer</span>)</span><br>&#123;<br>    endGameObservers.Remove(observer);<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">NotifyObservers</span>()</span><br>&#123;<br>    <span class="hljs-keyword">foreach</span> (<span class="hljs-keyword">var</span> observer <span class="hljs-keyword">in</span> endGameObservers)<br>    &#123;<br>        observer.EndNotify();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>此外在GameManager中添加玩家状态、相机这些需要全局使用的游戏对象。</p>
-<h2 id="savemanager">3.1.3 SaveManager</h2>
+<h3 id="savemanager">3.1.3 SaveManager</h3>
 <p>将游戏数据用JsonUtility转化为json，利用PlayerPrefs保存游戏数据。Windows的默认保存位置在注册表HKEY_CURRENT_USER。</p>
 <p><strong>Update()</strong></p>
 <p>根据键盘输入进行保存和加载操作。</p>
 <h2 id="character">3.2 Character</h2>
 <p>此类代码用于游戏主角/敌人的控制。仅简单描述其逻辑。</p>
-<h2 id="playercontroller">3.2.1 PlayerController</h2>
+<h3 id="playercontroller">3.2.1 PlayerController</h3>
 <p><strong>Awake()</strong></p>
 <p>通过<code>GetComponent&lt;&gt;</code>获取身上的各种组件。</p>
 <p><strong>OnEnable()</strong></p>
@@ -402,7 +402,7 @@ Collider。</p>
 <p><code>Physics.OverlapSphere(transform.position, sightRadius)</code>找到视野内的所有colliders。</p>
 <p>使用Animation
 Event控制伤害造成的时机。对可击飞目标的Rigidbody加力。</p>
-<h2 id="enemycontroller">3.2.2 EnemyController</h2>
+<h3 id="enemycontroller">3.2.2 EnemyController</h3>
 <p>通过<code>[RequireComponent(typeof(NavMeshAgent))]</code>自动添加组件。</p>
 <p>通过<code>[Header("Basic Settings")]</code>设置窗口头部。</p>
 <p>使用枚举EnemyStates规定敌人的状态<code>GUARD,PATROL,CHASE,DEAD</code>。</p>
@@ -428,7 +428,7 @@ Event控制伤害造成的时机。对可击飞目标的Rigidbody加力。</p>
 <p>CharacterData_SO、AttackData_SO继承自ScriptableObject，使用字段记录基本数据、攻击数据。CharacterStats类使用属性和方法提供对前者的控制。</p>
 <h2 id="ui">3.4 UI</h2>
 <p>使用canvas、image、button。</p>
-<h2 id="healthbarui">3.4.1 HealthBarUI</h2>
+<h3 id="healthbarui">3.4.1 HealthBarUI</h3>
 <p>挂载在每个敌人身上。需要在敌人身上创建barPoint作为血条位置参考。</p>
 <p><strong>Awake()</strong></p>
 <p>将血条更新方法添加到CharacterStats的委托中，在收到伤害时触发。</p>
@@ -438,17 +438,17 @@ Canvas，每个脚本均创建独立的Bar Holder，以红/绿image叠加显示�
 <p><strong>LateUpdate()</strong></p>
 <p>更新血条位置（根据敌人位置）和朝向（根据相机朝向）</p>
 <p>刷新血条显示冷却时间。</p>
-<h2 id="playerhealthui">3.4.2 PlayerHealthUI</h2>
+<h3 id="playerhealthui">3.4.2 PlayerHealthUI</h3>
 <p>挂载在玩家身上。Render Mode为Screen
 Space。在每一帧更新血量和经验值。</p>
-<h2 id="mainmenu">3.4.3 MainMenu</h2>
+<h3 id="mainmenu">3.4.3 MainMenu</h3>
 <p>挂载在Menu Canvas上。给主界面UI相应按钮注册鼠标点击事件。</p>
-<h2 id="scenefader">3.4.4 SceneFader</h2>
+<h3 id="scenefader">3.4.4 SceneFader</h3>
 <p>挂载在Fade Canvas上。利用Canvas Group的alpha通道实现渐入渐出。</p>
 <h2 id="transition">3.5 Transition</h2>
-<h2 id="transitiondesitination">3.5.1 TransitionDesitination</h2>
+<h3 id="transitiondesitination">3.5.1 TransitionDesitination</h3>
 <p>目的地枚举<code>ENTER, A, B, C, EXIT</code>。</p>
-<h2 id="transitionpoint">3.5.2 TransitionPoint</h2>
+<h3 id="transitionpoint">3.5.2 TransitionPoint</h3>
 <p>传送类型枚举<code>SameScene, DifferentScene</code>。</p>
 <p>传送门挂载TransitionPoint和
 TransitionDesitination，设定传送类型和目的地。</p>
@@ -456,7 +456,7 @@ TransitionDesitination，设定传送类型和目的地。</p>
 Trigger，通过<code>void OnTriggerStay(Collider other)</code>和<code>void OnTriggerExit(Collider other)</code>方法改变变量canTrans，标记是否可以传送。</p>
 <p><strong>Update()</strong></p>
 <p>按E传送。</p>
-<h2 id="scenecontroller">3.5.3 SceneController</h2>
+<h3 id="scenecontroller">3.5.3 SceneController</h3>
 <p>单例模式。</p>
 <p>通过协程异步加载场景并传送。</p>
 <p>所有的传送方法均放在这里。</p>
