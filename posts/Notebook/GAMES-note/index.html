@@ -24,7 +24,7 @@
 <meta property="og:description" content="GAMES系列网络课程简要学习笔记">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-01-05T01:33:16.592Z">
-<meta property="article:modified_time" content="2024-02-23T20:47:46.708Z">
+<meta property="article:modified_time" content="2024-04-08T14:19:07.482Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="CG">
 <meta name="twitter:card" content="summary_large_image">
@@ -607,7 +607,7 @@ M_{persp} = M_{ortho}M_{squish}=
 0 &amp; 0 &amp; 1 &amp; 0
 \end{bmatrix} \\
 \]</span>
-透视投影得到的点在齐次坐标系（称为在裁剪空间内），需要使用<strong>透视除法</strong>将该点从转换到笛卡尔坐标系（称为在NDC（标准设备坐标）内）。透视除法将顶点四个分量都除以w。</p>
+透视投影得到的点在齐次坐标系（称为在裁剪空间内），需要使用<strong>透视除法</strong>将该点从齐次坐标系转换到笛卡尔坐标系（称为在NDC（标准设备坐标）内）。透视除法将顶点四个分量都除以w。</p>
 <h2 id="rasterization-1-triangles">05 Rasterization 1 (Triangles)</h2>
 <p>FOV（field of view）视场角计算方法：</p>
 <p>水平FOV=2artan(胶片宽/2/镜头焦距）</p>
