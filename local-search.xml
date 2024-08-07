@@ -8,7 +8,7 @@
     <link href="/posts/Article/Lua-ephemeron-table/"/>
     <url>/posts/Article/Lua-ephemeron-table/</url>
     
-    <content type="html"><![CDATA[<p>Lua ephemeron table</p><span id="more"></span><p>Lua表中的键值对，在键或者值任何一方被回收时，都将从表中移除。</p><p>瞬表，特指键为<strong>弱引用</strong>值为<strong>强引用</strong>的表，它的值是否可达<strong>仅</strong>取决于键是否可达。如果瞬表的键仅被其值引用（即不可达，没有外部引用），键值对将被移除。这种设计符合直觉，当键不再可达时，也无法通过键取得值，键值对也不再有存在的意义。</p><p>测试代码：</p><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- Lua 5.4.2  Copyright (C) 1994-2020 Lua.org, PUC-Rio</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span><span class="hljs-params">(mode)</span></span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n__mode：&quot;</span> .. mode)<br>    <span class="hljs-keyword">local</span> x = &#123;&#125;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x地址：&quot;</span>, x)<br>    <span class="hljs-keyword">local</span> test = <span class="hljs-built_in">setmetatable</span>(&#123;&#125;, &#123;<span class="hljs-built_in">__mode</span> = mode&#125;)<br>    test[x] = x<br>    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">next</span>(test))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;取消x外部引用，并执行垃圾回收&quot;</span>)<br>    x = <span class="hljs-literal">nil</span><br>    <span class="hljs-built_in">collectgarbage</span>()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">next</span>(test))<br><span class="hljs-keyword">end</span><br><br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;&#x27;)&quot;</span>)()<br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;k&#x27;)&quot;</span>)()<br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;v&#x27;)&quot;</span>)()<br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;kv&#x27;)&quot;</span>)()<br><br><span class="hljs-comment">--[[ </span><br><span class="hljs-comment">使用next遍历表的过程中的索引次序无定义（即使是数字索引），</span><br><span class="hljs-comment">给新键赋值是未定义行为，但可以修改已存在的键的值，也可以删除键</span><br><span class="hljs-comment">]]</span><span class="hljs-comment">--</span><br></code></pre></td></tr></table></figure><p>输出：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash">__mode：<br>x地址： table: 00000000006cacc0<br>table: 00000000006cacc0 table: 00000000006cacc0<br>取消x外部引用，并执行垃圾回收<br>table: 00000000006cacc0 table: 00000000006cacc0<br><br>__mode：k<br>x地址： table: 00000000006ca900<br>table: 00000000006ca900 table: 00000000006ca900<br>取消x外部引用，并执行垃圾回收<br>nil<br><br>__mode：v<br>x地址： table: 00000000006ca700<br>table: 00000000006ca700 table: 00000000006ca700<br>取消x外部引用，并执行垃圾回收<br>table: 00000000006ca700 table: 00000000006ca700<br><br>__mode：kv<br>x地址： table: 00000000006ca9c0<br>table: 00000000006ca9c0 table: 00000000006ca9c0<br>取消x外部引用，并执行垃圾回收<br>nil<br></code></pre></td></tr></table></figure><p>可以看出，当<code>test</code>键为弱引用时，取消<code>x</code>外部引用会使<code>test[x]</code>被垃圾回收，无论值是否为强引用。</p><p>通过使用瞬表，可以在值为强引用的同时，由键的可达性决定值的可达性。</p>]]></content>
+    <content type="html"><![CDATA[<p>Lua ephemeron table</p><span id="more"></span><p>Lua表中的键值对，在键或者值任何一方被回收时，都将从表中移除。</p><p>瞬表，特指键为<strong>弱引用</strong>值为<strong>强引用</strong>的表，它的值是否可达<strong>仅</strong>取决于键是否可达。如果瞬表的键仅被其值引用（即不可达，没有外部引用），键值对将被移除。这种设计符合直觉，当键不再可达时，也无法通过键取得值，键值对也不再有存在的意义。</p><p>测试代码：</p><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- Lua 5.4.2  Copyright (C) 1994-2020 Lua.org, PUC-Rio</span><br><br><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">test</span><span class="hljs-params">(mode)</span></span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;\n__mode：&quot;</span> .. mode)<br>    <span class="hljs-keyword">local</span> x = &#123;&#125;<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;x地址：&quot;</span>, x)<br>    <span class="hljs-keyword">local</span> test = <span class="hljs-built_in">setmetatable</span>(&#123;&#125;, &#123;<span class="hljs-built_in">__mode</span> = mode&#125;)<br>    test[x] = x<br>    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">next</span>(test))<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;取消x外部引用，并执行垃圾回收&quot;</span>)<br>    x = <span class="hljs-literal">nil</span><br>    <span class="hljs-built_in">collectgarbage</span>()<br>    <span class="hljs-built_in">print</span>(<span class="hljs-built_in">next</span>(test))<br><span class="hljs-keyword">end</span><br><br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;&#x27;)&quot;</span>)()<br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;k&#x27;)&quot;</span>)()<br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;v&#x27;)&quot;</span>)()<br><span class="hljs-built_in">load</span>(<span class="hljs-string">&quot;test(&#x27;kv&#x27;)&quot;</span>)()<br><br><span class="hljs-comment">--[[ </span><br><span class="hljs-comment">使用next遍历表的过程中的索引次序无定义（即使是数字索引），</span><br><span class="hljs-comment">给新键赋值是未定义行为，但可以修改已存在的键的值，也可以删除键</span><br><span class="hljs-comment">]]</span><span class="hljs-comment">--</span><br></code></pre></td></tr></table></figure><p>输出：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash">__mode：<br>x地址： table: 00000000006cacc0<br>table: 00000000006cacc0 table: 00000000006cacc0<br>取消x外部引用，并执行垃圾回收<br>table: 00000000006cacc0 table: 00000000006cacc0<br><br>__mode：k<br>x地址： table: 00000000006ca900<br>table: 00000000006ca900 table: 00000000006ca900<br>取消x外部引用，并执行垃圾回收<br>nil<br><br>__mode：v<br>x地址： table: 00000000006ca700<br>table: 00000000006ca700 table: 00000000006ca700<br>取消x外部引用，并执行垃圾回收<br>table: 00000000006ca700 table: 00000000006ca700<br><br>__mode：kv<br>x地址： table: 00000000006ca9c0<br>table: 00000000006ca9c0 table: 00000000006ca9c0<br>取消x外部引用，并执行垃圾回收<br>nil<br></code></pre></td></tr></table></figure><p>可以看出，当<code>test</code>键为弱引用时，取消<code>x</code>外部引用会使<code>test[x]</code>被垃圾回收，无论值是否为强引用。</p><p>通过使用瞬表，可以在值为强引用的同时，由键的可达性决定值的可达性，从而避免循环引用使不可达对象无法被垃圾回收。</p>]]></content>
     
     
     <categories>
@@ -70,11 +70,11 @@
     
     <tags>
       
+      <tag>Unity</tag>
+      
       <tag>CG</tag>
       
       <tag>UE</tag>
-      
-      <tag>Unity</tag>
       
     </tags>
     
@@ -253,9 +253,9 @@
     
     <tags>
       
-      <tag>CG</tag>
-      
       <tag>Unity</tag>
+      
+      <tag>CG</tag>
       
     </tags>
     
@@ -582,9 +582,9 @@
     
     <tags>
       
-      <tag>CPP</tag>
-      
       <tag>CS</tag>
+      
+      <tag>CPP</tag>
       
     </tags>
     
@@ -786,9 +786,9 @@
     
     <tags>
       
-      <tag>CPP</tag>
-      
       <tag>CS</tag>
+      
+      <tag>CPP</tag>
       
     </tags>
     

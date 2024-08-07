@@ -24,7 +24,7 @@
 <meta property="og:description" content="Lua ephemeron table">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-07-14T11:37:43.300Z">
-<meta property="article:modified_time" content="2024-07-14T14:22:31.766Z">
+<meta property="article:modified_time" content="2024-08-07T15:58:29.089Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="Lua">
 <meta name="twitter:card" content="summary_large_image">
@@ -309,7 +309,7 @@
 <p>输出：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs bash">__mode：<br>x地址： table: 00000000006cacc0<br>table: 00000000006cacc0 table: 00000000006cacc0<br>取消x外部引用，并执行垃圾回收<br>table: 00000000006cacc0 table: 00000000006cacc0<br><br>__mode：k<br>x地址： table: 00000000006ca900<br>table: 00000000006ca900 table: 00000000006ca900<br>取消x外部引用，并执行垃圾回收<br>nil<br><br>__mode：v<br>x地址： table: 00000000006ca700<br>table: 00000000006ca700 table: 00000000006ca700<br>取消x外部引用，并执行垃圾回收<br>table: 00000000006ca700 table: 00000000006ca700<br><br>__mode：kv<br>x地址： table: 00000000006ca9c0<br>table: 00000000006ca9c0 table: 00000000006ca9c0<br>取消x外部引用，并执行垃圾回收<br>nil<br></code></pre></td></tr></table></figure>
 <p>可以看出，当<code>test</code>键为弱引用时，取消<code>x</code>外部引用会使<code>test[x]</code>被垃圾回收，无论值是否为强引用。</p>
-<p>通过使用瞬表，可以在值为强引用的同时，由键的可达性决定值的可达性。</p>
+<p>通过使用瞬表，可以在值为强引用的同时，由键的可达性决定值的可达性，从而避免循环引用使不可达对象无法被垃圾回收。</p>
 
                 
               </div>
@@ -747,5 +747,20 @@
   <noscript>
     <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
   </noscript>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 </body>
 </html>
