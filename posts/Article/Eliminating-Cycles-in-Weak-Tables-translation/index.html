@@ -24,7 +24,7 @@
 <meta property="og:description" content="消除弱表中的循环">
 <meta property="og:locale">
 <meta property="article:published_time" content="2024-08-08T15:40:46.824Z">
-<meta property="article:modified_time" content="2024-08-14T09:59:17.516Z">
+<meta property="article:modified_time" content="2024-08-14T10:19:29.341Z">
 <meta property="article:author" content="bit704">
 <meta property="article:tag" content="Lua">
 <meta name="twitter:card" content="summary_large_image">
@@ -255,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          15k 字
+          16k 字
         
       </span>
     
@@ -341,25 +341,38 @@ table翻译为瞬表更加合理。为避免歧义，不对ephemeron做翻译。
 <h1 id="introduction">1 Introduction</h1>
 <p>具有自动内存管理功能的编程语言通常会在客户端程序和GC之间提供一个接口。该接口由允许客户端程序与GC交互的机制组成，常见代表是<strong>finalizer</strong><a
 href="#fn1" class="footnote-ref" id="fnref1"
-role="doc-noteref"><sup>1</sup></a>[^Boehm 2003][^Dybvig et al.
-1993][^Hayes 1992]和<strong>弱引用（weak reference）</strong>[^Leal
-2005]。</p>
-<p>finalizer是GC在回收对象占用的内存之前自动执行的一种特殊方法。此类方法用于许多活动，包括管理对象缓存、释放服务器和其他程序提供的资源。终结器具有异步特性。Bloch[^Bloch
-2001]
-认为finalizer不可预测，通常很危险且不必要，并会对程序性能产生负面影响。但Boehm[^Boehm
-2003]认为finalizer的使用在某些情况下是必要的，并且其异步性并不一定会使程序不健全。</p>
-<p>弱引用是一种不保护对象不被GC回收的引用。许多具有GC功能的编程语言至少从80年代开始就为弱引用提供了一些支持[^PARC
-1985][^Rees et al.
-1984]。弱引用还可以用作finalization机制，从而避免与传统finalizer相关的诸多问题。根据编程语言和其GC管理的方式，对终结器的支持甚至可能不再必要。</p>
+role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref"
+id="fnref2" role="doc-noteref"><sup>2</sup></a><a href="#fn3"
+class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a><a
+href="#fn4" class="footnote-ref" id="fnref4"
+role="doc-noteref"><sup>4</sup></a>和<strong>弱引用（weak
+reference）</strong><a href="#fn5" class="footnote-ref" id="fnref5"
+role="doc-noteref"><sup>5</sup></a>。</p>
+<p>finalizer是GC在回收对象占用的内存之前自动执行的一种特殊方法。此类方法用于许多活动，包括管理对象缓存、释放服务器和其他程序提供的资源。终结器具有异步特性。Bloch<a
+href="#fn6" class="footnote-ref" id="fnref6"
+role="doc-noteref"><sup>6</sup></a>
+认为finalizer不可预测，通常很危险且不必要，并会对程序性能产生负面影响。但Boehm<a
+href="#fn7" class="footnote-ref" id="fnref7"
+role="doc-noteref"><sup>7</sup></a>认为finalizer的使用在某些情况下是必要的，并且其异步性并不一定会使程序不健全。</p>
+<p>弱引用是一种不保护对象不被GC回收的引用。许多具有GC功能的编程语言至少从80年代开始就为弱引用提供了一些支持<a
+href="#fn8" class="footnote-ref" id="fnref8"
+role="doc-noteref"><sup>8</sup></a><a href="#fn9" class="footnote-ref"
+id="fnref9"
+role="doc-noteref"><sup>9</sup></a>。弱引用还可以用作finalization机制，从而避免与传统finalizer相关的诸多问题。根据编程语言和其GC管理的方式，对终结器的支持甚至可能不再必要。</p>
 <p>弱引用的重要性日益增加，促使我们寻找一个关键问题的解决方案：弱表中的循环。此问题的一个典型示例为property表中。通常，我们希望动态地向对象添加property，并且独立于它的类attribute。一种非常常见的方法是使用property表。在property表中，将对于对象的引用作为搜索键插入，与此键关联的值指定额外property。但是，如果property表中的所有引用都是普通的，则插入新的键/值对这一简单事实将阻止键引用的对象被收集。解决此问题的最佳方法是使用弱表，这是一种通过弱引用实现的数据结构。弱表由<strong>弱对（weak
 pair）</strong>组成，其中第一个元素（键）由弱引用维护，第二个元素（值）由普通引用维护。这样，向对象添加property不会阻止其被收集。</p>
 <p>然而，弱表中的循环问题仍然存在于大多数编程语言中：键和值之间存在循环引用，即使客户端程序没有对它们的其他引用，也会阻止收集循环中的元素。这些循环的常见情况是值引用它自己的键。例如，property表（使用弱表实现）可以将函数与其各自的模块相关联，以便它可以说明给定函数属于哪个模块。由于每个模块都会引用其所有函数，此property表中的任何键或值永远不会被收集。这最终会造成大量的内存浪费，并给使用弱表带来困难。在
-Java[^SUN 2006] 和 Lua [^Ierusalimschy 2006]
+Java<a href="#fn10" class="footnote-ref" id="fnref10"
+role="doc-noteref"><sup>10</sup></a> 和 Lua <a href="#fn11"
+class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>
 等编程语言中可以发现此问题。通过Lua的讨论列表，我们可以看到与此问题相关的频繁抱怨。</p>
-<p>这个问题的解决方案可以在Hayes[^Hayes
-1997]提出的一种称为ephemerons的机制中找到。Jones[^Jones et al. 1999]
-独立为Haskell[^Glasgow
-2007]编程语言开发了一种类似的解决方案，其核心思想与ephemerons机制相同。</p>
+<p>这个问题的解决方案可以在Hayes<a href="#fn12" class="footnote-ref"
+id="fnref12"
+role="doc-noteref"><sup>12</sup></a>提出的一种称为ephemerons的机制中找到。Jones<a
+href="#fn13" class="footnote-ref" id="fnref13"
+role="doc-noteref"><sup>13</sup></a> 独立为Haskell<a href="#fn14"
+class="footnote-ref" id="fnref14"
+role="doc-noteref"><sup>14</sup></a>编程语言开发了一种类似的解决方案，其核心思想与ephemerons机制相同。</p>
 <p>基于Haskell的成功，我们为Lua设计并实现了该机制的改编版。作为起点，我们仔细研究了Hayes的著作[^Hayes
 1997]中描述的算法。在研究该机制时，我们很好奇为什么大多数编程语言都没有实现该机制，以及实现它的影响是什么。之后，我们开发了LuaGC的改编版，以衡量这种影响。我们的目标是表明使用ephemerons可以轻松解决Lua弱表中的循环问题。通过这样做，我们能够改进弱引用机制。</p>
 <h1 id="weak-tables">2 Weak Tables</h1>
@@ -369,19 +382,25 @@ Java[^SUN 2006] 和 Lua [^Ierusalimschy 2006]
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- Code 1 Creating a weak table in Lua.</span><br> a = &#123;&#125;  <span class="hljs-comment">-- a regular table</span><br> b = &#123;&#125;  <span class="hljs-comment">-- its metatable</span><br> <span class="hljs-built_in">setmetatable</span>(a, b)<br> b.<span class="hljs-built_in">__mode</span> = <span class="hljs-string">&quot;k&quot;</span>  <span class="hljs-comment">-- makes &#x27;a&#x27; weak</span><br></code></pre></td></tr></table></figure>
 <p>大多数弱引用的典型用途涉及弱表。在弱引用（和弱表）最相关的应用中，我们重点介绍以下内容：</p>
 <ul>
-<li><p><strong>循环数据结构的收集</strong>——纯引用计数（reference-counting）GC无法回收循环数据结构。根据Brownbridge[^Brownbridge
-1985]的说法，
+<li><p><strong>循环数据结构的收集</strong>——纯引用计数（reference-counting）GC无法回收循环数据结构。根据Brownbridge<a
+href="#fn15" class="footnote-ref" id="fnref15"
+role="doc-noteref"><sup>15</sup></a>的说法，
 这一缺陷是开发弱引用的最初动机。只需用弱引用替换普通引用，使每个循环至少有一个弱引用，即可轻松克服这一缺陷。随着tracing
 GC的出现，这种用法已变得过时。</p></li>
 <li><p><strong>缓存</strong>——
 频繁使用大型数据结构的应用程序可以通过将这些结构驻留在内存中来显著提高其性能。但是，这可能会导致内存快速耗尽。弱表提供了一种简单的解决方案来实现自动管理的缓存，只要内存不紧缺，它就会保留数据。</p>
-<p>根据文献[^Ierusalimschy 2006][^Jones et al.
-1999]所说，缓存的常见用途是记忆函数。通过保存其结果，可以显著减少处理复杂函数所需的计算工作量。当使用相同参数重新调用该函数时，它只会返回保存的值。在长期运行的应用程序中，记忆函数使用的存储空间可能会增长到令人望而却步的水平。在这种情况下，使用弱表可以透明地保存最近（可能也是最频繁）访问的值，而不会影响内存可用性。</p></li>
-<li><p><strong>弱集</strong>——弱集可以理解为一组对象，这些对象与该集合的相关性不会产生对该对象的引用。当对象必须作为一个组进行处理，但又不干扰其生命周期时，可以使用弱集作为一种实现解决方案。一个常见的例子是观察者设计模式，它定义了对象之间的一对多依赖关系，这样当一个对象改变状态时，它的所有依赖者都会收到通知并自动更新[^Gamma
-et al.
-1995]。此通知由需要了解其观察者的被观察对象完成。在松散耦合的应用程序中，这些引用不应该妨碍观察者的收集。使用弱表来保存观察者集并不会妨碍它们被收集。</p></li>
+<p>根据文献<a href="#fn16" class="footnote-ref" id="fnref16"
+role="doc-noteref"><sup>16</sup></a><a href="#fn17" class="footnote-ref"
+id="fnref17"
+role="doc-noteref"><sup>17</sup></a>所说，缓存的常见用途是记忆函数。通过保存其结果，可以显著减少处理复杂函数所需的计算工作量。当使用相同参数重新调用该函数时，它只会返回保存的值。在长期运行的应用程序中，记忆函数使用的存储空间可能会增长到令人望而却步的水平。在这种情况下，使用弱表可以透明地保存最近（可能也是最频繁）访问的值，而不会影响内存可用性。</p></li>
+<li><p><strong>弱集</strong>——弱集可以理解为一组对象，这些对象与该集合的相关性不会产生对该对象的引用。当对象必须作为一个组进行处理，但又不干扰其生命周期时，可以使用弱集作为一种实现解决方案。一个常见的例子是观察者设计模式，它定义了对象之间的一对多依赖关系，这样当一个对象改变状态时，它的所有依赖者都会收到通知并自动更新<a
+href="#fn18" class="footnote-ref" id="fnref18"
+role="doc-noteref"><sup>18</sup></a>。此通知由需要了解其观察者的被观察对象完成。在松散耦合的应用程序中，这些引用不应该妨碍观察者的收集。使用弱表来保存观察者集并不会妨碍它们被收集。</p></li>
 <li><p><strong>Finalization</strong>——弱引用通过通知机制进行扩展，可以用于通知客户端程序已收集对象，最终执行与此类事件相关的例程（routine）。这称为基于容器的finalization，与实现面向对象finalization的class
-instance finalizer形成对比[^Hayes 1997][^Jones et al. 1999]。</p></li>
+instance finalizer形成对比<a href="#fn19" class="footnote-ref"
+id="fnref19" role="doc-noteref"><sup>19</sup></a><a href="#fn20"
+class="footnote-ref" id="fnref20"
+role="doc-noteref"><sup>20</sup></a>。</p></li>
 <li><p><strong>Property表</strong>——弱表可用于向对象添加任意property，即，它们可以表示property表。使用弱表表示property表的好处在于，在大多数情况下，向对象添加property不会改变其收集时间。例如，考虑图1中的表。在此表中，每个键都有一个对对象的弱引用，每个相应的值都有对此对象额外属性的普通引用。如果从键到对象的引用是普通的，那么在表中插入新的键/值对这一简单事实就会阻止收集由该键引用的对象。当从键到对象的引用是弱的，只要客户端程序不再使用对象，就可以收集它们。</p></li>
 </ul>
 <p><img
@@ -393,20 +412,22 @@ src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-08-11-Eliminating-Cyc
 <p><img
 src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-08-11-Eliminating-Cycles-in-Weak-Tables-Figure-2.png" srcset="/img/loading.gif" lazyload /></p>
 <p>Java和Lua等编程语言都面临弱表循环的问题。Java的WeakHashMap
-API中有一条实现说明，指出“应注意确保值对象不会直接或间接强引用其自己的键，因为这将阻止键被丢弃”[^SUN
-2006]。</p>
+API中有一条实现说明，指出“应注意确保值对象不会直接或间接强引用其自己的键，因为这将阻止键被丢弃”<a
+href="#fn21" class="footnote-ref" id="fnref21"
+role="doc-noteref"><sup>21</sup></a>。</p>
 <h1 id="ephemerons">3 Ephemerons</h1>
-<p>Hayes[^Hayes
-1997]首次提出了一种解决弱表中循环问题的有趣方法，即使用ephemeron代替弱对。<strong>ephemeron是弱对的改进</strong>，其中的键和值都不能归类为弱或强。键的连通性（connectivity）决定了值的连通性，但值的连通性不会影响键的连通性。根据Hayes的说法，当GC为ephemeron提供支持时，它会分为三个阶段而不是两个（标记和清除）。接下来我们考虑第一和第二阶段，因为它们与我们的工作最相关。第三阶段的详细信息可以在Hayes[^Hayes
-1997]的著作中找到。</p>
+<p>Hayes<a href="#fn22" class="footnote-ref" id="fnref22"
+role="doc-noteref"><sup>22</sup></a>首次提出了一种解决弱表中循环问题的有趣方法，即使用ephemeron代替弱对。<strong>ephemeron是弱对的改进</strong>，其中的键和值都不能归类为弱或强。键的连通性（connectivity）决定了值的连通性，但值的连通性不会影响键的连通性。根据Hayes的说法，当GC为ephemeron提供支持时，它会分为三个阶段而不是两个（标记和清除）。接下来我们考虑第一和第二阶段，因为它们与我们的工作最相关。第三阶段的详细信息可以在Hayes<a
+href="#fn23" class="footnote-ref" id="fnref23"
+role="doc-noteref"><sup>23</sup></a>的著作中找到。</p>
 <p>在第一阶段，跟踪对象图，跟踪它们之间的引用。每当发现一个ephemeron时，收集器不会跟踪ephemeron的字段，而是将该
 ephemeron插入队列中以供稍后处理。此队列中的ephemeron可能包含或不包含可访问的entry。</p>
 <p>在第二阶段，收集器扫描ephemeron队列。当ephemeron的键已被到达时，将跟踪相应的值——如果键是可到达的，则程序的某些部分可能会请求该值。任何键尚未到达的ephemeron可能包含或不包含可到达的值；这些ephemeron将保留在队列中以供将来检查。现在我们有两组ephemeron，一组具有可到达的键，一组没有。第一组是按照与非ephemeron对象组相同的方式追踪。因为键已经到达并被跟踪，只需要跟踪值。但是，值可以包含对一些仍在队列的ephemeron的键的引用，将使这些键可访问。当发生这种情况时，需要重新检查队列。除此之外，可以找到额外的ephemeron。在这种情况下，它们被插入到队列中。</p>
 <p>这个过程一直持续到队列中只有没有可到达的键的ephemeron。当队列收敛到这样的集合时，收集器可以回收这些ephemeron占用的内存。第二阶段的算法的伪代码如Code
 2所示。</p>
 <blockquote>
-<p>Hayes[^Hayes
-1997]中提到，在第三阶段，收集器从仍在队列中的ephemeron开始追踪剩下的对象。这一阶段遇到的任何ephemeron被当作普通对象处理，并且所有字段都被追踪。</p>
+<p>Hayes<a href="#fn24" class="footnote-ref" id="fnref24"
+role="doc-noteref"><sup>24</sup></a>中提到，在第三阶段，收集器从仍在队列中的ephemeron开始追踪剩下的对象。这一阶段遇到的任何ephemeron被当作普通对象处理，并且所有字段都被追踪。</p>
 </blockquote>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-comment">-- Code 2 Second phase of the ephemeron’s collection algorithm</span><br><span class="hljs-keyword">while</span> TRUE <span class="hljs-keyword">do</span><br>	<span class="hljs-keyword">for</span> all e ∈ ephemeron-queue <span class="hljs-keyword">do</span><br>		<span class="hljs-keyword">if</span> key(e) is marked <span class="hljs-keyword">then</span><br>			put(reachable-value, e)<br>		<span class="hljs-keyword">else</span><br>			put(unreachable-value, e)<br>		<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br>	<span class="hljs-keyword">end</span> <span class="hljs-keyword">for</span><br>	ephemeron-queue ⟸ unreachable-value<br>	<span class="hljs-keyword">if</span> reachable-value is <span class="hljs-keyword">not</span> empty <span class="hljs-keyword">then</span><br>        <span class="hljs-keyword">for</span> all e ∈ reachable-value <span class="hljs-keyword">do</span><br>            trace(value(e))<br>		<span class="hljs-keyword">end</span> <span class="hljs-keyword">for</span><br>		make-empty(reachable-value)<br>	<span class="hljs-keyword">else</span><br>		<span class="hljs-keyword">return</span><br>	<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">while</span><br></code></pre></td></tr></table></figure>
 <p>Haskell编程语言定义了弱引用的语义，基于类似ephemeron的键/值对。我们的工作表明，通过修改GC算法，可以轻松地将ephemeron纳入目前的Lua的实现中。下一节将介绍我们如何实现ephemeron机制并测量了其效率和有效性。</p>
@@ -418,11 +439,13 @@ ephemeron插入队列中以供稍后处理。此队列中的ephemeron可能包�
 3展示了在表<code>et</code>（一个ephemerons表）中创建的简单循环。在这个循环中，第一个entry的值引用了第二个entry的键。如果使用具有弱键的弱表，则此循环永远不会被收集。创建循环后，显示调用GC。因为我们使用的是ephemerons表，所以循环将被收集，并且在执行结束时，变量<code>count</code>的值将为零。</p>
 <h2 id="implementation">4.1 Implementation</h2>
 <p>在讨论实现之前，我们将花一些时间来描述Lua GC。</p>
-<p>Lua垃圾收集器实现了<em>三色标记</em>增量算法 [^Dijkstra et al.
-1978]。此算法将跟踪阶段（检测到（非）垃圾时）与程序执行【脚注1】交错进行。在三色标记算法中，收集器可以描述为跟踪对象并为它们分配颜色的过程。一开始，所有对象都涂成白色。当收集器跟踪引用图时，它会为每个跟踪的对象分配黑色。</p>
+<p>Lua垃圾收集器实现了<em>三色标记</em>增量算法 <a href="#fn25"
+class="footnote-ref" id="fnref25"
+role="doc-noteref"><sup>25</sup></a>。此算法将跟踪阶段（检测到（非）垃圾时）与程序执行【脚注1】交错进行。在三色标记算法中，收集器可以描述为跟踪对象并为它们分配颜色的过程。一开始，所有对象都涂成白色。当收集器跟踪引用图时，它会为每个跟踪的对象分配黑色。</p>
 <blockquote>
-<p>脚注1：有关GC算法和技术的更多信息，请参阅Wilson[^Wilson
-1992]的著作。</p>
+<p>脚注1：有关GC算法和技术的更多信息，请参阅Wilson<a href="#fn26"
+class="footnote-ref" id="fnref26"
+role="doc-noteref"><sup>26</sup></a>的著作。</p>
 </blockquote>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs Lua"><span class="hljs-comment">-- Code 3 Example of how an ephemerons table works.</span><br>et = &#123;&#125;<br>mt = &#123;&#125;<br><span class="hljs-built_in">setmetatable</span>(et, mt) <br><span class="hljs-comment">-- sets the table to be an ephemerons table,</span><br><span class="hljs-comment">-- in the new implementation.</span><br>mt.<span class="hljs-built_in">__mode</span> = <span class="hljs-string">&quot;k&quot;</span><br><br>a = &#123;&#125;<br>b = &#123;&#125;<br>et[a] = b<br>et[b] = a<br>a = <span class="hljs-literal">nil</span><br>b = <span class="hljs-literal">nil</span><br><span class="hljs-built_in">collectgarbage</span>()<br>count = <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> k,v <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(et) <span class="hljs-keyword">do</span><br>	count = count + <span class="hljs-number">1</span><br><span class="hljs-keyword">end</span><br><span class="hljs-built_in">print</span>(count) <span class="hljs-comment">-- 0</span><br></code></pre></td></tr></table></figure>
 <p>到收集结束时，程序可访问的对象必须被涂成黑色，所有白色对象都将被删除。但是，由于程序和GC的执行是交错的，
@@ -503,54 +526,6 @@ GC中轻松地实现对原始ephemerons机制的改造。
 在没有循环的情况下，我们的实现与弱表的实现一样高效。当循环确实存在时，ephemerons表能够收集它们。综上所述，我们认为这一机制可以很容易地在任何编程语言实现，就像在Lua中一样。</p>
 <h1 id="acknowledgments">7 Acknowledgments</h1>
 <p>我们希望感谢审稿人的宝贵建议。</p>
-<h1 id="references">References</h1>
-<p>[^Boehm 2003]: Boehm, H.: “Destructors, Finalizers, and
-Synchronization”; Proc. of the 30th ACM SIGPLAN-SIGACT symposium on
-Principles of Programming Languages (2003), 262-272.</p>
-<p>[^Dybvig et al. 1993]: Dybvig, R. K., Bruggeman, C., Eby, D.:
-“Guardians in a Generation-based Garbage Collector”; Proc. of the ACM
-SIGPLAN ’93 Conference on Programming Language Design and Implementation
-(1994), 207–216.</p>
-<p>[^Hayes 1992]: Hayes, B.: “Finalization in the Collector Interface”;
-Proc. of the ’92 In ternational Workshop on Memory Management, London
-(1992), 277–298.</p>
-<p>[^Leal 2005]: Legal, M. A.: “Finalizadores e Referˆencias Fracas:
-Interagindo com o Coletor de Lixo”; PhD thesis, Informatics Department,
-Pontifical Catholic University of Rio de Janeiro (2005).</p>
-<p>[^Bloch 2001]: Bloch, J.: “Effective Java Programming Language
-Guide”; Prentice Hall, f irst edition (June 2001).</p>
-<p>[^PARC 1985]: Xerox Palo Alto Research Center (PARC): “InterLISP
-Reference Manual”; Palo Alto, CA (October 1985).</p>
-<p>[^Rees et al. 1984]: Rees, J. A., Adms, N. I., Meehan, J. R.: “The T
-Manual”; Yale University, Computer Science Department, fourth edition
-(January 1984).</p>
-<p>[^SUN 2006]: Sun Microsystems: “JavaTM Platform Standard Edition 6.0:
-API Specification”; (2006).</p>
-<p>[^Ierusalimschy 2006]: Ierusalimschy, R.: “Programming in Lua”;
-Lua.org, second edition (2006).</p>
-<p>[^Hayes 1997]: Hayes, B.: “Ephemerons: a New Finalization Mechanism”;
-In Proc. of the 12th ACM SIGPLAN Conference on Object-Oriented
-Programming, Systems, Languages, and Applications, New York, NY (1997),
-176–183.</p>
-<p>[^Jones et al. 1999]: Jones, S. P., Marlow, S., Elliott, C.:
-“Stretching the Storage Manager: Weak Pointers and Stable Names in
-haskell”; Lect. Notes Comp. Sci. 1868, Springer (1999), 37-58.</p>
-<p>[^Glasgow 2007]: The Glasgow Haskell Compiler user’s guide, version
-6.2; http://www.haskell.org/ghc, last viewed in April 2nd, 2007.</p>
-<p>[^Brownbridge 1985]: Brownbridge, D. R.: “Cyclic Reference Counting
-for Combinator Machines”; Proc. of the ACM Conference on Functional
-Programming Languages and Computer Architecture, New York, NY (1985),
-273–288.</p>
-<p>[^Gamma et al. 1995]: Gamma, E., Helm, R., Johnson, R., Vlissides,
-J.:“Design Patterns: Elements of Reusable Objetct-Oriented Software”;
-Addison Wesley (1995).</p>
-<p>[^Dijkstra et al. 1978]: Dijkstra, E. W., Lamport, L., Martin, A. J.,
-Scholten, C. S., Ste ens, E. F. M.: “On-the-fly Garbage Collection: An
-Exercise in Cooperation”; Communications of the ACM, 21, 11 (November
-1978, 966-975.</p>
-<p>[^Wilson 1992]: Wilson, P. R.: “Uniprocessor Garbage Collection
-Techniques”; Proc. of the 1992 International Workshop on Memory
-Management, Saint-Malo, France (1992), 1-42</p>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
@@ -558,6 +533,107 @@ role="doc-endnotes">
 <li id="fn1"><p>Atkins, M. C., Nackman, L. R.: “The Active Deallocation
 of Objects in Object-Oriented System”; Software: Practice and
 Experience, 18, 11 (1988), 1073-1089.<a href="#fnref1"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Boehm, H.: “Destructors, Finalizers, and
+Synchronization”; Proc. of the 30th ACM SIGPLAN-SIGACT symposium on
+Principles of Programming Languages (2003), 262-272.<a href="#fnref2"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Dybvig, R. K., Bruggeman, C., Eby, D.: “Guardians in a
+Generation-based Garbage Collector”; Proc. of the ACM SIGPLAN ’93
+Conference on Programming Language Design and Implementation (1994),
+207–216.<a href="#fnref3" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Hayes, B.: “Finalization in the Collector Interface”;
+Proc. of the ’92 In ternational Workshop on Memory Management, London
+(1992), 277–298.<a href="#fnref4" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Legal, M. A.: “Finalizadores e Referˆencias Fracas:
+Interagindo com o Coletor de Lixo”; PhD thesis, Informatics Department,
+Pontifical Catholic University of Rio de Janeiro (2005).<a
+href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Bloch, J.: “Effective Java Programming Language Guide”;
+Prentice Hall, f irst edition (June 2001).<a href="#fnref6"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Boehm, H.: “Destructors, Finalizers, and
+Synchronization”; Proc. of the 30th ACM SIGPLAN-SIGACT symposium on
+Principles of Programming Languages (2003), 262-272.<a href="#fnref7"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Xerox Palo Alto Research Center (PARC): “InterLISP
+Reference Manual”; Palo Alto, CA (October 1985).<a href="#fnref8"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Rees, J. A., Adms, N. I., Meehan, J. R.: “The T Manual”;
+Yale University, Computer Science Department, fourth edition (January
+1984).<a href="#fnref9" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Sun Microsystems: “JavaTM Platform Standard Edition
+6.0: API Specification”; (2006).<a href="#fnref10" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Ierusalimschy, R.: “Programming in Lua”; Lua.org,
+second edition (2006).<a href="#fnref11" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Hayes, B.: “Ephemerons: a New Finalization Mechanism”;
+In Proc. of the 12th ACM SIGPLAN Conference on Object-Oriented
+Programming, Systems, Languages, and Applications, New York, NY (1997),
+176–183.<a href="#fnref12" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Jones, S. P., Marlow, S., Elliott, C.: “Stretching the
+Storage Manager: Weak Pointers and Stable Names in haskell”; Lect. Notes
+Comp. Sci. 1868, Springer (1999), 37-58.<a href="#fnref13"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>The Glasgow Haskell Compiler user’s guide, version 6.2;
+http://www.haskell.org/ghc, last viewed in April 2nd, 2007.<a
+href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Brownbridge, D. R.: “Cyclic Reference Counting for
+Combinator Machines”; Proc. of the ACM Conference on Functional
+Programming Languages and Computer Architecture, New York, NY (1985),
+273–288.<a href="#fnref15" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Ierusalimschy, R.: “Programming in Lua”; Lua.org,
+second edition (2006).<a href="#fnref16" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Jones, S. P., Marlow, S., Elliott, C.: “Stretching the
+Storage Manager: Weak Pointers and Stable Names in haskell”; Lect. Notes
+Comp. Sci. 1868, Springer (1999), 37-58.<a href="#fnref17"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>Gamma, E., Helm, R., Johnson, R., Vlissides, J.:“Design
+Patterns: Elements of Reusable Objetct-Oriented Software”; Addison
+Wesley (1995).<a href="#fnref18" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>Hayes, B.: “Ephemerons: a New Finalization Mechanism”;
+In Proc. of the 12th ACM SIGPLAN Conference on Object-Oriented
+Programming, Systems, Languages, and Applications, New York, NY (1997),
+176–183.<a href="#fnref19" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>Jones, S. P., Marlow, S., Elliott, C.: “Stretching the
+Storage Manager: Weak Pointers and Stable Names in haskell”; Lect. Notes
+Comp. Sci. 1868, Springer (1999), 37-58.<a href="#fnref20"
+class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>Sun Microsystems: “JavaTM Platform Standard Edition
+6.0: API Specification”; (2006).<a href="#fnref21" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn22"><p>Hayes, B.: “Ephemerons: a New Finalization Mechanism”;
+In Proc. of the 12th ACM SIGPLAN Conference on Object-Oriented
+Programming, Systems, Languages, and Applications, New York, NY (1997),
+176–183.<a href="#fnref22" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn23"><p>Hayes, B.: “Ephemerons: a New Finalization Mechanism”;
+In Proc. of the 12th ACM SIGPLAN Conference on Object-Oriented
+Programming, Systems, Languages, and Applications, New York, NY (1997),
+176–183.<a href="#fnref23" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn24"><p>Hayes, B.: “Ephemerons: a New Finalization Mechanism”;
+In Proc. of the 12th ACM SIGPLAN Conference on Object-Oriented
+Programming, Systems, Languages, and Applications, New York, NY (1997),
+176–183.<a href="#fnref24" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn25"><p>Dijkstra, E. W., Lamport, L., Martin, A. J., Scholten,
+C. S., Ste ens, E. F. M.: “On-the-fly Garbage Collection: An Exercise in
+Cooperation”; Communications of the ACM, 21, 11 (November 1978,
+966-975.<a href="#fnref25" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn26"><p>Wilson, P. R.: “Uniprocessor Garbage Collection
+Techniques”; Proc. of the 1992 International Workshop on Memory
+Management, Saint-Malo, France (1992), 1-42<a href="#fnref26"
 class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
