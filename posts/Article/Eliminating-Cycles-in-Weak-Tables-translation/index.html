@@ -326,8 +326,7 @@ Lua</a>的作者，中文版即<a
 target="_blank" rel="noopener" href="https://book.douban.com/subject/30262035/">Lua程序设计（第4版）</a>。</p>
 </blockquote>
 <p><strong>摘要：</strong>弱引用构成了应用程序与其GC（Garbage
-collector）交互的一种优雅机制。在大多数典型用途中，弱引用是通过弱表（如Java的
-WeakHashMap）使用的。但是，大多数弱表的实现都有一个严重的限制：弱表中键和值之间的循环引用会阻止循环内的元素被回收，即使它们不再可以从外部访问到。这给在某些类型的应用程序中使用弱表带来了困难。</p>
+collector）交互的一种优雅机制。在大多数典型用途中，弱引用是通过弱表（如Java的WeakHashMap）使用的。但是，大多数弱表的实现都有一个严重的限制：弱表中键和值之间的循环引用会阻止循环内的元素被回收，即使它们不再可以从外部访问到。这给在某些类型的应用程序中使用弱表带来了困难。</p>
 <p>本文中，我们介绍了在Lua中解决此问题的方法。我们的方法包括将<strong>ephemerons</strong>机制适配到表中。我们修改了Lua虚拟机的GC以支持此机制。使用这个经过调整的GC，我们可以验证这个实现在解决Lua中弱表上的循环问题方面的效率和有效性。</p>
 <blockquote>
 <p>ephemeron于Lua5.2引入，<a
@@ -349,8 +348,7 @@ reference）</strong><a href="#fn5" class="footnote-ref" id="fnref5"
 role="doc-noteref"><sup>5</sup></a>。</p>
 <p>finalizer是GC在回收对象占用的内存之前自动执行的一种特殊方法。此类方法用于许多活动，包括管理对象缓存、释放服务器和其他程序提供的资源。终结器具有异步特性。Bloch<a
 href="#fn6" class="footnote-ref" id="fnref6"
-role="doc-noteref"><sup>6</sup></a>
-认为finalizer不可预测，通常很危险且不必要，并会对程序性能产生负面影响。但Boehm<a
+role="doc-noteref"><sup>6</sup></a>认为finalizer不可预测，通常很危险且不必要，并会对程序性能产生负面影响。但Boehm<a
 href="#fn7" class="footnote-ref" id="fnref7"
 role="doc-noteref"><sup>7</sup></a>认为finalizer的使用在某些情况下是必要的，并且其异步性并不一定会使程序不健全。</p>
 <p>弱引用是一种不保护对象不被GC回收的引用。许多具有GC功能的编程语言至少从80年代开始就为弱引用提供了一些支持<a
@@ -360,16 +358,16 @@ id="fnref9"
 role="doc-noteref"><sup>9</sup></a>。弱引用还可以用作finalization机制，从而避免与传统finalizer相关的诸多问题。根据编程语言和其GC管理的方式，对终结器的支持甚至可能不再必要。</p>
 <p>弱引用的重要性日益增加，促使我们寻找一个关键问题的解决方案：弱表中的循环。此问题的一个典型示例为property表中。通常，我们希望动态地向对象添加property，并且独立于它的类attribute。一种非常常见的方法是使用property表。在property表中，将对于对象的引用作为搜索键插入，与此键关联的值指定额外property。但是，如果property表中的所有引用都是普通的，则插入新的键/值对这一简单事实将阻止键引用的对象被收集。解决此问题的最佳方法是使用弱表，这是一种通过弱引用实现的数据结构。弱表由<strong>弱对（weak
 pair）</strong>组成，其中第一个元素（键）由弱引用维护，第二个元素（值）由普通引用维护。这样，向对象添加property不会阻止其被收集。</p>
-<p>然而，弱表中的循环问题仍然存在于大多数编程语言中：键和值之间存在循环引用，即使客户端程序没有对它们的其他引用，也会阻止收集循环中的元素。这些循环的常见情况是值引用它自己的键。例如，property表（使用弱表实现）可以将函数与其各自的模块相关联，以便它可以说明给定函数属于哪个模块。由于每个模块都会引用其所有函数，此property表中的任何键或值永远不会被收集。这最终会造成大量的内存浪费，并给使用弱表带来困难。在
-Java<a href="#fn10" class="footnote-ref" id="fnref10"
-role="doc-noteref"><sup>10</sup></a> 和 Lua <a href="#fn11"
-class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a>
-等编程语言中可以发现此问题。通过Lua的讨论列表，我们可以看到与此问题相关的频繁抱怨。</p>
+<p>然而，弱表中的循环问题仍然存在于大多数编程语言中：键和值之间存在循环引用，即使客户端程序没有对它们的其他引用，也会阻止收集循环中的元素。这些循环的常见情况是值引用它自己的键。例如，property表（使用弱表实现）可以将函数与其各自的模块相关联，以便它可以说明给定函数属于哪个模块。由于每个模块都会引用其所有函数，此property表中的任何键或值永远不会被收集。这最终会造成大量的内存浪费，并给使用弱表带来困难。在Java<a
+href="#fn10" class="footnote-ref" id="fnref10"
+role="doc-noteref"><sup>10</sup></a> 和Lua<a href="#fn11"
+class="footnote-ref" id="fnref11"
+role="doc-noteref"><sup>11</sup></a>等编程语言中可以发现此问题。通过Lua的讨论列表，我们可以看到与此问题相关的频繁抱怨。</p>
 <p>这个问题的解决方案可以在Hayes<a href="#fn12" class="footnote-ref"
 id="fnref12"
 role="doc-noteref"><sup>12</sup></a>提出的一种称为ephemerons的机制中找到。Jones<a
 href="#fn13" class="footnote-ref" id="fnref13"
-role="doc-noteref"><sup>13</sup></a> 独立为Haskell<a href="#fn14"
+role="doc-noteref"><sup>13</sup></a>独立为Haskell<a href="#fn14"
 class="footnote-ref" id="fnref14"
 role="doc-noteref"><sup>14</sup></a>编程语言开发了一种类似的解决方案，其核心思想与ephemerons机制相同。</p>
 <p>基于Haskell的成功，我们为Lua设计并实现了该机制的改编版。作为起点，我们仔细研究了Hayes的著作[^Hayes
@@ -383,11 +381,9 @@ role="doc-noteref"><sup>14</sup></a>编程语言开发了一种类似的解决�
 <ul>
 <li><p><strong>循环数据结构的收集</strong>——纯引用计数（reference-counting）GC无法回收循环数据结构。根据Brownbridge<a
 href="#fn15" class="footnote-ref" id="fnref15"
-role="doc-noteref"><sup>15</sup></a>的说法，
-这一缺陷是开发弱引用的最初动机。只需用弱引用替换普通引用，使每个循环至少有一个弱引用，即可轻松克服这一缺陷。随着tracing
+role="doc-noteref"><sup>15</sup></a>的说法，这一缺陷是开发弱引用的最初动机。只需用弱引用替换普通引用，使每个循环至少有一个弱引用，即可轻松克服这一缺陷。随着tracing
 GC的出现，这种用法已变得过时。</p></li>
-<li><p><strong>缓存</strong>——
-频繁使用大型数据结构的应用程序可以通过将这些结构驻留在内存中来显著提高其性能。但是，这可能会导致内存快速耗尽。弱表提供了一种简单的解决方案来实现自动管理的缓存，只要内存不紧缺，它就会保留数据。</p>
+<li><p><strong>缓存</strong>——频繁使用大型数据结构的应用程序可以通过将这些结构驻留在内存中来显著提高其性能。但是，这可能会导致内存快速耗尽。弱表提供了一种简单的解决方案来实现自动管理的缓存，只要内存不紧缺，它就会保留数据。</p>
 <p>根据文献<a href="#fn16" class="footnote-ref" id="fnref16"
 role="doc-noteref"><sup>16</sup></a><a href="#fn17" class="footnote-ref"
 id="fnref17"
@@ -438,7 +434,7 @@ role="doc-noteref"><sup>24</sup></a>中提到，在第三阶段，收集器从�
 3展示了在表<code>et</code>（一个ephemerons表）中创建的简单循环。在这个循环中，第一个entry的值引用了第二个entry的键。如果使用具有弱键的弱表，则此循环永远不会被收集。创建循环后，显示调用GC。因为我们使用的是ephemerons表，所以循环将被收集，并且在执行结束时，变量<code>count</code>的值将为零。</p>
 <h2 id="implementation">4.1 Implementation</h2>
 <p>在讨论实现之前，我们将花一些时间来描述Lua GC。</p>
-<p>Lua垃圾收集器实现了<em>三色标记</em>增量算法 <a href="#fn25"
+<p>Lua垃圾收集器实现了<em>三色标记</em>增量算法<a href="#fn25"
 class="footnote-ref" id="fnref25"
 role="doc-noteref"><sup>25</sup></a>。此算法将跟踪阶段（检测到（非）垃圾时）与程序执行【脚注1】交错进行。在三色标记算法中，收集器可以描述为跟踪对象并为它们分配颜色的过程。一开始，所有对象都涂成白色。当收集器跟踪引用图时，它会为每个跟踪的对象分配黑色。</p>
 <blockquote>
@@ -447,22 +443,16 @@ class="footnote-ref" id="fnref26"
 role="doc-noteref"><sup>26</sup></a>的著作。</p>
 </blockquote>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs Lua"><span class="hljs-comment">-- Code 3 Example of how an ephemerons table works.</span><br>et = &#123;&#125;<br>mt = &#123;&#125;<br><span class="hljs-built_in">setmetatable</span>(et, mt) <br><span class="hljs-comment">-- sets the table to be an ephemerons table,</span><br><span class="hljs-comment">-- in the new implementation.</span><br>mt.<span class="hljs-built_in">__mode</span> = <span class="hljs-string">&quot;k&quot;</span><br><br>a = &#123;&#125;<br>b = &#123;&#125;<br>et[a] = b<br>et[b] = a<br>a = <span class="hljs-literal">nil</span><br>b = <span class="hljs-literal">nil</span><br><span class="hljs-built_in">collectgarbage</span>()<br>count = <span class="hljs-number">0</span><br><span class="hljs-keyword">for</span> k,v <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(et) <span class="hljs-keyword">do</span><br>	count = count + <span class="hljs-number">1</span><br><span class="hljs-keyword">end</span><br><span class="hljs-built_in">print</span>(count) <span class="hljs-comment">-- 0</span><br></code></pre></td></tr></table></figure>
-<p>到收集结束时，程序可访问的对象必须被涂成黑色，所有白色对象都将被删除。但是，由于程序和GC的执行是交错的，
-我们还需要考虑中间阶段。此外，程序不能以【收集器无法找到所有可访问对象】的方式更改引用图。为了防止这种情况，三色标记算法使用第三种颜色灰色来表示可能尚未跟踪其后代的已访问对象。这样，在跟踪过程中，只要发现一个对象，它就会被染成灰色。当跟踪到所有后代时，该对象就会被染成黑色。直观地看，跟踪在灰
-色对象的wavefront中进行，灰色对象将白色（未到达）对象与黑色对象分开，并且有一个不变量，即黑色对象永远不会引用白色对象。
-但是，程序仍然可以需要创建一个从黑色指向白色对象的指针，这违反了不变量。为了防止这种情况，收集器使用write
+<p>到收集结束时，程序可访问的对象必须被涂成黑色，所有白色对象都将被删除。但是，由于程序和GC的执行是交错的，我们还需要考虑中间阶段。此外，程序不能以【收集器无法找到所有可访问对象】的方式更改引用图。为了防止这种情况，三色标记算法使用第三种颜色灰色来表示可能尚未跟踪其后代的已访问对象。这样，在跟踪过程中，只要发现一个对象，它就会被染成灰色。当跟踪到所有后代时，该对象就会被染成黑色。直观地看，跟踪在灰色对象的wavefront中进行，灰色对象将白色（未到达）对象与黑色对象分开，并且有一个不变量，即黑色对象永远不会引用白色对象。但是，程序仍然可以需要创建一个从黑色指向白色对象的指针，这违反了不变量。为了防止这种情况，收集器使用write
 barrier：每当程序尝试将对白色对象的引用写入黑色对象时，要么原点变为（从黑色）灰色，要么目标变为（从白色）灰色。</p>
 <p>Lua垃圾收集分为四个阶段。在第一阶段，收集器跟踪引用图并给对象着色。此阶段与程序的执行交错进行。第二阶段称为原子阶段，当多个操作在一个步骤中执行时——一些垃圾收集器的操作不能与程序的执行交错（例如，清除弱表）。第三阶段，也是增量阶段，收集器释放白色对象占用的内存。最后，在第四阶段，finalizer被与程序的执行交错调用。为了简化对GC行为的理解，我们将在讨论中考虑两个阶段：原子阶段，由前面提到的第二阶段组成；以及非原子阶段，由第一、第三和第四阶段组成。</p>
 <p>在ephemeron的收集算法中，垃圾收集器首先跟踪对象图。当它找到一个ephemeron时，垃圾收集器不会立即跟踪ephemeron的字段，而是将此ephemeron插入队列中以便稍后处理，然后继续跟踪阶段。在我们的例子中，我们需要一个数据结构来表示ephemerons表的队列。Lua
 GC的原始实现有一个单独的数据结构来存储所有三种弱表，即弱列表。在我们的GC实现中，此列表被分成三个单独的列表，每种弱表一个。仅存储弱键的弱表的列表称为ephemeron列表，因为所有这种类型的表都表示一个ephemerons表。在跟踪阶段，每当垃圾收集器找到一个ephemerons表时，它都会将此表插入到ephemeron列表中。</p>
-<p>为了实现ephemeron机制，我们在GC的阶段添加了新操作。首先，如前所述，只要找到ephemerons表，它就会
-被列入ephemeron列表中。ephemerons表中的entry不会被跟踪，无论是键还是值。（请记住，在原始机制中，每个键/值对代表一个ephemeron。）这就是第一阶段添加的全部内容。</p>
+<p>为了实现ephemeron机制，我们在GC的阶段添加了新操作。首先，如前所述，只要找到ephemerons表，它就会被列入ephemeron列表中。ephemerons表中的entry不会被跟踪，无论是键还是值。（请记住，在原始机制中，每个键/值对代表一个ephemeron。）这就是第一阶段添加的全部内容。</p>
 <p>随后，收集器进入原子阶段，此时多个操作在一个步骤中执行。我们为该阶段实现了两个新函数：<code>traverseephemeron</code>，用于跟踪ephemeron列表；<code>convergeephemerons</code>，用于调用第一个函数来收敛ephemeron列表。这些函数的伪代码可在Code
 4中找到。函数<code>traverseephemeron</code>跟踪ephemerons表中的所有entry。如果某个entry的键被标记，即已到达该键，则标记相应的值。函数<code>traverseephemeron</code>返回一个布尔值，由Code
 4中的变量<code>b</code>定义。如果来自ephemerons表的任何值已被标记，则此布尔值为真，否则为假。</p>
-<p><code>convergeephemerons</code>函数调用<code>traverseephemeron</code>。如果此函数返回true，即如果某个值已被标记，则前者调用收集器原始实现中的函数<code>propagateall</code>。此函数未经修改。其职责是跟踪程序的引用图，并根据三色标记算法扩展灰色对象的屏障。请注意，在之前执行<code>traverseephemeron</code>时，
-标记了ephemerons表的值。因此
-<code>propagateall</code>将标记被这些值直接或间接引用的对象。由于这些新标记的对象可能引用ephemerons表中的键，函数<code>convergeephemerons</code>再次调用<code>traverseephemeron</code>。当没有标记任何值时，<code>traverseephemeron</code>返回false。如果在跟踪所有ephemerons表后没有标记任何值，则<code>convergeephemerons</code>终止执行。函数<code>convergeephemerons</code>和<code>traverseephemeron</code>将原始ephemeron机制的第二阶段适配到Lua
+<p><code>convergeephemerons</code>函数调用<code>traverseephemeron</code>。如果此函数返回true，即如果某个值已被标记，则前者调用收集器原始实现中的函数<code>propagateall</code>。此函数未经修改。其职责是跟踪程序的引用图，并根据三色标记算法扩展灰色对象的屏障。请注意，在之前执行<code>traverseephemeron</code>时，标记了ephemerons表的值。因此<code>propagateall</code>将标记被这些值直接或间接引用的对象。由于这些新标记的对象可能引用ephemerons表中的键，函数<code>convergeephemerons</code>再次调用<code>traverseephemeron</code>。当没有标记任何值时，<code>traverseephemeron</code>返回false。如果在跟踪所有ephemerons表后没有标记任何值，则<code>convergeephemerons</code>终止执行。函数<code>convergeephemerons</code>和<code>traverseephemeron</code>将原始ephemeron机制的第二阶段适配到Lua
 GC。</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs Lua"><span class="hljs-comment">-- Code 4 Pseudo-code for convergeephemerons and traversephemeron</span><br> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">convergeephemerons</span><span class="hljs-params">(ephemeron)</span></span><br> <span class="hljs-keyword">while</span> TRUE <span class="hljs-keyword">do</span><br> 	changed ⟸ FALSE<br> 	<span class="hljs-keyword">for</span> all e ∈ ephemeron <span class="hljs-keyword">do</span><br> 		<span class="hljs-keyword">if</span> traverseephemeron(e) <span class="hljs-keyword">then</span><br> 			changed ∈ TRUE<br> 			propagateall(...)<br> 		<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br> 	<span class="hljs-keyword">end</span> <span class="hljs-keyword">for</span><br> 	<span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> changed <span class="hljs-keyword">then</span><br> 		<span class="hljs-keyword">break</span><br> 	<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">while</span><br>            <br> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">traverseephemeron</span><span class="hljs-params">(e)</span></span><br> b ⟸ FALSE<br> <span class="hljs-keyword">for</span> all pair ∈ hash(e) <span class="hljs-keyword">do</span><br> 	<span class="hljs-keyword">if</span> key(pair) is marked <span class="hljs-keyword">then</span><br> 		mark the value<br> 		b ⟸ TRUE<br>	<span class="hljs-keyword">end</span> <span class="hljs-keyword">if</span><br><span class="hljs-keyword">end</span> <span class="hljs-keyword">for</span><br><span class="hljs-keyword">return</span> b<br></code></pre></td></tr></table></figure>
 <p>在执行<code>convergeephemerons</code>之后，并且仍然处于原子阶段时，收集器调用<code>cleartable</code>函数作为<code>propagateall</code>，这个函数也属于收集器的原始实现。函数<code>cleartable</code>从弱表（包括具有弱键和强值的ephemerons表）中删除无法访问的entry。最终，收集器继续到最后阶段，释放内存并执行finalizer。此阶段未修改。</p>
@@ -482,7 +472,7 @@ class="math inline">\(f_n=f_a+f_b\)</span>。</p>
 </blockquote>
 <p>在处理ephemerons表或弱表时，一些GC函数对于收集性能至关重要。在经过调整的GC中，这些函数是：</p>
 <ul>
-<li><p><code>traversetable</code>： 跟踪一个表以标记其键和值；</p></li>
+<li><p><code>traversetable</code>：跟踪一个表以标记其键和值；</p></li>
 <li><p><code>traverseephemeron</code>：追踪一个ephemerons表以标记相关相应键已到达的值；</p></li>
 <li><p><code>cleartable</code>：删除在跟踪阶段未到达的ephemerons表和弱表的entry。</p></li>
 </ul>
@@ -502,8 +492,7 @@ class="math inline">\((2×e_h)+1\)</span>次：每个值标记一次，最后一
 class="math inline">\(O(e_n^2+(K_e×e_n))\)</span>。</p>
 <p><img
 src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-08-11-Eliminating-Cycles-in-Weak-Tables-Figure-4.png" srcset="/img/loading.gif" lazyload /></p>
-<p>函数<code>cleartable</code>在两种实现中具有相同的行为。对于程序
-A，此函数的成本为<span
+<p>函数<code>cleartable</code>在两种实现中具有相同的行为。对于程序A，此函数的成本为<span
 class="math inline">\(O(K_e×(e_n))\)</span>；对于程序B，为<span
 class="math inline">\(O(K_f×(f_n))\)</span>。结果是，程序A中ephemerons表的收集成本在最佳情况下为<span
 class="math inline">\(O(K_e×(e_n))\)</span>，程序B中为<span
@@ -521,10 +510,9 @@ src="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-08-11-Eliminating-Cyc
 <h1 id="conclusion">6 Conclusion</h1>
 <p>弱表是实现弱引用的好方法。事实上，大多数弱引用的使用，如property表、弱集和缓存，都涉及弱表。然而，弱表中的循环问题仍然存在于大多数编程语言中。这可能会导致内存丢失或内存回收延迟。虽然在程序员中并不出名，但ephemerons机制对于这一问题是一个非常合理的解决方案。</p>
 <p>因为只有在弱表的上下文中ephemerons才是必要的，所以我们认为考虑ephemerons表而不是独立的键/值对更为合理。我们可以在Lua
-GC中轻松地实现对原始ephemerons机制的改造。
-在没有循环的情况下，我们的实现与弱表的实现一样高效。当循环确实存在时，ephemerons表能够收集它们。综上所述，我们认为这一机制可以很容易地在任何编程语言实现，就像在Lua中一样。</p>
+GC中轻松地实现对原始ephemerons机制的改造。在没有循环的情况下，我们的实现与弱表的实现一样高效。当循环确实存在时，ephemerons表能够收集它们。综上所述，我们认为这一机制可以很容易地在任何编程语言实现，就像在Lua中一样。</p>
 <h1 id="acknowledgments">7 Acknowledgments</h1>
-<p>我们希望感谢审稿人的宝贵建议。</p>
+<p>我们衷心感谢审稿人的宝贵建议。</p>
 <section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
