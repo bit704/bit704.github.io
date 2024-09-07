@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>UFSH2024参与记录</title>
+      <link href="//posts/Log/UFSH2024-ATTENDEE/"/>
+      <url>//posts/Log/UFSH2024-ATTENDEE/</url>
+      
+        <content type="html"><![CDATA[<p>📅</p><span id="more"></span><p><imgsrc="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-09-07-UFSH2024-scene.JPG" /></p><p>现场有丰富的技术讲座、游戏试玩展台和互动展台，非常值得参加。第一天全程听完了A场，第二天在A与B之间来回。</p><p>其中，印象最深刻的内容有《幻塔》的toon渲染实现、<ahref="https://51earth.com/">51Earth</a>使用AI从OSM生成3D地图的技术展示、详尽的<ahref="https://github.com/fjz13/UnrealSpecifiers">UE5标识符详解</a>等。</p><p><imgsrc="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-09-07-UFSH2024-agenda.jpg" /></p><p>胸牌与纪念徽章。</p><p><imgsrc="https://bit704.oss-cn-beijing.aliyuncs.com/image/2024-09-07-UFSH2024-badge.JPG" /></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Log </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Log </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Eliminating Cycles in Weak Tables【译】</title>
       <link href="//posts/Article/Eliminating-Cycles-in-Weak-Tables-translation/"/>
       <url>//posts/Article/Eliminating-Cycles-in-Weak-Tables-translation/</url>
@@ -95,11 +120,11 @@
       
         <tags>
             
-            <tag> Unity </tag>
-            
             <tag> CG </tag>
             
             <tag> UE </tag>
+            
+            <tag> Unity </tag>
             
         </tags>
       
@@ -278,9 +303,9 @@
       
         <tags>
             
-            <tag> Unity </tag>
-            
             <tag> CG </tag>
+            
+            <tag> Unity </tag>
             
         </tags>
       
@@ -684,9 +709,9 @@
       
         <tags>
             
-            <tag> CS </tag>
-            
             <tag> CPP </tag>
+            
+            <tag> CS </tag>
             
         </tags>
       
@@ -761,9 +786,9 @@
       
         <tags>
             
-            <tag> CS </tag>
-            
             <tag> CPP </tag>
+            
+            <tag> CS </tag>
             
         </tags>
       
