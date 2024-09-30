@@ -303,6 +303,8 @@
 <span id="more"></span>
 <p>本文参考UE5.0.3源码</p>
 <h1 id="ue-gc">UE GC</h1>
+<p>UE使用<a
+target="_blank" rel="noopener" href="https://dev.epicgames.com/documentation/en-us/unreal-engine/smart-pointers-in-unreal-engine">智能指针</a>管理非UObject对象，使用GC管理UObject对象。</p>
 <h2 id="uobject管理">UObject管理</h2>
 <p><code>UObject</code>是UE的基石，其内部继承体系如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">// UE_5.0\Engine\Source\Runtime\CoreUObject文件夹</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">COREUOBJECT_API</span> UObjectBase<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">COREUOBJECT_API</span> UObjectBaseUtility : <span class="hljs-keyword">public</span> UObjectBase<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">COREUOBJECT_API</span> UObject : <span class="hljs-keyword">public</span> UObjectBaseUtility<br></code></pre></td></tr></table></figure>
@@ -352,6 +354,10 @@ class="math inline">\(2^{16}\)</span>）的指针块。<code>FUObjectItem</code>
 <h1 id="参考资料">参考资料</h1>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/401956734">原创 UE基础—Garbage
 Collection(垃圾回收) - 知乎 (zhihu.com)</a></p>
+<p><a
+target="_blank" rel="noopener" href="https://www.cnblogs.com/ghl_carmack/p/6112118.html">虚幻4垃圾回收剖析
+- 风恋残雪 - 博客园 (cnblogs.com)</a></p>
+<p>大象无形——虚幻引擎程序设计浅析 / 罗丁力，张三（10.1.4）</p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/25539690">Java性能优化之JVM
 GC（垃圾回收机制） - 知乎 (zhihu.com)</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/295062531">GC 机制探究之 Python
