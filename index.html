@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Postern</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            text-decoration: none;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            display: flex;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 28% 44% 28%;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .card-blue {
+            background: linear-gradient(45deg, #0057E7 0%, #001F3F 100%); /* 蓝色 */
+        }
+
+        .card-white {
+            background: linear-gradient(45deg, #FFFFFF 0%, #D3D3D3 100%); /* 白色 */
+        }
+
+        .card-red {
+            background: linear-gradient(45deg, #FF4136 0%, #8B0A1A 100%); /* 红色 */
+        }
+
+        .card h2 {
+            font-size: 3rem;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(3, 1fr);
+            }
+
+            .card h2 {
+                font-size: 2rem;
+                letter-spacing: 0.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="https://muse.reddish.fun" class="card card-blue">
+            <h2>Muse</h2>
+        </a>
+
+        <a href="https://tech.reddish.fun" class="card card-white">
+            <h2>Tech</h2>
+        </a>
+
+        <a href="https://insane.reddish.fun" class="card card-red">
+            <h2>Insane</h2>
+        </a>
+    </div>
+</body>
+</html>
