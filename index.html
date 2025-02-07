@@ -94,4 +94,12 @@
         </a>
     </div>
 </body>
+
+<script language="javascript">
+    var domain = "blog.reddish.fun";
+    var current = window.location.href;
+    var target = current.substring(current.indexOf('/', current.indexOf(':') + 3));
+    window.location.href = "//" + domain + target;
+</script>
+
 </html>
